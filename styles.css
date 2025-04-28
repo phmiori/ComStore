@@ -147,4 +147,65 @@
     padding: 20px;
     background: #a09f9f;
   }
+
+
+
+  .container-nichos {
+    display: flex;            /* Deixa os itens lado a lado */
+    flex-wrap: wrap;          /* Permite que quebrem para a linha de baixo */
+    justify-content: center;  /* Centraliza os itens na linha */
+    gap: 20px;                /* Espaçamento entre os quadrados */
+    margin: 30px;             /* Espaçamento em volta do container */
+  }
+  
+  /* Estilo de cada quadrado individual */
+  .nichos {
+    width: 220px;             /* Largura fixa do quadrado */
+    height: 280px;            /* Altura fixa do quadrado */
+    border: 2px solid #ccc;   /* Borda cinza clara */
+    border-radius: 10px;      /* Bordas arredondadas */
+    text-align: center;       /* Centraliza o texto */
+    padding: 10px;            /* Espaçamento interno */
+    box-sizing: border-box;   /* Inclui padding e borda dentro da largura e altura */
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1); /* Sombra leve para dar profundidade */
+    display: flex;            /* Flexbox para alinhar conteúdo interno */
+    flex-direction: column;   /* Organiza imagem e texto um abaixo do outro */
+    align-items: center;      /* Alinha imagem e texto ao centro horizontalmente */
+    justify-content: center;  /* Centraliza o conteúdo na altura também */
+    background-color: white;  /* Fundo branco */
+    transition: transform 0.2s, box-shadow 0.2s; /* Animação suave para hover */
+  }
+  
+  .nichos:hover {
+    transform: scale(1.05);
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Responsividade */
+  
+  /* Tablet: 3 por linha */
+  @media (max-width: 900px) {
+    .nichos {
+      width: 30%;
+      max-width: 200px;
+      min-width: 120px;
+    }
+  }
+  
+  /* Celular médio: 2 por linha */
+  @media (max-width: 600px) {
+    .nichos {
+      width: 45%;
+      max-width: 180px;
+      min-width: 120px;
+    }
+  }
+  
+  /* Celular pequeno: 1 por linha */
+  @media (max-width: 400px) {
+    .nichos {
+      width: 90%;
+    }
+  }
+  
   

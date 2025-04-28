@@ -83,59 +83,64 @@
   .dropdown:hover .dropdown-content {
     display: block;
   }
+
+  /*-------------------------------------------------------------*/
+  /*-------------------------------------------------------------*/
   
-  .slider {
-    position: relative;
-    width: 90%;
-    overflow: hidden;
-    background: #f5f5f5;
-    display: flex;
-    align-items: center;
-  }
-  
-  .cards-container {
-    overflow: hidden;
-    width: 100%;
-  }
-  
-  .cards-wrapper {
-    display: flex;
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .card {
-    flex: 0 0 220px;
-    margin: 0 10px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    text-align: center;
-    padding: 20px;
-    position: relative;
-  }
-  
-  .card a {
-    text-decoration: none; /* Remove default link styling */
-    color: inherit; /* Keep text color the same as the card's */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%; /* Ensure the link occupies the whole card */
-    height: 100%;
-  }
-  
-  .card img {
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
-    margin-bottom: 10px;
-  }
-  
-  .card p {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 500;
-  }
+/* Estilo geral do carrossel */
+.carousel {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 1660px;
+  margin: 20px auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* Pista */
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+/* Container de imagens */
+.carousel-images {
+  display: flex;
+}
+
+/* Cada imagem */
+.carousel-images img {
+  height: 400px;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  margin-right: 10px;
+}
+
+/* Botões */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 24px;
+  z-index: 10;
+}
+
+.prev {
+  left: 10px;
+}
+
+.next {
+  right: 10px;
+}
+
+  /*-------------------------------------------------------------*/
+  /*-------------------------------------------------------------*/
   
   button.prev,
   button.next {
@@ -164,7 +169,8 @@
     background: #a09f9f;
   }
 
-  /*-----------------------------------------------------*/
+  /*-------------------------------------------------------------*/
+  /*-------------------------------------------------------------*/
 
   .container-nichos {
     display: flex;            /* Deixa os itens lado a lado */
@@ -224,8 +230,8 @@
     }
   }
   
-  /*------------------------------*/
-  /*------------------------------*/
+  /*-------------------------------------------------------------*/
+  /*-------------------------------------------------------------*/
 
   .barra-pesquisa {
     display: flex;

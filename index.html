@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Site Estilo Mercado Livre</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="script.js">
 </head>
 <body>
 
@@ -36,69 +37,21 @@
 </header>
 
 <main>
-  <div class="slider">
-    <button class="prev">&#10094;</button>
-    <div class="cards-container">
-      <div class="cards-wrapper">
-        <div class="card">
-          <a href="pagina1.html">
-            <img src="imagens/Screenshot 2025-04-28 014439.png" alt="Imagem 1">
-            <p>Categoria 1</p>
-          </a>
-        </div>
 
-        <div class="card">
-          <a href="pagina2.html">
-            <img src="imagens/Screenshot 2025-04-28 014439.png" alt="Imagem 2">
-            <p>Categoria 2</p>
-          </a>
-        </div>
-
-        <div class="card">
-          <a href="pagina3.html">
-            <img src="imagens/Screenshot 2025-04-28 014439.png" alt="Imagem 3">
-            <p>Categoria 3</p>
-          </a>
-        </div>
-
-        <div class="card">
-          <a href="pagina4.html">
-            <img src="imagens/Screenshot 2025-04-28 014439.png" alt="Imagem 4">
-            <p>Categoria 4</p>
-          </a>
-        </div>
-
-        <div class="card">
-          <a href="pagina5.html">
-            <img src="imagens/Screenshot 2025-04-28 014439.png" alt="Imagem 5">
-            <p>Categoria 5</p>
-          </a>
-        </div>
-
-        <div class="card">
-          <a href="pagina6.html">
-            <img src="imagens/Screenshot 2025-04-28 014439.png" alt="Imagem 5">
-            <p>Categoria 6</p>
-          </a>
-        </div>
-
-        <div class="card">
-          <a href="pagina7.html">
-            <img src="imagens/Screenshot 2025-04-28 014439.png" alt="Imagem 5">
-            <p>Categoria 7</p>
-          </a>
-        </div>
-
-        <div class="card">
-          <a href="pagina8.html">
-            <img src="imagens/Screenshot 2025-04-28 014439.png" alt="Imagem 5">
-            <p>Categoria 8</p>
-          </a>
-        </div>
-
+  <div class="carousel" id="carousel">
+    <div class="carousel-track" id="carousel-track">
+      <div class="carousel-images" id="carousel-images">
+        <img src="imagens/2f6d0faa355125320122dc57e8b07084-icone-de-camiseta.webp" alt="Banner 1">
+        <img src="imagens/regata_masculina__preta__62099_std.png" alt="Banner 2">
+        <img src="imagens/Screenshot 2025-04-28 014439.png" alt="Banner 3">
+        <img src="imagens/CALCA-JEANS-FEMININA-SOUL-SPORTS-01.png" alt="Banner 4">
+        <img src="imagens/7898458687965.jpg" alt="Banner 5">
+        <!-- Adicione quantas quiser -->
       </div>
     </div>
-    <button class="next">&#10095;</button>
+  
+    <button class="carousel-btn prev" onclick="moveSlideManual(-1)">&#10094;</button>
+    <button class="carousel-btn next" onclick="moveSlideManual(1)">&#10095;</button>
   </div>
 
   <!-------------------------------------------------- -->
@@ -106,16 +59,16 @@
 
   <div class="container-nichos">
     <div class="nichos">
-      <a href="pagina00">
-        <img src="" alt="Imagem" style="max-width: 80px;">
-        <p>Camisa</p>
+      <a href="pagina1.html">
+        <img src="imagens/2f6d0faa355125320122dc57e8b07084-icone-de-camiseta.webp" alt="Imagem" style="max-width: 80px;">
+        <p>Camisetas</p>
       </a>
     </div>
   
     <div class="nichos">
-      <a href="pagina01">
-        <img src="" alt="Imagem" style="max-width: 80px;">
-        <p>Camisa</p>
+      <a href="pagina2.html">
+        <img src="imagens/regata_masculina__preta__62099_std.png" alt="Imagem" style="max-width: 80px;">
+        <p>Regata</p>
       </a>
     </div>
   
@@ -234,6 +187,9 @@
   </div>
 
 </main>
+
+ <!-------------------------------------------------- -->
+ <!-------------------------------------------------- -->
 
 <footer>
   <p>© 2025 Meu Site</p>

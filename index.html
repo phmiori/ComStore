@@ -1,60 +1,76 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trens em Miniatura</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Site Estilo Mercado Livre</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <header>
-        <h1>Trens em Miniatura</h1>
-    </header>
-
-    <section class="categories">
-        <a href="#locomotivas" class="category-card">
-            <img src="imagens/locomotiva.jpg" alt="Locomotivas">
-            <span>Locomotivas</span>
-        </a>
-        <a href="#vagoes" class="category-card">
-            <img src="imagens/vagao.jpg" alt="Vagões">
-            <span>Vagões</span>
-        </a>
-        <a href="#trilhos" class="category-card">
-            <img src="imagens/trilhos.jpg" alt="Trilhos">
-            <span>Trilhos</span>
-        </a>
-        <a href="#acessorios" class="category-card">
-            <img src="imagens/acessorios.jpg" alt="Acessórios">
-            <span>Acessórios</span>
-        </a>
-        <a href="#kits" class="category-card">
-            <img src="imagens/kits.jpg" alt="Kits">
-            <span>Kits Completos</span>
-        </a>
-        <a href="#colecionaveis" class="category-card">
-            <img src="imagens/colecionaveis.jpg" alt="Colecionáveis">
-            <span>Colecionáveis</span>
-        </a>
-    </section>
-
-    <section class="about">
-        <div class="about-container">
-            <div class="about-text">
-                <h2>Sobre a Nossa Empresa</h2>
-                <p>
-                    Fundada em 1985, nossa empresa é líder na fabricação de trens em miniatura de alta qualidade.
-                    Com atenção aos mínimos detalhes, cada modelo é produzido com paixão, precisão e respeito
-                    à história ferroviária. Nosso compromisso é oferecer experiências únicas para colecionadores
-                    e entusiastas ao redor do mundo.
-                </p>
-            </div>
-            <div class="about-image">
-                <img src="imagens/empresa.jpg" alt="Nossa Empresa">
-            </div>
+<header>
+  <h1>Meu Site</h1>
+  <nav>
+    <div class="dropdown">
+        <button class="dropbtn">Categorias</button>
+        <div class="dropdown-content">
+          <a href="pagina1.html">Categoria 1</a>
+          <a href="pagina2.html">Categoria 2</a>
+          <a href="pagina3.html">Categoria 3</a>
         </div>
-    </section>
+    </div>
+    <a href="#">A</a>
+    <a href="#">B</a>
+    <a href="#">C</a>
+    <a href="#">D</a>
+  </nav>
+</header>
 
+<main>
+  <div class="slider">
+    <button class="prev">&#10094;</button>
+    <div class="cards-container">
+      <div class="cards-wrapper">
+        <div class="card">
+          <a href="pagina1.html">
+            <img src="imagens/Screenshot 2025-04-28 014439.png" alt="Imagem 1">
+            <p>Visto recentemente</p>
+          </a>
+        </div>
+        <div class="card">
+          <a href="pagina2.html">
+            <img src="imagens/Screenshot 2025-04-28 014439.png" alt="Imagem 2">
+            <p>Insira sua localização</p>
+          </a>
+        </div>
+        <div class="card">
+          <a href="pagina3.html">
+            <img src="imagens/Screenshot 2025-04-28 014439.png" alt="Imagem 3">
+            <p>Entre na sua conta</p>
+          </a>
+        </div>
+        <div class="card">
+          <a href="pagina4.html">
+            <img src="imagens/Screenshot 2025-04-28 014439.png" alt="Imagem 4">
+            <p>Meios de pagamento</p>
+          </a>
+        </div>
+        <div class="card">
+          <a href="pagina5.html">
+            <img src="imagens/Screenshot 2025-04-28 014439.png" alt="Imagem 5">
+            <p>Produtos populares</p>
+          </a>
+        </div>
+      </div>
+    </div>
+    <button class="next">&#10095;</button>
+  </div>
+</main>
+
+<footer>
+  <p>© 2025 Meu Site</p>
+</footer>
+
+<script src="script.js"></script>
 </body>
 </html>

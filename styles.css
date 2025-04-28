@@ -9,22 +9,38 @@
     font-family: Arial, sans-serif;
     background: #f5f5f5;
   }
-  
+
   header {
-    background: yellow;
+    display: flex;
+    flex-direction: column; /* Para que os itens fiquem em coluna (título, barra de pesquisa, menu) */
+    align-items: center; /* Centraliza horizontalmente */
     padding: 20px;
-    text-align: center;
+    background-color: #FFFF00;
+  }
+  
+  header h1 {
+    margin: 0;
+    font-size: 32px;
+    padding-bottom: 15px; /* Adicionando espaçamento abaixo do título */
   }
   
   header nav {
-    margin-top: 10px;
+    display: flex;
+    gap: 20px; /* Espaçamento igual entre os links */
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 15px; /* Espaçamento superior igual ao do título */
   }
   
   header nav a {
-    margin: 0 15px;
     text-decoration: none;
+    padding: 10px 15px;
+    background-color: #ddd;
+    border-radius: 8px;
     color: black;
     font-weight: bold;
+    transition: background-color 0.3s;
   }
   
   .dropdown {
@@ -214,11 +230,13 @@
   .barra-pesquisa {
     display: flex;
     justify-content: center; /* Centraliza a barra na tela */
-    margin-top: 50px;
+    margin-top: 10px;
+    width: 100%;
+    max-width: 500px;
   }
 
   .barra-pesquisa input[type="text"] {
-    width: 300px;
+    flex: 1;
     padding: 10px;
     border: 2px solid #ccc;
     border-radius: 25px 0 0 25px; /* Borda arredondada só à esquerda */
@@ -228,9 +246,9 @@
 
   .barra-pesquisa button {
     padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: 2px solid #4CAF50;
+    background-color: #ffffff;
+    color: r#ccc;
+    border: 2px solid #ccc;
     border-radius: 0 25px 25px 0; /* Borda arredondada só à direita */
     cursor: pointer;
     font-size: 16px;
@@ -238,5 +256,5 @@
   }
 
   .barra-pesquisa button:hover {
-    background-color: #45a049;
+    background-color: #ccc;
   }

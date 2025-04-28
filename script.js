@@ -46,3 +46,5 @@ dropdownContent.addEventListener('mouseenter', () => {
 dropdownContent.addEventListener('mouseleave', () => {
   dropdownContent.style.display = 'none'; // Esconde a lista quando o mouse sai da lista
 });
+
+

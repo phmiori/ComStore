@@ -1,0 +1,307 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+  }
+
+  header {
+    display: flex;
+    flex-direction: column; /* Para que os itens fiquem em coluna (título, barra de pesquisa, menu) */
+    align-items: center; /* Centraliza horizontalmente */
+    padding: 20px;
+    background-color: #FFFF00;
+  }
+  
+  header h1 {
+    margin: 0;
+    font-size: 32px;
+    padding-bottom: 15px; /* Adicionando espaçamento abaixo do título */
+  }
+  
+  header nav {
+    display: flex;
+    gap: 20px; /* Espaçamento igual entre os links */
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 15px; /* Espaçamento superior igual ao do título */
+  }
+  
+  header nav a {
+    text-decoration: none;
+    padding: 10px 15px;
+    background-color: #ddd;
+    border-radius: 8px;
+    color: black;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropbtn {
+    background-color: transparent;
+    color: #333;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 8px;
+  }
+  
+  .dropdown-content a {
+    color: #333;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background 0.3s;
+  }
+  
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+    border-radius: 8px;
+  }
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+  .slider {
+    position: relative;
+    width: 90%;
+    overflow: hidden;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+  }
+  
+  .cards-container {
+    overflow: hidden;
+    width: 100%;
+  }
+  
+  .cards-wrapper {
+    display: flex;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .card {
+    flex: 0 0 220px;
+    margin: 0 10px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    padding: 20px;
+    position: relative;
+  }
+  
+  .card a {
+    text-decoration: none; /* Remove default link styling */
+    color: inherit; /* Keep text color the same as the card's */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; /* Ensure the link occupies the whole card */
+    height: 100%;
+  }
+  
+  .card img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    margin-bottom: 10px;
+  }
+  
+  .card p {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  button.prev,
+  button.next {
+    background: white;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10;
+  }
+  
+  button.prev {
+    margin-right: 10px;
+  }
+  
+  button.next {
+    margin-left: 10px;
+  }
+  
+  footer {
+    text-align: center;
+    padding: 20px;
+    background: #a09f9f;
+  }
+
+  /*-----------------------------------------------------*/
+
+  .container-nichos {
+    display: flex;            /* Deixa os itens lado a lado */
+    flex-wrap: wrap;          /* Permite que quebrem para a linha de baixo */
+    justify-content: center;  /* Centraliza os itens na linha */
+    gap: 20px;                /* Espaçamento entre os quadrados */
+    margin: 100px;             /* Espaçamento em volta do container */
+  }
+  
+  /* Estilo de cada quadrado individual */
+  .nichos {
+    width: 190px;             /* Largura fixa do quadrado */
+    height: 280px;            /* Altura fixa do quadrado */
+    border: 2px solid #ccc;   /* Borda cinza clara */
+    border-radius: 8px;      /* Bordas arredondadas */
+    text-align: center;       /* Centraliza o texto */
+    padding: 10px;            /* Espaçamento interno */
+    box-sizing: border-box;   /* Inclui padding e borda dentro da largura e altura */
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1); /* Sombra leve para dar profundidade */
+    display: flex;            /* Flexbox para alinhar conteúdo interno */
+    flex-direction: column;   /* Organiza imagem e texto um abaixo do outro */
+    align-items: center;      /* Alinha imagem e texto ao centro horizontalmente */
+    justify-content: center;  /* Centraliza o conteúdo na altura também */
+    background-color: white;  /* Fundo branco */
+    transition: transform 0.2s, box-shadow 0.2s; /* Animação suave para hover */
+  }
+  
+  .nichos:hover {
+    transform: scale(1.05);
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Responsividade */
+  
+  /* Tablet: 3 por linha */
+  @media (max-width: 900px) {
+    .nichos {
+      width: 30%;
+      max-width: 200px;
+      min-width: 120px;
+    }
+  }
+  
+  /* Celular médio: 2 por linha */
+  @media (max-width: 600px) {
+    .nichos {
+      width: 45%;
+      max-width: 180px;
+      min-width: 120px;
+    }
+  }
+  
+  /* Celular pequeno: 1 por linha */
+  @media (max-width: 400px) {
+    .nichos {
+      width: 90%;
+    }
+  }
+  
+  /*------------------------------*/
+  /*------------------------------*/
+
+  .barra-pesquisa {
+    display: flex;
+    justify-content: center; /* Centraliza a barra na tela */
+    margin-top: 10px;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .barra-pesquisa input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 25px 0 0 25px; /* Borda arredondada só à esquerda */
+    outline: none;
+    font-size: 16px;
+  }
+
+  .barra-pesquisa button {
+    padding: 10px 20px;
+    background-color: #ffffff;
+    color: r#ccc;
+    border: 2px solid #ccc;
+    border-radius: 0 25px 25px 0; /* Borda arredondada só à direita */
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+
+  .barra-pesquisa button:hover {
+    background-color: #ccc;
+  }
+
+
+main.pagina-categoria {
+    display: flex;
+    padding: 20px;
+  }
+  
+  .filtros {
+    width: 20%;
+    padding: 20px;
+    border-right: 1px solid #ccc;
+  }
+  
+  .produtos {
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .produto-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    width: calc(25% - 20px);
+    box-sizing: border-box;
+    text-align: center;
+    background-color: #fff;
+  }
+  
+  .produto-card img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  
+  .produto-card h3 {
+    font-size: 18px;
+    margin: 5px 0;
+  }
+  
+  .produto-card p {
+    font-size: 16px;
+    color: green;
+  }
+  

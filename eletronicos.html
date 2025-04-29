@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuperStore - Eletrônicos e Tecnologia</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom styles for the carousel and other elements */
+        .carousel-container {
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .carousel-item {
+            flex: 0 0 33.333%;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+        
+        @media (max-width: 1024px) {
+            .carousel-item {
+                flex: 0 0 50%;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .carousel-item {
+                flex: 0 0 100%;
+            }
+        }
+        
+        .category-dropdown {
+            display: none;
+            position: absolute;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        
+        .show-categories .category-dropdown {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .niche-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .filter-section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .price-range-slider {
+            width: 100%;
+            height: 5px;
+            -webkit-appearance: none;
+            background: #ddd;
+            outline: none;
+            border-radius: 5px;
+        }
+
+        .price-range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #3b82f6;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .brand-checkbox {
+            display: none;
+        }
+
+        .brand-label {
+            display: inline-block;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .brand-checkbox:checked + .brand-label {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .type-option {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .type-option.selected {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .product-card:hover .product-actions {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .product-actions {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ef4444;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .tech-specs {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Header with logo, navigation, and search -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between">
+            <!-- Logo on the left -->
+            <div class="flex items-center mb-4 md:mb-0">
+                <img src="https://via.placeholder.com/50x50" alt="SuperStore Logo" class="h-10 mr-2">
+                <h1 class="text-xl font-bold text-gray-800">SuperStore</h1>
+            </div>
+            
+            <!-- Navigation and search in the middle -->
+            <div class="flex-1 flex flex-col md:flex-row items-center justify-center mx-0 md:mx-8 w-full md:w-auto">
+                <!-- Navigation buttons -->
+                <div class="flex space-x-4 mb-4 md:mb-0">
+                    <a href="index.html" class="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium">Início</a>
+                    <div class="relative">
+                        <button id="categories-btn" class="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                            Categorias <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <!-- Categories dropdown -->
+                        <div id="category-dropdown" class="category-dropdown p-4 rounded-lg mt-1 w-full md:w-96">
+                            <div>
+                                <h3 class="font-bold mb-2">Eletrônicos</h3>
+                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500 text-blue-600 font-medium">Smartphones & Acessórios</a>
+                                <a href="computadores.html" class="block py-1 text-gray-600 hover:text-blue-500">Computadores</a>
+                                <a href="tv-video.html" class="block py-1 text-gray-600 hover:text-blue-500">TV & Vídeo</a>
+                            </div>
+                            <div>
+                                <h3 class="font-bold mb-2">Eletrodomésticos</h3>
+                                <a href="eletrodomesticos.html" class="block py-1 text-gray-600 hover:text-blue-500">Geladeiras</a>
+                                <a href="eletrodomesticos.html" class="block py-1 text-gray-600 hover:text-blue-500">Fogões</a>
+                                <a href="eletrodomesticos.html" class="block py-1 text-gray-600 hover:text-blue-500">Microondas</a>
+                            </div>
+                            <div>
+                                <h3 class="font-bold mb-2">Moda</h3>
+                                <a href="camisas.html" class="block py-1 text-gray-600 hover:text-blue-500">Camisas</a>
+                                <a href="calcas.html" class="block py-1 text-gray-600 hover:text-blue-500">Calças, Blusas e Jaquetas</a>
+                                <a href="calcados.html" class="block py-1 text-gray-600 hover:text-blue-500">Tênis</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Search bar -->
+                <div class="relative w-full md:w-96 mb-4 md:mb-0">
+                    <input type="text" id="search-input" placeholder="Buscar produtos..." 
+                           class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button id="search-btn" class="absolute right-3 top-2 text-gray-500 hover:text-blue-600">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Logout button on the right -->
+            <div class="ml-auto">
+                <button id="logout-btn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
+                    Sair <i class="fas fa-sign-out-alt ml-1"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Breadcrumb navigation -->
+        <div class="flex items-center text-sm text-gray-500 mb-6">
+            <a href="index.html" class="hover:text-blue-500">Início</a>
+            <span class="mx-2">/</span>
+            <a href="eletronicos.html" class="hover:text-blue-500">Eletrônicos</a>
+            <span class="mx-2">/</span>
+            <span class="text-gray-700">Smartphones & Acessórios</span>
+        </div>
+
+        <!-- Page title and sorting options -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Smartphones & Acessórios</h1>
+            <div class="flex items-center">
+                <span class="text-gray-600 mr-2">Ordenar por:</span>
+                <select class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option>Mais vendidos</option>
+                    <option>Menor preço</option>
+                    <option>Maior preço</option>
+                    <option>Melhor avaliados</option>
+                    <option>Novidades</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Filters sidebar -->
+            <aside class="w-full lg:w-1/4">
+                <div class="filter-section mb-6">
+                    <h2 class="text-lg font-semibold mb-4 text-gray-800">Filtrar por</h2>
+                    
+                    <!-- Price range filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Faixa de preço</h3>
+                        <input type="range" min="100" max="10000" value="2000" class="price-range-slider mb-3">
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>R$ 100</span>
+                            <span>R$ 10.000</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Type filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Tipo</h3>
+                        <div class="flex flex-wrap">
+                            <div class="type-option selected">Smartphones</div>
+                            <div class="type-option">Smartwatches</div>
+                            <div class="type-option">Tablets</div>
+                            <div class="type-option">Notebooks</div>
+                            <div class="type-option">PCs</div>
+                            <div class="type-option">Monitores</div>
+                            <div class="type-option">Teclados</div>
+                            <div class="type-option">Mouses</div>
+                            <div class="type-option">Headsets</div>
+                            <div class="type-option">Fones</div>
+                            <div class="type-option">Mouse Pads</div>
+                            <div class="type-option">TVs</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Brand filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Marca</h3>
+                        <div class="flex flex-wrap">
+                            <input type="checkbox" id="apple" class="brand-checkbox" checked>
+                            <label for="apple" class="brand-label">Apple</label>
+                            
+                            <input type="checkbox" id="samsung" class="brand-checkbox" checked>
+                            <label for="samsung" class="brand-label">Samsung</label>
+                            
+                            <input type="checkbox" id="xiaomi" class="brand-checkbox">
+                            <label for="xiaomi" class="brand-label">Xiaomi</label>
+                            
+                            <input type="checkbox" id="motorola" class="brand-checkbox">
+                            <label for="motorola" class="brand-label">Motorola</label>
+                            
+                            <input type="checkbox" id="lg" class="brand-checkbox">
+                            <label for="lg" class="brand-label">LG</label>
+                            
+                            <input type="checkbox" id="asus" class="brand-checkbox">
+                            <label for="asus" class="brand-label">Asus</label>
+                            
+                            <input type="checkbox" id="dell" class="brand-checkbox">
+                            <label for="dell" class="brand-label">Dell</label>
+                            
+                            <input type="checkbox" id="hp" class="brand-checkbox">
+                            <label for="hp" class="brand-label">HP</label>
+                            
+                            <input type="checkbox" id="logitech" class="brand-checkbox">
+                            <label for="logitech" class="brand-label">Logitech</label>
+                            
+                            <input type="checkbox" id="razer" class="brand-checkbox">
+                            <label for="razer" class="brand-label">Razer</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Features filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Recursos</h3>
+                        <div class="space-y-2">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="5g" class="mr-2" checked>
+                                <label for="5g" class="text-gray-600">5G</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="bluetooth" class="mr-2" checked>
+                                <label for="bluetooth" class="text-gray-600">Bluetooth</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="nfc" class="mr-2">
+                                <label for="nfc" class="text-gray-600">NFC</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="wireless" class="mr-2">
+                                <label for="wireless" class="text-gray-600">Wireless</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="waterproof" class="mr-2">
+                                <label for="waterproof" class="text-gray-600">À prova d'água</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Storage filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Armazenamento</h3>
+                        <div class="flex flex-wrap">
+                            <div class="type-option">64GB</div>
+                            <div class="type-option selected">128GB</div>
+                            <div class="type-option">256GB</div>
+                            <div class="type-option">512GB</div>
+                            <div class="type-option">1TB</div>
+                        </div>
+                    </div>
+                    
+                    <!-- RAM filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Memória RAM</h3>
+                        <div class="flex flex-wrap">
+                            <div class="type-option">4GB</div>
+                            <div class="type-option selected">8GB</div>
+                            <div class="type-option">12GB</div>
+                            <div class="type-option">16GB</div>
+                            <div class="type-option">32GB</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Apply filters button -->
+                    <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
+                        Aplicar Filtros
+                    </button>
+                </div>
+                
+                <!-- Special offers -->
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h3 class="font-semibold text-blue-800 mb-3">Ofertas Especiais</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <div class="bg-white p-2 rounded-lg mr-3">
+                                <i class="fas fa-percentage text-blue-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium">Até 30% OFF</p>
+                                <p class="text-xs text-gray-500">Em smartphones e tablets</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="bg-white p-2 rounded-lg mr-3">
+                                <i class="fas fa-truck text-blue-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium">Frete Grátis</p>
+                                <p class="text-xs text-gray-500">Para compras acima de R$ 500</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="bg-white p-2 rounded-lg mr-3">
+                                <i class="fas fa-credit-card text-blue-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium">Parcele em até 12x</p>
+                                <p class="text-xs text-gray-500">Sem juros no cartão</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            
+            <!-- Products grid -->
+            <div class="w-full lg:w-3/4">
+                <!-- Featured products carousel -->
+                <section class="mb-12">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Destaques</h2>
+                    <div class="carousel-container relative group" id="carousel">
+                        <div class="carousel-track" id="carousel-track">
+                            <!-- Carousel items will be added by JavaScript -->
+                        </div>
+                        
+                        <!-- Carousel navigation arrows -->
+                        <button id="carousel-prev" class="absolute left-0 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 text-gray-800 p-2 rounded-full shadow-md hover:bg-opacity-100 transition opacity-0 group-hover:opacity-100">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button id="carousel-next" class="absolute right-0 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 text-gray-800 p-2 rounded-full shadow-md hover:bg-opacity-100 transition opacity-0 group-hover:opacity-100">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </section>
+                
+                <!-- All products grid -->
+                <section>
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">Todos os Produtos</h2>
+                        <span class="text-gray-600">Mostrando 24 de 356 produtos</span>
+                    </div>
+                    
+                    <div class="product-grid">
+                        <!-- Product Card 1 - Smartphone -->
+                        <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition relative">
+                            <div class="discount-badge">-15%</div>
+                            <div class="p-4">
+                                <img src="https://via.placeholder.com/300x300" alt="iPhone 15 Pro" class="w-full h-64 object-contain">
+                                <div class="mt-4">
+                                    <h3 class="font-semibold text-lg text-gray-800">iPhone 15 Pro 128GB</h3>
+                                    <p class="text-gray-500 text-sm">Apple</p>
+                                    <div class="tech-specs">6.1" OLED • A17 Pro • 48MP</div>
+                                    <div class="flex items-center mt-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <span class="text-gray-500 text-sm ml-2">(542)</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <span class="text-gray-500 line-through text-sm">R$ 7.499,00</span>
+                                        <div class="flex items-baseline">
+                                            <span class="text-xl font-bold text-gray-800">R$ 6.374,10</span>
+                                            <span class="text-green-600 text-sm ml-2">à vista</span>
+                                        </div>
+                                        <p class="text-gray-500 text-sm">ou 12x de R$ 531,18</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-actions p-4 bg-gray-50 border-t border-gray-200">
+                                <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                                    <i class="fas fa-shopping-cart mr-2"></i> Adicionar ao Carrinho
+                                </button>
+                                <button class="w-full mt-2 bg-white border border-blue-500 text-blue-500 py-2 rounded-lg hover:bg-blue-50 transition flex items-center justify-center">
+                                    <i class="fas fa-heart mr-2"></i> Favoritar
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Product Card 2 - Smartwatch -->
+                        <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition relative">
+                            <div class="p-4">
+                                <img src="https://via.placeholder.com/300x300" alt="Galaxy Watch 6" class="w-full h-64 object-contain">
+                                <div class="mt-4">
+                                    <h3 class="font-semibold text-lg text-gray-800">Galaxy Watch 6 44mm</h3>
+                                    <p class="text-gray-500 text-sm">Samsung</p>
+                                    <div class="tech-specs">1.5" AMOLED • Wear OS • 4G</div>
+                                    <div class="flex items-center mt-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                        <span class="text-gray-500 text-sm ml-2">(187)</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <div class="flex items-baseline">
+                                            <span class="text-xl font-bold text-gray-800">R$ 1.799,00</span>
+                                            <span class="text-green-600 text-sm ml-2">à vista</span>
+                                        </div>
+                                        <p class="text-gray-500 text-sm">ou 7x de R$ 257,00</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-actions p-4 bg-gray-50 border-t border-gray-200">
+                                <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                                    <i class="fas fa-shopping-cart mr-2"></i> Adicionar ao Carrinho
+                                </button>
+                                <button class="w-full mt-2 bg-white border border-blue-500 text-blue-500 py-2 rounded-lg hover:bg-blue-50 transition flex items-center justify-center">
+                                    <i class="fas fa-heart mr-2"></i> Favoritar
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Product Card 3 - Tablet -->
+                        <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition relative">
+                            <div class="discount-badge">-20%</div>
+                            <div class="p-4">
+                                <img src="https://via.placeholder.com/300x300" alt="iPad Air 10.9" class="w-full h-64 object-contain">
+                                <div class="mt-4">
+                                    <h3 class="font-semibold text-lg text-gray-800">iPad Air 10.9" 256GB</h3>
+                                    <p class="text-gray-500 text-sm">Apple</p>
+                                    <div class="tech-specs">M1 • Wi-Fi • 12MP</div>
+                                    <div class="flex items-center mt-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <span class="text-gray-500 text-sm ml-2">(342)</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <span class="text-gray-500 line-through text-sm">R$ 6.499,00</span>
+                                        <div class="flex items-baseline">
+                                            <span class="text-xl font-bold text-gray-800">R$ 5.199,20</span>
+                                            <span class="text-green-600 text-sm ml-2">à vista</span>
+                                        </div>
+                                        <p class="text-gray-500 text-sm">ou 10x de R$ 519,92</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-actions p-4 bg-gray-50 border-t border-gray-200">
+                                <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                                    <i class="fas fa-shopping-cart mr-2"></i> Adicionar ao Carrinho
+                                </button>
+                                <button class="w-full mt-2 bg-white border border-blue-500 text-blue-500 py-2 rounded-lg hover:bg-blue-50 transition flex items-center justify-center">
+                                    <i class="fas fa-heart mr-2"></i> Favoritar
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Product Card 4 - Notebook -->
+                        <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition relative">
+                            <div class="p-4">
+                                <img src="https://via.placeholder.com/300x300" alt="MacBook Air M2" class="w-full h-64 object-contain">
+                                <div class="mt-4">
+                                    <h3 class="font-semibold text-lg text-gray-800">MacBook Air M2 256GB</h3>
+                                    <p class="text-gray-500 text-sm">Apple</p>
+                                    <div class="tech-specs">13.6" • 8GB RAM • 8-core GPU</div>
+                                    <div class="flex items-center mt-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <span class="text-gray-500 text-sm ml-2">(128)</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <div class="flex items-baseline">
+                                            <span class="text-xl font-bold text-gray-800">R$ 8.999,00</span>
+                                            <span class="text-green-600 text-sm ml-2">à vista</span>
+                                        </div>
+                                        <p class="text-gray-500 text-sm">ou 12x de R$ 749,92</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-actions p-4 bg-gray-50 border-t border-gray-200">
+                                <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                                    <i class="fas fa-shopping-cart mr-2"></i> Adicionar ao Carrinho
+                                </button>
+                                <button class="w-full mt-2 bg-white border border-blue-500 text-blue-500 py-2 rounded-lg hover:bg-blue-50 transition flex items-center justify-center">
+                                    <i class="fas fa-heart mr-2"></i> Favoritar
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Product Card 5 - Headset -->
+                        <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition relative">
+                            <div class="discount-badge">-25%</div>
+                            <div class="p-4">
+                                <img src="https://via.placeholder.com/300x300" alt="Headset Gamer" class="w-full h-64 object-contain">
+                                <div class="mt-4">
+                                    <h3 class="font-semibold text-lg text-gray-800">Headset Gamer Razer BlackShark</h3>
+                                    <p class="text-gray-500 text-sm">Razer</p>
+                                    <div class="tech-specs">7.1 Surround • USB • Mic</div>
+                                    <div class="flex items-center mt-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                        <span class="text-gray-500 text-sm ml-2">(96)</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <span class="text-gray-500 line-through text-sm">R$ 799,00</span>
+                                        <div class="flex items-baseline">
+                                            <span class="text-xl font-bold text-gray-800">R$ 599,25</span>
+                                            <span class="text-green-600 text-sm ml-2">à vista</span>
+                                        </div>
+                                        <p class="text-gray-500 text-sm">ou 6x de R$ 99,88</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-actions p-4 bg-gray-50 border-t border-gray-200">
+                                <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                                    <i class="fas fa-shopping-cart mr-2"></i> Adicionar ao Carrinho
+                                </button>
+                                <button class="w-full mt-2 bg-white border border-blue-500 text-blue-500 py-2 rounded-lg hover:bg-blue-50 transition flex items-center justify-center">
+                                    <i class="fas fa-heart mr-2"></i> Favoritar
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Product Card 6 - Monitor -->
+                        <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition relative">
+                            <div class="p-4">
+                                <img src="https://via.placeholder.com/300x300" alt="Monitor Gamer" class="w-full h-64 object-contain">
+                                <div class="mt-4">
+                                    <h3 class="font-semibold text-lg text-gray-800">Monitor Gamer 27" 144Hz</h3>
+                                    <p class="text-gray-500 text-sm">LG</p>
+                                    <div class="tech-specs">QHD • 1ms • HDMI/DP</div>
+                                    <div class="flex items-center mt-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                        <span class="text-gray-500 text-sm ml-2">(78)</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <div class="flex items-baseline">
+                                            <span class="text-xl font-bold text-gray-800">R$ 1.899,00</span>
+                                            <span class="text-green-600 text-sm ml-2">à vista</span>
+                                        </div>
+                                        <p class="text-gray-500 text-sm">ou 10x de R$ 189,90</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-actions p-4 bg-gray-50 border-t border-gray-200">
+                                <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                                    <i class="fas fa-shopping-cart mr-2"></i> Adicionar ao Carrinho
+                                </button>
+                                <button class="w-full mt-2 bg-white border border-blue-500 text-blue-500 py-2 rounded-lg hover:bg-blue-50 transition flex items-center justify-center">
+                                    <i class="fas fa-heart mr-2"></i> Favoritar
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Product Card 7 - Mouse -->
+                        <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition relative">
+                            <div class="discount-badge">-10%</div>
+                            <div class="p-4">
+                                <img src="https://via.placeholder.com/300x300" alt="Mouse Gamer" class="w-full h-64 object-contain">
+                                <div class="mt-4">
+                                    <h3 class="font-semibold text-lg text-gray-800">Mouse Gamer Logitech G502</h3>
+                                    <p class="text-gray-500 text-sm">Logitech</p>
+                                    <div class="tech-specs">11 botões • 25.600 DPI • RGB</div>
+                                    <div class="flex items-center mt-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <span class="text-gray-500 text-sm ml-2">(412)</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <span class="text-gray-500 line-through text-sm">R$ 499,00</span>
+                                        <div class="flex items-baseline">
+                                            <span class="text-xl font-bold text-gray-800">R$ 449,10</span>
+                                            <span class="text-green-600 text-sm ml-2">à vista</span>
+                                        </div>
+                                        <p class="text-gray-500 text-sm">ou 5x de R$ 89,82</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-actions p-4 bg-gray-50 border-t border-gray-200">
+                                <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                                    <i class="fas fa-shopping-cart mr-2"></i> Adicionar ao Carrinho
+                                </button>
+                                <button class="w-full mt-2 bg-white border border-blue-500 text-blue-500 py-2 rounded-lg hover:bg-blue-50 transition flex items-center justify-center">
+                                    <i class="fas fa-heart mr-2"></i> Favoritar
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Product Card 8 - Teclado -->
+                        <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition relative">
+                            <div class="p-4">
+                                <img src="https://via.placeholder.com/300x300" alt="Teclado Mecânico" class="w-full h-64 object-contain">
+                                <div class="mt-4">
+                                    <h3 class="font-semibold text-lg text-gray-800">Teclado Mecânico Redragon K552</h3>
+                                    <p class="text-gray-500 text-sm">Redragon</p>
+                                    <div class="tech-specs">Switch Outemu Blue • Anti-ghosting</div>
+                                    <div class="flex items-center mt-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                        <span class="text-gray-500 text-sm ml-2">(287)</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <div class="flex items-baseline">
+                                            <span class="text-xl font-bold text-gray-800">R$ 349,90</span>
+                                            <span class="text-green-600 text-sm ml-2">à vista</span>
+                                        </div>
+                                        <p class="text-gray-500 text-sm">ou 5x de R$ 69,98</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-actions p-4 bg-gray-50 border-t border-gray-200">
+                                <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                                    <i class="fas fa-shopping-cart mr-2"></i> Adicionar ao Carrinho
+                                </button>
+                                <button class="w-full mt-2 bg-white border border-blue-500 text-blue-500 py-2 rounded-lg hover:bg-blue-50 transition flex items-center justify-center">
+                                    <i class="fas fa-heart mr-2"></i> Favoritar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="flex justify-center mt-10">
+                        <nav class="inline-flex rounded-md shadow">
+                            <a href="#" class="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-blue-600 font-medium">1</a>
+                            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-500 hover:bg-gray-50">2</a>
+                            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-500 hover:bg-gray-50">3</a>
+                            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-500 hover:bg-gray-50">4</a>
+                            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-500 hover:bg-gray-50">5</a>
+                            <a href="#" class="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </nav>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-10">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">SuperStore</h3>
+                    <p class="text-gray-400">A melhor loja online para suas compras de tecnologia, eletrônicos e muito mais.</p>
+                    <div class="flex space-x-4 mt-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Institucional</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Quem Somos</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Nossas Lojas</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Política de Privacidade</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Termos de Uso</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Trabalhe Conosco</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Atendimento</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Central de Ajuda</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Meus Pedidos</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Trocas e Devoluções</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Formas de Pagamento</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Fale Conosco</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
+                    <p class="text-gray-400 mb-4">Cadastre-se e receba ofertas exclusivas</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Seu e-mail" class="px-4 py-2 w-full rounded-l-md focus:outline-none text-gray-800">
+                        <button class="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600 transition">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <div class="mt-4 flex items-center">
+                        <i class="fas fa-credit-card text-gray-400 mr-2"></i>
+                        <div class="flex space-x-2">
+                            <img src="https://via.placeholder.com/30x20" alt="Visa" class="h-5">
+                            <img src="https://via.placeholder.com/30x20" alt="Mastercard" class="h-5">
+                            <img src="https://via.placeholder.com/30x20" alt="American Express" class="h-5">
+                            <img src="https://via.placeholder.com/30x20" alt="Elo" class="h-5">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>© 2023 SuperStore. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Categories dropdown toggle
+        document.getElementById('categories-btn').addEventListener('click', function() {
+            document.getElementById('category-dropdown').parentElement.classList.toggle('show-categories');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.relative')) {
+                document.getElementById('category-dropdown').parentElement.classList.remove('show-categories');
+            }
+        });
+
+        // Type selection
+        const typeOptions = document.querySelectorAll('.type-option');
+        typeOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                typeOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Carousel functionality
+        const carouselTrack = document.getElementById('carousel-track');
+        const carouselItems = [
+            {
+                title: "iPhone 15 Pro 128GB",
+                brand: "Apple",
+                price: "6.374,10",
+                oldPrice: "7.499,00",
+                image: "https://via.placeholder.com/300x300",
+                rating: 4.5,
+                specs: "6.1\" OLED • A17 Pro • 48MP"
+            },
+            {
+                title: "Galaxy Watch 6 44mm",
+                brand: "Samsung",
+                price: "1.799,00",
+                oldPrice: "",
+                image: "https://via.placeholder.com/300x300",
+                rating: 4,
+                specs: "1.5\" AMOLED • Wear OS • 4G"
+            },
+            {
+                title: "iPad Air 10.9\" 256GB",
+                brand: "Apple",
+                price: "5.199,20",
+                oldPrice: "6.499,00",
+                image: "https://via.placeholder.com/300x300",
+                rating: 5,
+                specs: "M1 • Wi-Fi • 12MP"
+            },
+            {
+                title: "MacBook Air M2 256GB",
+                brand: "Apple",
+                price: "8.999,00",
+                oldPrice: "",
+                image: "https://via.placeholder.com/300x300",
+                rating: 4.5,
+                specs: "13.6\" • 8GB RAM • 8-core GPU"
+            },
+            {
+                title: "Headset Gamer Razer BlackShark",
+                brand: "Razer",
+                price: "599,25",
+                oldPrice: "799,00",
+                image: "https://via.placeholder.com/300x300",
+                rating: 4,
+                specs: "7.1 Surround • USB • Mic"
+            },
+            {
+                title: "Monitor Gamer 27\" 144Hz",
+                brand: "LG",
+                price: "1.899,00",
+                oldPrice: "",
+                image: "https://via.placeholder.com/300x300",
+                rating: 3.5,
+                specs: "QHD • 1ms • HDMI/DP"
+            }
+        ];
+
+        // Generate carousel items
+        carouselItems.forEach(item => {
+            const carouselItem = document.createElement('div');
+            carouselItem.className = 'carousel-item';
+            
+            const discountBadge = item.oldPrice ? `<div class="discount-badge">-${Math.round((1 - parseFloat(item.price.replace('.', '').replace(',', '.')) / parseFloat(item.oldPrice.replace('.', '').replace(',', '.'))) * 100)}%</div>` : '';
+            
+            carouselItem.innerHTML = `
+                <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition relative">
+                    ${discountBadge}
+                    <div class="p-4">
+                        <img src="${item.image}" alt="${item.title}" class="w-full h-48 object-contain">
+                        <div class="mt-4">
+                            <h3 class="font-semibold text-lg text-gray-800">${item.title}</h3>
+                            <p class="text-gray-500 text-sm">${item.brand}</p>
+                            <div class="tech-specs">${item.specs}</div>
+                            <div class="flex items-center mt-2">
+                                ${generateRatingStars(item.rating)}
+                                <span class="text-gray-500 text-sm ml-2">(${Math.floor(Math.random() * 100) + 50})</span>
+                            </div>
+                            <div class="mt-3">
+                                ${item.oldPrice ? `<span class="text-gray-500 line-through text-sm">R$ ${item.oldPrice}</span>` : ''}
+                                <div class="flex items-baseline">
+                                    <span class="text-xl font-bold text-gray-800">R$ ${item.price}</span>
+                                    <span class="text-green-600 text-sm ml-2">à vista</span>
+                                </div>
+                                <p class="text-gray-500 text-sm">ou ${Math.ceil(parseFloat(item.price.replace('.', '').replace(',', '.')) / 50)}x de R$ ${(parseFloat(item.price.replace('.', '').replace(',', '.')) / Math.ceil(parseFloat(item.price.replace('.', '').replace(',', '.')) / 50)).toFixed(2).replace('.', ',')}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-actions p-4 bg-gray-50 border-t border-gray-200">
+                        <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                            <i class="fas fa-shopping-cart mr-2"></i> Adicionar ao Carrinho
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            carouselTrack.appendChild(carouselItem);
+        });
+
+        function generateRatingStars(rating) {
+            let stars = '';
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            
+            for (let i = 0; i < fullStars; i++) {
+                stars += '<i class="fas fa-star"></i>';
+            }
+            
+            if (hasHalfStar) {
+                stars += '<i class="fas fa-star-half-alt"></i>';
+            }
+            
+            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+            for (let i = 0; i < emptyStars; i++) {
+                stars += '<i class="far fa-star"></i>';
+            }
+            
+            return stars;
+        }
+
+        // Carousel navigation
+        let currentPosition = 0;
+        const itemWidth = 33.333; // Percentage
+        const itemCount = carouselItems.length;
+        
+        document.getElementById('carousel-next').addEventListener('click', function() {
+            if (currentPosition > -(itemWidth * (itemCount - 3))) {
+                currentPosition -= itemWidth;
+                carouselTrack.style.transform = `translateX(${currentPosition}%)`;
+            }
+        });
+        
+        document.getElementById('carousel-prev').addEventListener('click', function() {
+            if (currentPosition < 0) {
+                currentPosition += itemWidth;
+                carouselTrack.style.transform = `translateX(${currentPosition}%)`;
+            }
+        });
+
+        // Responsive carousel
+        function updateCarousel() {
+            const screenWidth = window.innerWidth;
+            if (screenWidth <= 640) {
+                carouselTrack.style.width = `${itemCount * 100}%`;
+                carouselItemWidth = 100;
+            } else if (screenWidth <= 1024) {
+                carouselTrack.style.width = `${itemCount * 50}%`;
+                carouselItemWidth = 50;
+            } else {
+                carouselTrack.style.width = `${itemCount * 33.333}%`;
+                carouselItemWidth = 33.333;
+            }
+        }
+
+        window.addEventListener('resize', updateCarousel);
+        updateCarousel();
+    </script>
+</body>
+</html>

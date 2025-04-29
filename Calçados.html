@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuperStore - Calçados</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom styles for the carousel and other elements */
+        .carousel-container {
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .carousel-item {
+            flex: 0 0 33.333%;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+        
+        @media (max-width: 1024px) {
+            .carousel-item {
+                flex: 0 0 50%;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .carousel-item {
+                flex: 0 0 100%;
+            }
+        }
+        
+        .category-dropdown {
+            display: none;
+            position: absolute;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        
+        .show-categories .category-dropdown {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .niche-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .filter-section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .price-range-slider {
+            width: 100%;
+            height: 5px;
+            -webkit-appearance: none;
+            background: #ddd;
+            outline: none;
+            border-radius: 5px;
+        }
+
+        .price-range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #3b82f6;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .size-checkbox {
+            display: none;
+        }
+
+        .size-label {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .size-checkbox:checked + .size-label {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin: 5px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .color-option.selected {
+            border-color: #3b82f6;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Header with logo, navigation, and search -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between">
+            <!-- Logo on the left -->
+            <div class="flex items-center mb-4 md:mb-0">
+                <img src="https://via.placeholder.com/50x50" alt="SuperStore Logo" class="h-10 mr-2">
+                <h1 class="text-xl font-bold text-gray-800">SuperStore</h1>
+            </div>
+            
+            <!-- Navigation and search in the middle -->
+            <div class="flex-1 flex flex-col md:flex-row items-center justify-center mx-0 md:mx-8 w-full md:w-auto">
+                <!-- Navigation buttons -->
+                <div class="flex space-x-4 mb-4 md:mb-0">
+                    <a href="index.html" class="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium">Início</a>
+                    <div class="relative">
+                        <button id="categories-btn" class="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                            Categorias <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <!-- Categories dropdown -->
+                        <div id="category-dropdown" class="category-dropdown p-4 rounded-lg mt-1 w-full md:w-96">
+                            <div>
+                                <h3 class="font-bold mb-2">Eletrônicos</h3>
+                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">Celulares</a>
+                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">Notebooks</a>
+                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">TVs</a>
+                            </div>
+                            <div>
+                                <h3 class="font-bold mb-2">Eletrodomésticos</h3>
+                                <a href="eletrodomesticos.html" class="block py-1 text-gray-600 hover:text-blue-500">Geladeiras</a>
+                                <a href="eletrodomesticos.html" class="block py-1 text-gray-600 hover:text-blue-500">Fogões</a>
+                                <a href="eletrodomesticos.html" class="block py-1 text-gray-600 hover:text-blue-500">Microondas</a>
+                            </div>
+                            <div>
+                                <h3 class="font-bold mb-2">Moda</h3>
+                                <a href="roupas.html" class="block py-1 text-gray-600 hover:text-blue-500">Camisetas</a>
+                                <a href="roupas.html" class="block py-1 text-gray-600 hover:text-blue-500">Calças</a>
+                                <a href="calcados.html" class="block py-1 text-gray-600 hover:text-blue-500 text-blue-600 font-medium">Tênis</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Search bar -->
+                <div class="relative w-full md:w-96 mb-4 md:mb-0">
+                    <input type="text" id="search-input" placeholder="Buscar produtos..." 
+                           class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button id="search-btn" class="absolute right-3 top-2 text-gray-500 hover:text-blue-600">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Logout button on the right -->
+            <div class="ml-auto">
+                <button id="logout-btn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
+                    Sair <i class="fas fa-sign-out-alt ml-1"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Breadcrumb navigation -->
+        <div class="flex items-center text-sm text-gray-500 mb-6">
+            <a href="index.html" class="hover:text-blue-500">Início</a>
+            <span class="mx-2">/</span>
+            <a href="moda.html" class="hover:text-blue-500">Moda</a>
+            <span class="mx-2">/</span>
+            <span class="text-gray-700">Calçados</span>
+        </div>
+
+        <!-- Page title and sorting options -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Calçados</h1>
+            <div class="flex items-center">
+                <span class="text-gray-600 mr-2">Ordenar por:</span>
+                <select class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option>Mais vendidos</option>
+                    <option>Menor preço</option>
+                    <option>Maior preço</option>
+                    <option>Melhor avaliados</option>
+                    <option>Novidades</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Filters sidebar -->
+            <aside class="w-full lg:w-1/4">
+                <div class="filter-section mb-6">
+                    <h2 class="text-lg font-semibold mb-4 text-gray-800">Filtrar por</h2>
+                    
+                    <!-- Price range filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Faixa de preço</h3>
+                        <input type="range" min="50" max="1000" value="500" class="price-range-slider mb-3">
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>R$ 50</span>
+                            <span>R$ 1000</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Size filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Tamanho</h3>
+                        <div class="flex flex-wrap">
+                            <input type="checkbox" id="size-36" class="size-checkbox">
+                            <label for="size-36" class="size-label">36</label>
+                            
+                            <input type="checkbox" id="size-37" class="size-checkbox">
+                            <label for="size-37" class="size-label">37</label>
+                            
+                            <input type="checkbox" id="size-38" class="size-checkbox">
+                            <label for="size-38" class="size-label">38</label>
+                            
+                            <input type="checkbox" id="size-39" class="size-checkbox">
+                            <label for="size-39" class="size-label">39</label>
+                            
+                            <input type="checkbox" id="size-40" class="size-checkbox">
+                            <label for="size-40" class="size-label">40</label>
+                            
+                            <input type="checkbox" id="size-41" class="size-checkbox">
+                            <label for="size-41" class="size-label">41</label>
+                            
+                            <input type="checkbox" id="size-42" class="size-checkbox">
+                            <label for="size-42" class="size-label">42</label>
+                            
+                            <input type="checkbox" id="size-43" class="size-checkbox">
+                            <label for="size-43" class="size-label">43</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Color filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Cor</h3>
+                        <div class="flex flex-wrap">
+                            <div class="color-option bg-black selected" data-color="black"></div>
+                            <div class="color-option bg-white border border-gray-300" data-color="white"></div>
+                            <div class="color-option bg-gray-500" data-color="gray"></div>
+                            <div class="color-option bg-blue-500" data-color="blue"></div>
+                            <div class="color-option bg-red-500" data-color="red"></div>
+                            <div class="color-option bg-green-500" data-color="green"></div>
+                            <div class="color-option bg-yellow-400" data-color="yellow"></div>
+                            <div class="color-option bg-purple-500" data-color="purple"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Brand filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Marca</h3>
+                        <div class="space-y-2">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="nike" class="mr-2">
+                                <label for="nike" class="text-gray-600">Nike</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="adidas" class="mr-2">
+                                <label for="adidas" class="text-gray-600">Adidas</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="puma" class="mr-2">
+                                <label for="puma" class="text-gray-600">Puma</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="vans" class="mr-2">
+                                <label for="vans" class="text-gray-600">Vans</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="converse" class="mr-2">
+                                <label for="converse" class="text-gray-600">Converse</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Apply filters button -->
+                    <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
+                        Aplicar Filtros
+                    </button>
+                </div>
+                
+                <!-- Special offers -->
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h3 class="font-semibold text-blue-800 mb-3">Ofertas Especiais</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <div class="bg-white p-2 rounded-lg mr-3">
+                                <i class="fas fa-percentage text-blue-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium">Até 40% OFF</p>
+                                <p class="text-xs text-gray-500">Em tênis selecionados</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="bg-white p-2 rounded-lg mr-3">
+                                <i class="fas fa-truck text-blue-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium">Frete Grátis</p>
+                                <p class="text-xs text-gray-500">Para compras acima de R$ 200</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="bg-white p-2 rounded-lg mr-3">
+                                <i class="fas fa-credit-card text-blue-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium">Parcele em até 10x</p>
+                                <p class="text-xs text-gray-500">Sem juros no cartão</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            
+            <!-- Products grid -->
+            <div class="w-full lg:w-3/4">
+                <!-- Featured products carousel -->
+                <section class="mb-12">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Destaques</h2>
+                    <div class="carousel-container relative group" id="carousel">
+                        <div class="carousel-track" id="carousel-track">
+                            <!-- Carousel items will be added by JavaScript -->
+                        </div>
+                        
+                        <!-- Carousel navigation arrows -->
+                        <button id="carousel-prev" class="absolute left-0 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 text-gray-800 p-2 rounded-full shadow-md hover:bg-opacity-100 transition opacity-0 group-hover:opacity-100">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button id="carousel-next" class="absolute right-0 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 text-gray-800 p-2 rounded-full shadow-md hover:bg-opacity-100 transition opacity-0 group-hover:opacity-100">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </section>
+                
+                <!-- All shoes products -->
+                <section>
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">Todos os Calçados</h2>
+                        <span class="text-gray-500">Mostrando 24 de 120 produtos</span>
+                    </div>
+                    
+                    <div class="product-grid" id="products-grid">
+                        <!-- Products will be added by JavaScript -->
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="flex justify-center mt-8">
+                        <nav class="flex items-center space-x-1">
+                            <button class="px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="px-3 py-1 rounded-lg bg-blue-500 text-white">1</button>
+                            <button class="px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">2</button>
+                            <button class="px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">3</button>
+                            <button class="px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">4</button>
+                            <button class="px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">5</button>
+                            <button class="px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </nav>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer with social media links -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center">
+                        <img src="https://via.placeholder.com/50x50" alt="SuperStore Logo" class="h-10 mr-2">
+                        <h2 class="text-xl font-bold">SuperStore</h2>
+                    </div>
+                    <p class="mt-2 text-gray-400">Sua loja online completa com os melhores produtos.</p>
+                </div>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2023 SuperStore. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample product data for shoes
+        const shoesProducts = [
+            {
+                id: 1,
+                name: "Tênis Nike Air Max",
+                price: 799.99,
+                category: "calcados",
+                brand: "Nike",
+                colors: ["black", "white"],
+                sizes: [38, 39, 40, 41, 42],
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Tênis esportivo com tecnologia Air Max para máximo conforto.",
+                rating: 4.8,
+                discount: 0.15
+            },
+            {
+                id: 2,
+                name: "Tênis Adidas Ultraboost",
+                price: 899.99,
+                category: "calcados",
+                brand: "Adidas",
+                colors: ["black", "blue"],
+                sizes: [37, 38, 39, 40, 41, 42],
+                image: "https://images.unsplash.com/photo-1600269452121-1f5d14148cd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Tênis de corrida com amortecimento responsivo.",
+                rating: 4.9,
+                discount: 0.10
+            },
+            {
+                id: 3,
+                name: "Tênis Puma RS-X",
+                price: 549.99,
+                category: "calcados",
+                brand: "Puma",
+                colors: ["white", "red"],
+                sizes: [36, 37, 38, 39, 40, 41],
+                image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Tênis casual com design retrô e conforto moderno.",
+                rating: 4.5,
+                discount: 0.20
+            },
+            {
+                id: 4,
+                name: "Tênis Vans Old Skool",
+                price: 399.99,
+                category: "calcados",
+                brand: "Vans",
+                colors: ["black", "white"],
+                sizes: [37, 38, 39, 40, 41, 42],
+                image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Clássico tênis skate com design icônico.",
+                rating: 4.7,
+                discount: 0
+            },
+            {
+                id: 5,
+                name: "Tênis Converse Chuck Taylor",
+                price: 349.99,
+                category: "calcados",
+                brand: "Converse",
+                colors: ["black", "white", "red"],
+                sizes: [36, 37, 38, 39, 40, 41, 42],
+                image: "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "O clássico tênis All Star em versão moderna.",
+                rating: 4.6,
+                discount: 0.05
+            },
+            {
+                id: 6,
+                name: "Tênis Nike Revolution",
+                price: 499.99,
+                category: "calcados",
+                brand: "Nike",
+                colors: ["black", "blue", "gray"],
+                sizes: [38, 39, 40, 41, 42, 43],
+                image: "https://images.unsplash.com/photo-1600269452121-1f5d14148cd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Tênis de corrida com amortecimento macio.",
+                rating: 4.4,
+                discount: 0.15
+            },
+            {
+                id: 7,
+                name: "Tênis Adidas Superstar",
+                price: 599.99,
+                category: "calcados",
+                brand: "Adidas",
+                colors: ["white", "black"],
+                sizes: [37, 38, 39, 40, 41, 42],
+                image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "O icônico tênis com design de casca de bode.",
+                rating: 4.8,
+                discount: 0
+            },
+            {
+                id: 8,
+                name: "Tênis Puma Smash",
+                price: 449.99,
+                category: "calcados",
+                brand: "Puma",
+                colors: ["white", "black", "red"],
+                sizes: [36, 37, 38, 39, 40, 41],
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Tênis casual com sola vulcanizada e design clássico.",
+                rating: 4.3,
+                discount: 0.25
+            },
+            {
+                id: 9,
+                name: "Tênis Vans Sk8-Hi",
+                price: 479.99,
+                category: "calcados",
+                brand: "Vans",
+                colors: ["black", "white"],
+                sizes: [37, 38, 39, 40, 41, 42],
+                image: "https://images.unsplash.com/photo-1600269452121-1f5d14148cd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Tênis cano alto com design clássico de skate.",
+                rating: 4.6,
+                discount: 0.10
+            },
+            {
+                id: 10,
+                name: "Tênis Converse Run Star",
+                price: 599.99,
+                category: "calcados",
+                brand: "Converse",
+                colors: ["black", "white"],
+                sizes: [36, 37, 38, 39, 40, 41, 42],
+                image: "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Design inovador com sola plataforma.",
+                rating: 4.7,
+                discount: 0.15
+            },
+            {
+                id: 11,
+                name: "Tênis Nike Air Force 1",
+                price: 899.99,
+                category: "calcados",
+                brand: "Nike",
+                colors: ["white", "black"],
+                sizes: [38, 39, 40, 41, 42, 43],
+                image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "O clássico tênis de basquete em couro premium.",
+                rating: 4.9,
+                discount: 0
+            },
+            {
+                id: 12,
+                name: "Tênis Adidas NMD",
+                price: 799.99,
+                category: "calcados",
+                brand: "Adidas",
+                colors: ["black", "white", "blue"],
+                sizes: [37, 38, 39, 40, 41, 42],
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Tênis urbano com tecnologia Boost para conforto.",
+                rating: 4.8,
+                discount: 0.20
+            }
+        ];
+
+        // DOM elements
+        const carouselTrack = document.getElementById('carousel-track');
+        const carouselPrev = document.getElementById('carousel-prev');
+        const carouselNext = document.getElementById('carousel-next');
+        const carousel = document.getElementById('carousel');
+        const categoriesBtn = document.getElementById('categories-btn');
+        const categoryDropdown = document.getElementById('category-dropdown');
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const productsGrid = document.getElementById('products-grid');
+        const colorOptions = document.querySelectorAll('.color-option');
+
+        // Format price to BRL
+        function formatPrice(price) {
+            return new Intl.NumberFormat('pt-BR', { 
+                style: 'currency', 
+                currency: 'BRL' 
+            }).format(price);
+        }
+
+        // Initialize carousel with featured shoes
+        function initCarousel() {
+            // Clear any existing items
+            carouselTrack.innerHTML = '';
+            
+            // Get featured shoes (first 6 products)
+            const featuredShoes = shoesProducts.slice(0, 6);
+            
+            // Add products to carousel
+            featuredShoes.forEach(product => {
+                const item = document.createElement('div');
+                item.className = 'carousel-item';
+                
+                // Calculate discounted price if applicable
+                const discountedPrice = product.discount > 0 
+                    ? product.price * (1 - product.discount)
+                    : null;
+                
+                item.innerHTML = `
+                    <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition h-full flex flex-col">
+                        ${product.discount > 0 ? 
+                            `<div class="absolute bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-br-lg">
+                                ${Math.round(product.discount * 100)}% OFF
+                            </div>` : ''}
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+                        <div class="p-4 flex-grow">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-1">${product.name}</h3>
+                            <p class="text-gray-600 text-sm mb-3">${product.description}</p>
+                            <div class="flex flex-col">
+                                ${discountedPrice ? 
+                                    `<div class="flex items-center">
+                                        <span class="text-lg font-bold text-blue-500">${formatPrice(discountedPrice)}</span>
+                                        <span class="text-sm text-gray-500 line-through ml-2">${formatPrice(product.price)}</span>
+                                    </div>` :
+                                    `<span class="text-lg font-bold text-blue-500">${formatPrice(product.price)}</span>`
+                                }
+                                <div class="flex items-center mt-1">
+                                    ${Array.from({ length: 5 }).map((_, i) => 
+                                        `<i class="fas fa-star ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}"></i>`
+                                    ).join('')}
+                                    <span class="text-xs text-gray-500 ml-1">(${product.rating})</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-4 pb-4">
+                            <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                                <i class="fas fa-shopping-cart mr-2"></i> Comprar
+                            </button>
+                        </div>
+                    </div>
+                `;
+                carouselTrack.appendChild(item);
+            });
+            
+            // Set carousel width based on number of items
+            const itemCount = featuredShoes.length;
+            const itemWidth = 100 / 3; // Show 3 items at a time
+            carouselTrack.style.width = `${itemCount * itemWidth}%`;
+            
+            // Initialize carousel position
+            let currentPosition = 0;
+            const maxPosition = itemCount - 3;
+            
+            // Update carousel position
+            function updateCarousel() {
+                carouselTrack.style.transform = `translateX(-${currentPosition * itemWidth}%)`;
+            }
+            
+            // Next button click handler
+            carouselNext.addEventListener('click', () => {
+                if (currentPosition < maxPosition) {
+                    currentPosition++;
+                } else {
+                    currentPosition = 0; // Loop back to start
+                }
+                updateCarousel();
+            });
+            
+            // Previous button click handler
+            carouselPrev.addEventListener('click', () => {
+                if (currentPosition > 0) {
+                    currentPosition--;
+                } else {
+                    currentPosition = maxPosition; // Loop to end
+                }
+                updateCarousel();
+            });
+            
+            // Auto-advance carousel
+            let autoAdvance = setInterval(() => {
+                if (currentPosition < maxPosition) {
+                    currentPosition++;
+                } else {
+                    currentPosition = 0;
+                }
+                updateCarousel();
+            }, 5000);
+            
+            // Pause auto-advance on hover
+            carousel.addEventListener('mouseenter', () => {
+                clearInterval(autoAdvance);
+            });
+            
+            // Resume auto-advance when mouse leaves
+            carousel.addEventListener('mouseleave', () => {
+                autoAdvance = setInterval(() => {
+                    if (currentPosition < maxPosition) {
+                        currentPosition++;
+                    } else {
+                        currentPosition = 0;
+                    }
+                    updateCarousel();
+                }, 5000);
+            });
+        }
+
+        // Initialize products grid
+        function initProductsGrid() {
+            productsGrid.innerHTML = '';
+            
+            shoesProducts.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition h-full flex flex-col';
+                
+                // Calculate discounted price if applicable
+                const discountedPrice = product.discount > 0 
+                    ? product.price * (1 - product.discount)
+                    : null;
+                
+                productCard.innerHTML = `
+                    ${product.discount > 0 ? 
+                        `<div class="absolute bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-br-lg">
+                            ${Math.round(product.discount * 100)}% OFF
+                        </div>` : ''}
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+                    <div class="p-4 flex-grow">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-1">${product.name}</h3>
+                        <p class="text-gray-600 text-sm mb-2">${product.brand}</p>
+                        <div class="flex flex-col">
+                            ${discountedPrice ? 
+                                `<div class="flex items-center">
+                                    <span class="text-lg font-bold text-blue-500">${formatPrice(discountedPrice)}</span>
+                                    <span class="text-sm text-gray-500 line-through ml-2">${formatPrice(product.price)}</span>
+                                </div>` :
+                                `<span class="text-lg font-bold text-blue-500">${formatPrice(product.price)}</span>`
+                            }
+                            <div class="flex items-center mt-1">
+                                ${Array.from({ length: 5 }).map((_, i) => 
+                                    `<i class="fas fa-star ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}"></i>`
+                                ).join('')}
+                                <span class="text-xs text-gray-500 ml-1">(${product.rating})</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-4 pb-4">
+                        <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                            <i class="fas fa-shopping-cart mr-2"></i> Comprar
+                        </button>
+                    </div>
+                `;
+                productsGrid.appendChild(productCard);
+            });
+        }
+
+        // Color selection functionality
+        colorOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove selected class from all options
+                colorOptions.forEach(opt => opt.classList.remove('selected'));
+                // Add selected class to clicked option
+                option.classList.add('selected');
+            });
+        });
+
+        // Toggle categories dropdown
+        categoriesBtn.addEventListener('click', () => {
+            document.querySelector('.relative').classList.toggle('show-categories');
+        });
+
+        // Close categories dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.relative') && !e.target.closest('#categories-btn')) {
+                document.querySelector('.relative').classList.remove('show-categories');
+            }
+        });
+
+        // Search functionality
+        searchBtn.addEventListener('click', () => {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            if (searchTerm) {
+                // In a real application, this would redirect to search results
+                alert(`Buscando por: ${searchTerm}`);
+                // window.location.href = `search.html?q=${encodeURIComponent(searchTerm)}`;
+            }
+        });
+
+        // Allow search on Enter key
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchBtn.click();
+            }
+        });
+
+        // Logout button
+        logoutBtn.addEventListener('click', () => {
+            if (confirm('Tem certeza que deseja sair?')) {
+                // In a real application, this would clear session and redirect
+                alert('Você foi desconectado.');
+                // window.location.href = 'login.html';
+            }
+        });
+
+        // Initialize the page
+        initCarousel();
+        initProductsGrid();
+    </script>
+</body>
+</html>

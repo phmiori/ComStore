@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuperStore - Calças, Blusas e Jaquetas</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom styles for the carousel and other elements */
+        .carousel-container {
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .carousel-item {
+            flex: 0 0 33.333%;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+        
+        @media (max-width: 1024px) {
+            .carousel-item {
+                flex: 0 0 50%;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .carousel-item {
+                flex: 0 0 100%;
+            }
+        }
+        
+        .category-dropdown {
+            display: none;
+            position: absolute;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        
+        .show-categories .category-dropdown {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .niche-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .filter-section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .price-range-slider {
+            width: 100%;
+            height: 5px;
+            -webkit-appearance: none;
+            background: #ddd;
+            outline: none;
+            border-radius: 5px;
+        }
+
+        .price-range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #3b82f6;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .size-checkbox {
+            display: none;
+        }
+
+        .size-label {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .size-checkbox:checked + .size-label {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin: 5px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .color-option.selected {
+            border-color: #3b82f6;
+            transform: scale(1.1);
+        }
+
+        .type-option {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .type-option.selected {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .product-card:hover .product-actions {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .product-actions {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #ef4444;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Header with logo, navigation, and search -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between">
+            <!-- Logo on the left -->
+            <div class="flex items-center mb-4 md:mb-0">
+                <img src="https://via.placeholder.com/50x50" alt="SuperStore Logo" class="h-10 mr-2">
+                <h1 class="text-xl font-bold text-gray-800">SuperStore</h1>
+            </div>
+            
+            <!-- Navigation and search in the middle -->
+            <div class="flex-1 flex flex-col md:flex-row items-center justify-center mx-0 md:mx-8 w-full md:w-auto">
+                <!-- Navigation buttons -->
+                <div class="flex space-x-4 mb-4 md:mb-0">
+                    <a href="index.html" class="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium">Início</a>
+                    <div class="relative">
+                        <button id="categories-btn" class="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                            Categorias <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <!-- Categories dropdown -->
+                        <div id="category-dropdown" class="category-dropdown p-4 rounded-lg mt-1 w-full md:w-96">
+                            <div>
+                                <h3 class="font-bold mb-2">Eletrônicos</h3>
+                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">Celulares</a>
+                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">Notebooks</a>
+                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">TVs</a>
+                            </div>
+                            <div>
+                                <h3 class="font-bold mb-2">Eletrodomésticos</h3>
+                                <a href="eletrodomesticos.html" class="block py-1 text-gray-600 hover:text-blue-500">Geladeiras</a>
+                                <a href="eletrodomesticos.html" class="block py-1 text-gray-600 hover:text-blue-500">Fogões</a>
+                                <a href="eletrodomesticos.html" class="block py-1 text-gray-600 hover:text-blue-500">Microondas</a>
+                            </div>
+                            <div>
+                                <h3 class="font-bold mb-2">Moda</h3>
+                                <a href="camisas.html" class="block py-1 text-gray-600 hover:text-blue-500">Camisas</a>
+                                <a href="calcas.html" class="block py-1 text-gray-600 hover:text-blue-500 text-blue-600 font-medium">Calças, Blusas e Jaquetas</a>
+                                <a href="calcados.html" class="block py-1 text-gray-600 hover:text-blue-500">Tênis</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Search bar -->
+                <div class="relative w-full md:w-96 mb-4 md:mb-0">
+                    <input type="text" id="search-input" placeholder="Buscar produtos..." 
+                           class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button id="search-btn" class="absolute right-3 top-2 text-gray-500 hover:text-blue-600">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Logout button on the right -->
+            <div class="ml-auto">
+                <button id="logout-btn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
+                    Sair <i class="fas fa-sign-out-alt ml-1"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Breadcrumb navigation -->
+        <div class="flex items-center text-sm text-gray-500 mb-6">
+            <a href="index.html" class="hover:text-blue-500">Início</a>
+            <span class="mx-2">/</span>
+            <a href="moda.html" class="hover:text-blue-500">Moda</a>
+            <span class="mx-2">/</span>
+            <span class="text-gray-700">Calças, Blusas e Jaquetas</span>
+        </div>
+
+        <!-- Page title and sorting options -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Calças, Blusas e Jaquetas</h1>
+            <div class="flex items-center">
+                <span class="text-gray-600 mr-2">Ordenar por:</span>
+                <select class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option>Mais vendidos</option>
+                    <option>Menor preço</option>
+                    <option>Maior preço</option>
+                    <option>Melhor avaliados</option>
+                    <option>Novidades</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Filters sidebar -->
+            <aside class="w-full lg:w-1/4">
+                <div class="filter-section mb-6">
+                    <h2 class="text-lg font-semibold mb-4 text-gray-800">Filtrar por</h2>
+                    
+                    <!-- Price range filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Faixa de preço</h3>
+                        <input type="range" min="50" max="1000" value="300" class="price-range-slider mb-3">
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>R$ 50</span>
+                            <span>R$ 1000</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Size filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Tamanho</h3>
+                        <div class="flex flex-wrap">
+                            <input type="checkbox" id="size-34" class="size-checkbox">
+                            <label for="size-34" class="size-label">34</label>
+                            
+                            <input type="checkbox" id="size-36" class="size-checkbox">
+                            <label for="size-36" class="size-label">36</label>
+                            
+                            <input type="checkbox" id="size-38" class="size-checkbox">
+                            <label for="size-38" class="size-label">38</label>
+                            
+                            <input type="checkbox" id="size-40" class="size-checkbox">
+                            <label for="size-40" class="size-label">40</label>
+                            
+                            <input type="checkbox" id="size-42" class="size-checkbox">
+                            <label for="size-42" class="size-label">42</label>
+                            
+                            <input type="checkbox" id="size-44" class="size-checkbox">
+                            <label for="size-44" class="size-label">44</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Type filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Tipo</h3>
+                        <div class="flex flex-wrap">
+                            <div class="type-option selected">Calças</div>
+                            <div class="type-option">Blusas</div>
+                            <div class="type-option">Jaquetas</div>
+                            <div class="type-option">Agasalhos</div>
+                            <div class="type-option">Moletons</div>
+                            <div class="type-option">Bermudas</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Color filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Cor</h3>
+                        <div class="flex flex-wrap">
+                            <div class="color-option bg-black selected" data-color="black"></div>
+                            <div class="color-option bg-white border border-gray-300" data-color="white"></div>
+                            <div class="color-option bg-blue-500" data-color="blue"></div>
+                            <div class="color-option bg-red-500" data-color="red"></div>
+                            <div class="color-option bg-green-500" data-color="green"></div>
+                            <div class="color-option bg-yellow-400" data-color="yellow"></div>
+                            <div class="color-option bg-gray-500" data-color="gray"></div>
+                            <div class="color-option bg-purple-500" data-color="purple"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Brand filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Marca</h3>
+                        <div class="space-y-2">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="nike" class="mr-2" checked>
+                                <label for="nike" class="text-gray-600">Nike</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="adidas" class="mr-2">
+                                <label for="adidas" class="text-gray-600">Adidas</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="puma" class="mr-2">
+                                <label for="puma" class="text-gray-600">Puma</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="oakley" class="mr-2" checked>
+                                <label for="oakley" class="text-gray-600">Oakley</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="columbia" class="mr-2">
+                                <label for="columbia" class="text-gray-600">Columbia</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Material filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Material</h3>
+                        <div class="space-y-2">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="algodao" class="mr-2" checked>
+                                <label for="algodao" class="text-gray-600">Algodão</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="jeans" class="mr-2">
+                                <label for="jeans" class="text-gray-600">Jeans</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="couro" class="mr-2">
+                                <label for="couro" class="text-gray-600">Couro</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="sintetico" class="mr-2">
+                                <label for="sintetico" class="text-gray-600">Sintético</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Apply filters button -->
+                    <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
+                        Aplicar Filtros
+                    </button>
+                </div>
+                
+                <!-- Special offers -->
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h3 class="font-semibold text-blue-800 mb-3">Ofertas Especiais</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <div class="bg-white p-2 rounded-lg mr-3">
+                                <i class="fas fa-percentage text-blue-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium">Até 50% OFF</p>
+                                <p class="text-xs text-gray-500">Em jaquetas e agasalhos</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="bg-white p-2 rounded-lg mr-3">
+                                <i class="fas fa-truck text-blue-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium">Frete Grátis</p>
+                                <p class="text-xs text-gray-500">Para compras acima de R$ 200</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="bg-white p-2 rounded-lg mr-3">
+                                <i class="fas fa-credit-card text-blue-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium">Parcele em até 10x</p>
+                                <p class="text-xs text-gray-500">Sem juros no cartão</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            
+            <!-- Products grid -->
+            <div class="w-full lg:w-3/4">
+                <!-- Featured products carousel -->
+                <section class="mb-12">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Destaques</h2>
+                    <div class="carousel-container relative group" id="carousel">
+                        <div class="carousel-track" id="carousel-track">
+                            <!-- Carousel items will be added by JavaScript -->
+                        </div>
+                        
+                        <!-- Carousel navigation arrows -->
+                        <button id="carousel-prev" class="absolute left-0 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 text-gray-800 p-2 rounded-full shadow-md hover:bg-opacity-100 transition opacity-0 group-hover:opacity-100">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button id="carousel-next" class="absolute right-0 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 text-gray-800 p-2 rounded-full shadow-md hover:bg-opacity-100 transition opacity-0 group-hover:opacity-100">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </section>
+                
+                <!-- All products grid -->
+                <section>
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">Todas as Peças</h2>
+                        <span class="text-gray-600">Mostrando 24 de 189 produtos</span>
+                    </div>
+                    
+                    <div class="product-grid">
+                        <!-- Product Card 1 - Calça Jeans -->
+                        <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition relative">
+                            <div class="discount-badge">-25%</div>
+                            <div class="p-4">
+                                <img src="https://via.placeholder.com/300x300" alt="Calça Jeans Skinny" class="w-full h-64 object-cover">
+                                <div class="mt-4">
+                                    <h3 class="font-semibold text-lg text-gray-800">Calça Jeans Skinny</h3>
+                                    <p class="text-gray-500 text-sm">Levi's</p>
+                                    <div class="flex items-center mt-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <span class="text-gray-500 text-sm ml-2">(215)</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <span class="text-gray-500 line-through text-sm">R$ 259,90</span>
+                                        <div class="flex items-baseline">
+                                            <span class="text-xl font-bold text-gray-800">R$ 194,90</span>
+                                            <span class="text-green-600 text-sm ml-2">à vista</span>
+                                        </div>
+                                        <p class="text-gray-500 text-sm">ou 5x de R$ 42,98</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-actions p-4 bg-gray-50 border-t border-gray-200">
+                                <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                                    <i class="fas fa-shopping-cart mr-2"></i> Adicionar ao Carrinho
+                                </button>
+                                <button class="w-full mt-2 bg-white border border-blue-500 text-blue-500 py-2 rounded-lg hover:bg-blue-50 transition flex items-center justify-center">
+                                    <i class="fas fa-heart mr-2"></i> Favoritar
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Product Card 2 - Jaqueta -->
+                        <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition relative">
+                            <div class="p-4">
+                                <img src="https://via.placeholder.com/300x300" alt="Jaqueta Corta Vento" class="w-full h-64 object-cover">
+                                <div class="mt-4">
+                                    <h3 class="font-semibold text-lg text-gray-800">Jaqueta Corta Vento</h3>
+                                    <p class="text-gray-500 text-sm">Nike</p>
+                                    <div class="flex items-center mt-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                        <span class="text-gray-500 text-sm ml-2">(187)</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <div class="flex items-baseline">
+                                            <span class="text-xl font-bold text-gray-800">R$ 349,90</span>
+                                            <span class="text-green-600 text-sm ml-2">à vista</span>
+                                        </div>
+                                        <p class="text-gray-500 text-sm">ou 7x de R$ 54,27</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-actions p-4 bg-gray-50 border-t border-gray-200">
+                                <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                                    <i class="fas fa-shopping-cart mr-2"></i> Adicionar ao Carrinho
+                                </button>
+                                <button class="w-full mt-2 bg-white border border-blue-500 text-blue-500 py-2 rounded-lg hover:bg-blue-50 transition flex items-center justify-center">
+                                    <i class="fas fa-heart mr-2"></i> Favoritar
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Product Card 3 - Blusa -->
+                        <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition relative">
+                            <div class="discount-badge">-30%</div>
+                            <div class="p-4">
+                                <img src="https://via.placeholder.com/300x300" alt="Blusa Moletom Capuz" class="w-full h-64 object-cover">
+                                <div class="mt-4">
+                                    <h3 class="font-semibold text-lg text-gray-800">Blusa Moletom Capuz</h3>
+                                    <p class="text-gray-500 text-sm">Adidas</p>
+                                    <div class="flex items-center mt-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <span class="text-gray-500 text-sm ml-2">(342)</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <span class="text-gray-500 line-through text-sm">R$ 229,90</span>
+                                        <div class="flex items-baseline">
+                                            <span class="text-xl font-bold text-gray-800">R$ 160,90</span>
+                                            <span class="text-green-600 text-sm ml-2">à vista</span>
+                                        </div>
+                                        <p class="text-gray-500 text-sm">ou 4x de R$ 43,23</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-actions p-4 bg-gray-50 border-t border-gray-200">
+                                <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                                    <i class="fas fa-shopping-cart mr-2"></i> Adicionar ao Carrinho
+                                </button>
+                                <button class="w-full mt-2 bg-white border border-blue-500 text-blue-500 py-2 rounded-lg hover:bg-blue-50 transition flex items-center justify-center">
+                                    <i class="fas fa-heart mr-2"></i> Favoritar
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Product Card 4 - Agasalho -->
+                        <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition relative">
+                            <div class="p-4">
+                                <img src="https://via.placeholder.com/300x300" alt="Conjunto Agasalho Esportivo" class="w-full h-64 object-cover">
+                                <div class="mt-4">
+                                    <h3 class="font-semibold text-lg text-gray-800">Conjunto Agasalho Esportivo</h3>
+                                    <p class="text-gray-500 text-sm">Puma</p>
+                                    <div class="flex items-center mt-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <span class="text-gray-500 text-sm ml-2">(128)</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <div class="flex items-baseline">
+                                            <span class="text-xl font-bold text-gray-800">R$ 289,90</span>
+                                            <span class="text-green-600 text-sm ml-2">à vista</span>
+                                        </div>
+                                        <p class="text-gray-500 text-sm">ou 6x de R$ 52,85</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-actions p-4 bg-gray-50 border-t border-gray-200">
+                                <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                                    <i class="fas fa-shopping-cart mr-2"></i> Adicionar ao Carrinho
+                                </button>
+                                <button class="w-full mt-2 bg-white border border-blue-500 text-blue-500 py-2 rounded-lg hover:bg-blue-50 transition flex items-center justify-center">
+                                    <i class="fas fa-heart mr-2"></i> Favoritar
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Product Card 5 - Bermuda -->
+                        <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition relative">
+                            <div class="discount-badge">-20%</div>
+                            <div class="p-4">
+                                <img src="https://via.placeholder.com/300x300" alt="Bermuda Tactel" class="w-full h-64 object-cover">
+                                <div class="mt-4">
+                                    <h3 class="font-semibold text-lg text-gray-800">Bermuda Tactel</h3>
+                                    <p class="text-gray-500 text-sm">Oakley</p>
+                                    <div class="flex items-center mt-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                        <span class="text-gray-500 text-sm ml-2">(96)</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <span class="text-gray-500 line-through text-sm">R$ 179,90</span>
+                                        <div class="flex items-baseline">
+                                            <span class="text-xl font-bold text-gray-800">R$ 143,90</span>
+                                            <span class="text-green-600 text-sm ml-2">à vista</span>
+                                        </div>
+                                        <p class="text-gray-500 text-sm">ou 3x de R$ 51,30</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-actions p-4 bg-gray-50 border-t border-gray-200">
+                                <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                                    <i class="fas fa-shopping-cart mr-2"></i> Adicionar ao Carrinho
+                                </button>
+                                <button class="w-full mt-2 bg-white border border-blue-500 text-blue-500 py-2 rounded-lg hover:bg-blue-50 transition flex items-center justify-center">
+                                    <i class="fas fa-heart mr-2"></i> Favoritar
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Product Card 6 - Jaqueta de Couro -->
+                        <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition relative">
+                            <div class="p-4">
+                                <img src="https://via.placeholder.com/300x300" alt="Jaqueta de Couro" class="w-full h-64 object-cover">
+                                <div class="mt-4">
+                                    <h3 class="font-semibold text-lg text-gray-800">Jaqueta de Couro</h3>
+                                    <p class="text-gray-500 text-sm">Columbia</p>
+                                    <div class="flex items-center mt-2">
+                                        <div class="flex text-yellow-400">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                        <span class="text-gray-500 text-sm ml-2">(78)</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <div class="flex items-baseline">
+                                            <span class="text-xl font-bold text-gray-800">R$ 599,90</span>
+                                            <span class="text-green-600 text-sm ml-2">à vista</span>
+                                        </div>
+                                        <p class="text-gray-500 text-sm">ou 10x de R$ 65,99</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-actions p-4 bg-gray-50 border-t border-gray-200">
+                                <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                                    <i class="fas fa-shopping-cart mr-2"></i> Adicionar ao Carrinho
+                                </button>
+                                <button class="w-full mt-2 bg-white border border-blue-500 text-blue-500 py-2 rounded-lg hover:bg-blue-50 transition flex items-center justify-center">
+                                    <i class="fas fa-heart mr-2"></i> Favoritar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="flex justify-center mt-10">
+                        <nav class="inline-flex rounded-md shadow">
+                            <a href="#" class="px-3 py-2 rounded-l-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+                                <i class="fas fa-chevron-left"></i>
+                            </a>
+                            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-blue-600 font-medium">1</a>
+                            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-500 hover:bg-gray-50">2</a>
+                            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-500 hover:bg-gray-50">3</a>
+                            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-500 hover:bg-gray-50">4</a>
+                            <a href="#" class="px-4 py-2 border-t border-b border-gray-300 bg-white text-gray-500 hover:bg-gray-50">5</a>
+                            <a href="#" class="px-3 py-2 rounded-r-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50">
+                                <i class="fas fa-chevron-right"></i>
+                            </a>
+                        </nav>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-10">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">SuperStore</h3>
+                    <p class="text-gray-400">A melhor loja online para suas compras de moda, eletrônicos e muito mais.</p>
+                    <div class="flex space-x-4 mt-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Institucional</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Quem Somos</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Nossas Lojas</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Política de Privacidade</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Termos de Uso</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Trabalhe Conosco</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Atendimento</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Central de Ajuda</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Meus Pedidos</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Trocas e Devoluções</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Formas de Pagamento</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Fale Conosco</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
+                    <p class="text-gray-400 mb-4">Cadastre-se e receba ofertas exclusivas</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Seu e-mail" class="px-4 py-2 w-full rounded-l-md focus:outline-none text-gray-800">
+                        <button class="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600 transition">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <div class="mt-4 flex items-center">
+                        <i class="fas fa-credit-card text-gray-400 mr-2"></i>
+                        <div class="flex space-x-2">
+                            <img src="https://via.placeholder.com/30x20" alt="Visa" class="h-5">
+                            <img src="https://via.placeholder.com/30x20" alt="Mastercard" class="h-5">
+                            <img src="https://via.placeholder.com/30x20" alt="American Express" class="h-5">
+                            <img src="https://via.placeholder.com/30x20" alt="Elo" class="h-5">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>© 2023 SuperStore. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Categories dropdown toggle
+        document.getElementById('categories-btn').addEventListener('click', function() {
+            document.getElementById('category-dropdown').parentElement.classList.toggle('show-categories');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.relative')) {
+                document.getElementById('category-dropdown').parentElement.classList.remove('show-categories');
+            }
+        });
+
+        // Color selection
+        const colorOptions = document.querySelectorAll('.color-option');
+        colorOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                colorOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Type selection
+        const typeOptions = document.querySelectorAll('.type-option');
+        typeOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                typeOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // Carousel functionality
+        const carouselTrack = document.getElementById('carousel-track');
+        const carouselItems = [
+            {
+                title: "Jaqueta de Couro Premium",
+                brand: "Columbia",
+                price: "599,90",
+                oldPrice: "",
+                image: "https://via.placeholder.com/300x300",
+                rating: 4.5
+            },
+            {
+                title: "Calça Jeans Skinny",
+                brand: "Levi's",
+                price: "194,90",
+                oldPrice: "259,90",
+                image: "https://via.placeholder.com/300x300",
+                rating: 4.5
+            },
+            {
+                title: "Blusa Moletom Capuz",
+                brand: "Adidas",
+                price: "160,90",
+                oldPrice: "229,90",
+                image: "https://via.placeholder.com/300x300",
+                rating: 5
+            },
+            {
+                title: "Jaqueta Corta Vento",
+                brand: "Nike",
+                price: "349,90",
+                oldPrice: "",
+                image: "https://via.placeholder.com/300x300",
+                rating: 4
+            },
+            {
+                title: "Conjunto Agasalho Esportivo",
+                brand: "Puma",
+                price: "289,90",
+                oldPrice: "",
+                image: "https://via.placeholder.com/300x300",
+                rating: 4.5
+            },
+            {
+                title: "Bermuda Tactel",
+                brand: "Oakley",
+                price: "143,90",
+                oldPrice: "179,90",
+                image: "https://via.placeholder.com/300x300",
+                rating: 4
+            }
+        ];
+
+        // Generate carousel items
+        carouselItems.forEach(item => {
+            const carouselItem = document.createElement('div');
+            carouselItem.className = 'carousel-item';
+            
+            const discountBadge = item.oldPrice ? `<div class="discount-badge">-${Math.round((1 - parseFloat(item.price.replace(',', '.')) / parseFloat(item.oldPrice.replace(',', '.'))) * 100)}%</div>` : '';
+            
+            carouselItem.innerHTML = `
+                <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition relative">
+                    ${discountBadge}
+                    <div class="p-4">
+                        <img src="${item.image}" alt="${item.title}" class="w-full h-48 object-cover">
+                        <div class="mt-4">
+                            <h3 class="font-semibold text-lg text-gray-800">${item.title}</h3>
+                            <p class="text-gray-500 text-sm">${item.brand}</p>
+                            <div class="flex items-center mt-2">
+                                ${generateRatingStars(item.rating)}
+                                <span class="text-gray-500 text-sm ml-2">(${Math.floor(Math.random() * 100) + 50})</span>
+                            </div>
+                            <div class="mt-3">
+                                ${item.oldPrice ? `<span class="text-gray-500 line-through text-sm">R$ ${item.oldPrice}</span>` : ''}
+                                <div class="flex items-baseline">
+                                    <span class="text-xl font-bold text-gray-800">R$ ${item.price}</span>
+                                    <span class="text-green-600 text-sm ml-2">à vista</span>
+                                </div>
+                                <p class="text-gray-500 text-sm">ou ${Math.ceil(parseFloat(item.price.replace(',', '.')) / 50)}x de R$ ${(parseFloat(item.price.replace(',', '.')) / Math.ceil(parseFloat(item.price.replace(',', '.')) / 50)).toFixed(2).replace('.', ',')}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-actions p-4 bg-gray-50 border-t border-gray-200">
+                        <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                            <i class="fas fa-shopping-cart mr-2"></i> Adicionar ao Carrinho
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            carouselTrack.appendChild(carouselItem);
+        });
+
+        function generateRatingStars(rating) {
+            let stars = '';
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+            
+            for (let i = 0; i < fullStars; i++) {
+                stars += '<i class="fas fa-star"></i>';
+            }
+            
+            if (hasHalfStar) {
+                stars += '<i class="fas fa-star-half-alt"></i>';
+            }
+            
+            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+            for (let i = 0; i < emptyStars; i++) {
+                stars += '<i class="far fa-star"></i>';
+            }
+            
+            return stars;
+        }
+
+        // Carousel navigation
+        let currentPosition = 0;
+        const itemWidth = 33.333; // Percentage
+        const itemCount = carouselItems.length;
+        
+        document.getElementById('carousel-next').addEventListener('click', function() {
+            if (currentPosition > -(itemWidth * (itemCount - 3))) {
+                currentPosition -= itemWidth;
+                carouselTrack.style.transform = `translateX(${currentPosition}%)`;
+            }
+        });
+        
+        document.getElementById('carousel-prev').addEventListener('click', function() {
+            if (currentPosition < 0) {
+                currentPosition += itemWidth;
+                carouselTrack.style.transform = `translateX(${currentPosition}%)`;
+            }
+        });
+
+        // Responsive carousel
+        function updateCarousel() {
+            const screenWidth = window.innerWidth;
+            if (screenWidth <= 640) {
+                carouselTrack.style.width = `${itemCount * 100}%`;
+                carouselItemWidth = 100;
+            } else if (screenWidth <= 1024) {
+                carouselTrack.style.width = `${itemCount * 50}%`;
+                carouselItemWidth = 50;
+            } else {
+                carouselTrack.style.width = `${itemCount * 33.333}%`;
+                carouselItemWidth = 33.333;
+            }
+        }
+
+        window.addEventListener('resize', updateCarousel);
+        updateCarousel();
+    </script>
+</body>
+</html>

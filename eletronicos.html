@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SuperStore - Eletrônicos e Tecnologia</title>
+    <title>SuperStore - Eletrônicos</title>
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome for icons -->
@@ -88,11 +88,54 @@
             cursor: pointer;
         }
 
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .pagination-btn {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .pagination-btn:hover:not(.active) {
+            background-color: #f1f5f9;
+        }
+        
+        .active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        
         .brand-checkbox {
             display: none;
         }
-
+        
         .brand-label {
+            display: inline-block;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .brand-checkbox:checked + .brand-label {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        .type-checkbox {
+            display: none;
+        }
+        
+        .type-label {
             display: inline-block;
             padding: 8px 12px;
             border: 1px solid #ddd;
@@ -100,73 +143,34 @@
             margin: 5px;
             cursor: pointer;
             transition: all 0.3s;
+            font-size: 14px;
         }
-
-        .brand-checkbox:checked + .brand-label {
+        
+        .type-checkbox:checked + .type-label {
             background-color: #3b82f6;
             color: white;
             border-color: #3b82f6;
         }
-
-        .type-option {
+        
+        .accessory-checkbox {
+            display: none;
+        }
+        
+        .accessory-label {
+            display: inline-block;
             padding: 8px 12px;
             border: 1px solid #ddd;
             border-radius: 4px;
             margin: 5px;
             cursor: pointer;
             transition: all 0.3s;
-            text-align: center;
+            font-size: 14px;
         }
-
-        .type-option.selected {
+        
+        .accessory-checkbox:checked + .accessory-label {
             background-color: #3b82f6;
             color: white;
             border-color: #3b82f6;
-        }
-
-        .product-card:hover .product-actions {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .product-actions {
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s ease;
-        }
-
-        .discount-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #ef4444;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .tech-specs {
-            font-size: 0.85rem;
-            color: #6b7280;
-            margin-top: 4px;
-        }
-
-        /* Loading spinner */
-        .loading-spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-radius: 50%;
-            border-top: 4px solid #3b82f6;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -193,9 +197,10 @@
                         <div id="category-dropdown" class="category-dropdown p-4 rounded-lg mt-1 w-full md:w-96">
                             <div>
                                 <h3 class="font-bold mb-2">Eletrônicos</h3>
-                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">Celulares</a>
+                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500 text-blue-600 font-medium">Smartphones</a>
                                 <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">Notebooks</a>
                                 <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">TVs</a>
+                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">Acessórios</a>
                             </div>
                             <div>
                                 <h3 class="font-bold mb-2">Eletrodomésticos</h3>
@@ -205,9 +210,9 @@
                             </div>
                             <div>
                                 <h3 class="font-bold mb-2">Moda</h3>
-                                <a href="roupas.html" class="block py-1 text-gray-600 hover:text-blue-500">Camisetas</a>
+                                <a href="roupas.html" class="block py-1 text-gray-600 hover:text-blue-500">Camisas</a>
                                 <a href="roupas.html" class="block py-1 text-gray-600 hover:text-blue-500">Calças</a>
-                                <a href="Calçados.html" class="block py-1 text-gray-600 hover:text-blue-500">Calçados</a>
+                                <a href="calcados.html" class="block py-1 text-gray-600 hover:text-blue-500">Calçados</a>
                             </div>
                         </div>
                     </div>
@@ -239,20 +244,18 @@
             <a href="index.html" class="hover:text-blue-500">Início</a>
             <span class="mx-2">/</span>
             <a href="eletronicos.html" class="hover:text-blue-500">Eletrônicos</a>
-            <span class="mx-2">/</span>
-            <span class="text-gray-700">Smartphones & Acessórios</span>
         </div>
 
         <!-- Page title and sorting options -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Smartphones & Acessórios</h1>
+            <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Eletrônicos</h1>
             <div class="flex items-center">
                 <span class="text-gray-600 mr-2">Ordenar por:</span>
                 <select id="sort-by" class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="best-sellers">Mais vendidos</option>
+                    <option value="popular">Mais vendidos</option>
                     <option value="price-low">Menor preço</option>
                     <option value="price-high">Maior preço</option>
-                    <option value="best-rated">Melhor avaliados</option>
+                    <option value="rating">Melhor avaliados</option>
                     <option value="newest">Novidades</option>
                 </select>
             </div>
@@ -267,120 +270,106 @@
                     <!-- Price range filter -->
                     <div class="mb-6">
                         <h3 class="font-medium mb-3 text-gray-700">Faixa de preço</h3>
-                        <div class="flex justify-between mb-2">
-                            <span id="min-price-display" class="text-sm text-gray-600">R$ 100</span>
-                            <span id="max-price-display" class="text-sm text-gray-600">R$ 10.000</span>
-                        </div>
-                        <input type="range" min="100" max="10000" value="2000" class="price-range-slider mb-3" id="price-range">
+                        <input type="range" id="price-range" min="10" max="20000" value="20000" class="price-range-slider mb-3">
                         <div class="flex justify-between text-sm text-gray-600">
-                            <span>R$ 100</span>
-                            <span>R$ 10.000</span>
+                            <span>R$ 10</span>
+                            <span id="max-price-display">R$ 20.000</span>
                         </div>
                     </div>
                     
                     <!-- Type filter -->
                     <div class="mb-6">
-                        <h3 class="font-medium mb-3 text-gray-700">Tipo</h3>
-                        <div class="flex flex-wrap" id="type-filter">
-                            <div class="type-option selected" data-type="smartphone">Smartphones</div>
-                            <div class="type-option" data-type="smartwatch">Smartwatches</div>
-                            <div class="type-option" data-type="tablet">Tablets</div>
-                            <div class="type-option" data-type="notebook">Notebooks</div>
-                            <div class="type-option" data-type="pc">PCs</div>
-                            <div class="type-option" data-type="monitor">Monitores</div>
-                            <div class="type-option" data-type="teclado">Teclados</div>
-                            <div class="type-option" data-type="mouse">Mouses</div>
-                            <div class="type-option" data-type="headset">Headsets</div>
-                            <div class="type-option" data-type="fone">Fones</div>
-                            <div class="type-option" data-type="mousepad">Mouse Pads</div>
-                            <div class="type-option" data-type="tv">TVs</div>
+                        <h3 class="font-medium mb-3 text-gray-700">Tipo de Produto</h3>
+                        <div class="flex flex-wrap" id="type-filters">
+                            <input type="checkbox" id="type-smartphone" class="type-checkbox" value="Smartphone">
+                            <label for="type-smartphone" class="type-label">Smartphone</label>
+                            
+                            <input type="checkbox" id="type-notebook" class="type-checkbox" value="Notebook">
+                            <label for="type-notebook" class="type-label">Notebook</label>
+                            
+                            <input type="checkbox" id="type-tablet" class="type-checkbox" value="Tablet">
+                            <label for="type-tablet" class="type-label">Tablet</label>
+                            
+                            <input type="checkbox" id="type-smartwatch" class="type-checkbox" value="Smartwatch">
+                            <label for="type-smartwatch" class="type-label">Smartwatch</label>
+                            
+                            <input type="checkbox" id="type-tv" class="type-checkbox" value="TV">
+                            <label for="type-tv" class="type-label">TV</label>
+                            
+                            <input type="checkbox" id="type-headset" class="type-checkbox" value="Headset">
+                            <label for="type-headset" class="type-label">Headset</label>
+                            
+                            <input type="checkbox" id="type-fone" class="type-checkbox" value="Fone de Ouvido">
+                            <label for="type-fone" class="type-label">Fone de Ouvido</label>
+                            
+                            <input type="checkbox" id="type-periferico" class="type-checkbox" value="Periférico">
+                            <label for="type-periferico" class="type-label">Periféricos</label>
+                            
+                            <input type="checkbox" id="type-carregador" class="type-checkbox" value="Carregador">
+                            <label for="type-carregador" class="type-label">Carregadores</label>
+                            
+                            <input type="checkbox" id="type-pilha" class="type-checkbox" value="Pilha">
+                            <label for="type-pilha" class="type-label">Pilhas</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Accessories filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Acessórios</h3>
+                        <div class="flex flex-wrap" id="accessory-filters">
+                            <input type="checkbox" id="accessory-capa-celular" class="accessory-checkbox" value="Capa de Celular">
+                            <label for="accessory-capa-celular" class="accessory-label">Capa Celular</label>
+                            
+                            <input type="checkbox" id="accessory-capa-tablet" class="accessory-checkbox" value="Capa de Tablet">
+                            <label for="accessory-capa-tablet" class="accessory-label">Capa Tablet</label>
+                            
+                            <input type="checkbox" id="accessory-pelicula-celular" class="accessory-checkbox" value="Película de Celular">
+                            <label for="accessory-pelicula-celular" class="accessory-label">Película Celular</label>
+                            
+                            <input type="checkbox" id="accessory-pelicula-tablet" class="accessory-checkbox" value="Película de Tablet">
+                            <label for="accessory-pelicula-tablet" class="accessory-label">Película Tablet</label>
                         </div>
                     </div>
                     
                     <!-- Brand filter -->
                     <div class="mb-6">
                         <h3 class="font-medium mb-3 text-gray-700">Marca</h3>
-                        <div class="flex flex-wrap" id="brand-filter">
-                            <input type="checkbox" id="apple" class="brand-checkbox" value="Apple" checked>
-                            <label for="apple" class="brand-label">Apple</label>
+                        <div class="flex flex-wrap" id="brand-filters">
+                            <input type="checkbox" id="brand-samsung" class="brand-checkbox" value="Samsung">
+                            <label for="brand-samsung" class="brand-label">Samsung</label>
                             
-                            <input type="checkbox" id="samsung" class="brand-checkbox" value="Samsung" checked>
-                            <label for="samsung" class="brand-label">Samsung</label>
+                            <input type="checkbox" id="brand-apple" class="brand-checkbox" value="Apple">
+                            <label for="brand-apple" class="brand-label">Apple</label>
                             
-                            <input type="checkbox" id="xiaomi" class="brand-checkbox" value="Xiaomi">
-                            <label for="xiaomi" class="brand-label">Xiaomi</label>
+                            <input type="checkbox" id="brand-xiaomi" class="brand-checkbox" value="Xiaomi">
+                            <label for="brand-xiaomi" class="brand-label">Xiaomi</label>
                             
-                            <input type="checkbox" id="motorola" class="brand-checkbox" value="Motorola">
-                            <label for="motorola" class="brand-label">Motorola</label>
+                            <input type="checkbox" id="brand-lg" class="brand-checkbox" value="LG">
+                            <label for="brand-lg" class="brand-label">LG</label>
                             
-                            <input type="checkbox" id="lg" class="brand-checkbox" value="LG">
-                            <label for="lg" class="brand-label">LG</label>
+                            <input type="checkbox" id="brand-sony" class="brand-checkbox" value="Sony">
+                            <label for="brand-sony" class="brand-label">Sony</label>
                             
-                            <input type="checkbox" id="asus" class="brand-checkbox" value="Asus">
-                            <label for="asus" class="brand-label">Asus</label>
+                            <input type="checkbox" id="brand-motorola" class="brand-checkbox" value="Motorola">
+                            <label for="brand-motorola" class="brand-label">Motorola</label>
                             
-                            <input type="checkbox" id="dell" class="brand-checkbox" value="Dell">
-                            <label for="dell" class="brand-label">Dell</label>
+                            <input type="checkbox" id="brand-dell" class="brand-checkbox" value="Dell">
+                            <label for="brand-dell" class="brand-label">Dell</label>
                             
-                            <input type="checkbox" id="hp" class="brand-checkbox" value="HP">
-                            <label for="hp" class="brand-label">HP</label>
+                            <input type="checkbox" id="brand-hp" class="brand-checkbox" value="HP">
+                            <label for="brand-hp" class="brand-label">HP</label>
                             
-                            <input type="checkbox" id="logitech" class="brand-checkbox" value="Logitech">
-                            <label for="logitech" class="brand-label">Logitech</label>
+                            <input type="checkbox" id="brand-asus" class="brand-checkbox" value="Asus">
+                            <label for="brand-asus" class="brand-label">Asus</label>
                             
-                            <input type="checkbox" id="razer" class="brand-checkbox" value="Razer">
-                            <label for="razer" class="brand-label">Razer</label>
-                        </div>
-                    </div>
-                    
-                    <!-- Features filter -->
-                    <div class="mb-6">
-                        <h3 class="font-medium mb-3 text-gray-700">Recursos</h3>
-                        <div class="space-y-2" id="features-filter">
-                            <div class="flex items-center">
-                                <input type="checkbox" id="5g" class="mr-2" value="5g" checked>
-                                <label for="5g" class="text-gray-600">5G</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input type="checkbox" id="bluetooth" class="mr-2" value="bluetooth" checked>
-                                <label for="bluetooth" class="text-gray-600">Bluetooth</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input type="checkbox" id="nfc" class="mr-2" value="nfc">
-                                <label for="nfc" class="text-gray-600">NFC</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input type="checkbox" id="wireless" class="mr-2" value="wireless">
-                                <label for="wireless" class="text-gray-600">Wireless</label>
-                            </div>
-                            <div class="flex items-center">
-                                <input type="checkbox" id="waterproof" class="mr-2" value="waterproof">
-                                <label for="waterproof" class="text-gray-600">À prova d'água</label>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Storage filter -->
-                    <div class="mb-6">
-                        <h3 class="font-medium mb-3 text-gray-700">Armazenamento</h3>
-                        <div class="flex flex-wrap" id="storage-filter">
-                            <div class="type-option" data-storage="64">64GB</div>
-                            <div class="type-option selected" data-storage="128">128GB</div>
-                            <div class="type-option" data-storage="256">256GB</div>
-                            <div class="type-option" data-storage="512">512GB</div>
-                            <div class="type-option" data-storage="1024">1TB</div>
-                        </div>
-                    </div>
-                    
-                    <!-- RAM filter -->
-                    <div class="mb-6">
-                        <h3 class="font-medium mb-3 text-gray-700">Memória RAM</h3>
-                        <div class="flex flex-wrap" id="ram-filter">
-                            <div class="type-option" data-ram="4">4GB</div>
-                            <div class="type-option selected" data-ram="8">8GB</div>
-                            <div class="type-option" data-ram="12">12GB</div>
-                            <div class="type-option" data-ram="16">16GB</div>
-                            <div class="type-option" data-ram="32">32GB</div>
+                            <input type="checkbox" id="brand-logitech" class="brand-checkbox" value="Logitech">
+                            <label for="brand-logitech" class="brand-label">Logitech</label>
+                            
+                            <input type="checkbox" id="brand-spigen" class="brand-checkbox" value="Spigen">
+                            <label for="brand-spigen" class="brand-label">Spigen</label>
+                            
+                            <input type="checkbox" id="brand-otterbox" class="brand-checkbox" value="OtterBox">
+                            <label for="brand-otterbox" class="brand-label">OtterBox</label>
                         </div>
                     </div>
                     
@@ -403,7 +392,7 @@
                             </div>
                             <div>
                                 <p class="text-sm font-medium">Até 30% OFF</p>
-                                <p class="text-xs text-gray-500">Em smartphones e tablets</p>
+                                <p class="text-xs text-gray-500">Em smartphones selecionados</p>
                             </div>
                         </div>
                         <div class="flex items-center">
@@ -448,23 +437,32 @@
                     </div>
                 </section>
                 
-                <!-- All products grid -->
+                
+                <!-- All electronics products -->
                 <section>
                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-bold text-gray-800">Todos os Produtos</h2>
-                        <span id="product-count" class="text-gray-600">Carregando produtos...</span>
+                        <h2 class="text-2xl font-bold text-gray-800">Todos os Eletrônicos</h2>
+                        <span id="product-count" class="text-gray-500">Mostrando 12 de 12 produtos</span>
                     </div>
                     
-                    <div id="loading-spinner" class="loading-spinner"></div>
-                    
-                    <div id="products-grid" class="product-grid">
-                        <!-- Products will be loaded here by JavaScript -->
+                    <div class="product-grid" id="products-grid">
+                        <!-- Products will be added by JavaScript -->
                     </div>
                     
                     <!-- Pagination -->
-                    <div class="flex justify-center mt-10">
-                        <nav class="inline-flex rounded-md shadow" id="pagination">
-                            <!-- Pagination will be loaded here by JavaScript -->
+                    <div class="flex justify-center mt-8">
+                        <nav class="flex items-center space-x-1" id="pagination">
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 prev-btn">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100 active">1</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">2</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">3</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">4</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">5</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 next-btn">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
                         </nav>
                     </div>
                 </section>
@@ -472,1104 +470,1225 @@
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-10">
+    <!-- Footer with social media links -->
+    <footer class="bg-gray-800 text-white py-8">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">SuperStore</h3>
-                    <p class="text-gray-400">A melhor loja online para suas compras de tecnologia, eletrônicos e muito mais.</p>
-                    <div class="flex space-x-4 mt-4">
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center">
+                        <img src="https://via.placeholder.com/50x50" alt="SuperStore Logo" class="h-10 mr-2">
+                        <h2 class="text-xl font-bold">SuperStore</h2>
                     </div>
+                    <p class="mt-2 text-gray-400">Sua loja online completa com os melhores produtos.</p>
                 </div>
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Institucional</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Quem Somos</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Nossas Lojas</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Política de Privacidade</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Termos de Uso</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Trabalhe Conosco</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Atendimento</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Central de Ajuda</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Meus Pedidos</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Trocas e Devoluções</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Formas de Pagamento</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Fale Conosco</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
-                    <p class="text-gray-400 mb-4">Cadastre-se e receba ofertas exclusivas</p>
-                    <div class="flex">
-                        <input type="email" placeholder="Seu e-mail" class="px-4 py-2 w-full rounded-l-md focus:outline-none text-gray-800">
-                        <button class="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600 transition">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
-                    <div class="mt-4 flex items-center">
-                        <i class="fas fa-credit-card text-gray-400 mr-2"></i>
-                        <div class="flex space-x-2">
-                            <img src="https://via.placeholder.com/30x20" alt="Visa" class="h-5">
-                            <img src="https://via.placeholder.com/30x20" alt="Mastercard" class="h-5">
-                            <img src="https://via.placeholder.com/30x20" alt="American Express" class="h-5">
-                            <img src="https://via.placeholder.com/30x20" alt="Elo" class="h-5">
-                        </div>
-                    </div>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-telegram"></i>
+                    </a>
                 </div>
             </div>
+            
             <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-                <p>© 2023 SuperStore. Todos os direitos reservados.</p>
+                <p>&copy; 2023 SuperStore. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Database of products
-        const productsDatabase = [
+        // Sample product data for electronics
+        const electronicsProducts = [
+            // Previous electronics products...
+            // ... (mantive os produtos anteriores para não ficar muito grande)
+            
+            // New accessory products
             {
-                id: 1,
-                title: "iPhone 15 Pro 128GB",
-                brand: "Apple",
-                type: "smartphone",
-                price: 6374.10,
-                oldPrice: 7499.00,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.5,
-                reviews: 542,
-                features: ["5g", "bluetooth", "nfc", "waterproof"],
-                storage: 128,
-                ram: 8,
-                specs: "6.1\" OLED • A17 Pro • 48MP",
-                bestSeller: true,
-                newArrival: true
-            },
-            {
-                id: 2,
-                title: "Galaxy Watch 6 44mm",
-                brand: "Samsung",
-                type: "smartwatch",
-                price: 1799.00,
-                oldPrice: 0,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.0,
-                reviews: 187,
-                features: ["bluetooth", "wireless", "waterproof"],
-                storage: 16,
-                ram: 2,
-                specs: "1.5\" AMOLED • Wear OS • 4G",
-                bestSeller: true,
-                newArrival: false
-            },
-            {
-                id: 3,
-                title: "iPad Air 10.9\" 256GB",
-                brand: "Apple",
-                type: "tablet",
-                price: 5199.20,
-                oldPrice: 6499.00,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.8,
-                reviews: 342,
-                features: ["bluetooth", "wireless"],
-                storage: 256,
-                ram: 8,
-                specs: "M1 • Wi-Fi • 12MP",
-                bestSeller: false,
-                newArrival: true
-            },
-            {
-                id: 4,
-                title: "MacBook Air M2 256GB",
-                brand: "Apple",
-                type: "notebook",
-                price: 8999.00,
-                oldPrice: 0,
-                image: "https://via.placeholder.com/300x300",
+                id: 25,
+                link: "https://www.example.com/product25",
+                name: "Capa para iPhone 14 Pro Max - Spigen Ultra Hybrid",
+                price: 149.99,
+                category: "eletronicos",
+                type: "Acessório",
+                accessoryType: "Capa de Celular",
+                brand: "Spigen",
+                colors: ["black", "clear"],
+                image: "https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Capa transparente com proteção antibacteriana e bordas coloridas.",
                 rating: 4.7,
-                reviews: 128,
-                features: ["bluetooth", "wireless"],
-                storage: 256,
-                ram: 8,
-                specs: "13.6\" • 8GB RAM • 8-core GPU",
-                bestSeller: true,
-                newArrival: false
+                discount: 0.10,
+                featured: true,
+                popularity: 92,
+                dateAdded: "2023-07-20"
             },
             {
-                id: 5,
-                title: "Headset Gamer Razer BlackShark",
-                brand: "Razer",
-                type: "headset",
-                price: 599.25,
-                oldPrice: 799.00,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.2,
-                reviews: 96,
-                features: ["bluetooth", "wireless"],
-                storage: 0,
-                ram: 0,
-                specs: "7.1 Surround • USB • Mic",
-                bestSeller: false,
-                newArrival: false
-            },
-            {
-                id: 6,
-                title: "Monitor Gamer 27\" 144Hz",
-                brand: "LG",
-                type: "monitor",
-                price: 1899.00,
-                oldPrice: 0,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.3,
-                reviews: 78,
-                features: [],
-                storage: 0,
-                ram: 0,
-                specs: "QHD • 1ms • HDMI/DP",
-                bestSeller: false,
-                newArrival: true
-            },
-            {
-                id: 7,
-                title: "Mouse Gamer Logitech G502",
-                brand: "Logitech",
-                type: "mouse",
-                price: 449.10,
-                oldPrice: 499.00,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.9,
-                reviews: 412,
-                features: ["wireless"],
-                storage: 0,
-                ram: 0,
-                specs: "11 botões • 25.600 DPI • RGB",
-                bestSeller: true,
-                newArrival: false
-            },
-            {
-                id: 8,
-                title: "Teclado Mecânico Redragon K552",
-                brand: "Redragon",
-                type: "teclado",
-                price: 349.90,
-                oldPrice: 0,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.5,
-                reviews: 287,
-                features: [],
-                storage: 0,
-                ram: 0,
-                specs: "Switch Outemu Blue • Anti-ghosting",
-                bestSeller: false,
-                newArrival: false
-            },
-            {
-                id: 9,
-                title: "Galaxy S23 Ultra 256GB",
+                id: 26,
+                link: "https://www.example.com/product26",
+                name: "Película de Vidro Samsung Galaxy S23 Ultra",
+                price: 89.99,
+                category: "eletronicos",
+                type: "Acessório",
+                accessoryType: "Película de Celular",
                 brand: "Samsung",
-                type: "smartphone",
-                price: 6999.00,
-                oldPrice: 7999.00,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.8,
-                reviews: 387,
-                features: ["5g", "bluetooth", "nfc", "waterproof"],
-                storage: 256,
-                ram: 12,
-                specs: "6.8\" AMOLED • Snapdragon 8 Gen 2 • 200MP",
-                bestSeller: true,
-                newArrival: false
+                colors: ["clear"],
+                image: "https://images.unsplash.com/photo-1585771724684-38269d6639fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Película de vidro temperado 9H com fácil aplicação.",
+                rating: 4.5,
+                discount: 0.15,
+                featured: true,
+                popularity: 88,
+                dateAdded: "2023-07-18"
             },
             {
-                id: 10,
-                title: "Xiaomi Redmi Note 12 128GB",
+                id: 27,
+                link: "https://www.example.com/product27",
+                name: "Capa para iPad Pro 12.9\" - OtterBox Defender",
+                price: 299.99,
+                category: "eletronicos",
+                type: "Acessório",
+                accessoryType: "Capa de Tablet",
+                brand: "OtterBox",
+                colors: ["black", "blue"],
+                image: "https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Capa robusta com proteção contra quedas e suporte integrado.",
+                rating: 4.8,
+                discount: 0,
+                featured: true,
+                popularity: 90,
+                dateAdded: "2023-07-15"
+            },
+            {
+                id: 28,
+                link: "https://www.example.com/product28",
+                name: "Película Anti-Reflexo iPad Air",
+                price: 119.99,
+                category: "eletronicos",
+                type: "Acessório",
+                accessoryType: "Película de Tablet",
+                brand: "Belkin",
+                colors: ["clear"],
+                image: "https://images.unsplash.com/photo-1585771724684-38269d6639fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Película que reduz reflexos e protege a tela sem prejudicar a visibilidade.",
+                rating: 4.6,
+                discount: 0.20,
+                featured: false,
+                popularity: 85,
+                dateAdded: "2023-07-10"
+            },
+            {
+                id: 29,
+                link: "https://www.example.com/product29",
+                name: "Capa para Galaxy S23 - Spigen Liquid Air",
+                price: 129.99,
+                category: "eletronicos",
+                type: "Acessório",
+                accessoryType: "Capa de Celular",
+                brand: "Spigen",
+                colors: ["black", "green"],
+                image: "https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Capa fina com padrão texturizado para melhor aderência.",
+                rating: 4.7,
+                discount: 0.05,
+                featured: false,
+                popularity: 87,
+                dateAdded: "2023-06-28"
+            },
+            {
+                id: 30,
+                link: "https://www.example.com/product30",
+                name: "Película Privacidade Galaxy S23 Ultra",
+                price: 139.99,
+                category: "eletronicos",
+                type: "Acessório",
+                accessoryType: "Película de Celular",
+                brand: "Samsung",
+                colors: ["black"],
+                image: "https://images.unsplash.com/photo-1585771724684-38269d6639fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Película que limita a visibilidade da tela para quem está ao seu lado.",
+                rating: 4.5,
+                discount: 0,
+                featured: false,
+                popularity: 83,
+                dateAdded: "2023-06-25"
+            },
+            {
+                id: 31,
+                link: "https://www.example.com/product31",
+                name: "Capa para iPad Mini - OtterBox Symmetry",
+                price: 249.99,
+                category: "eletronicos",
+                type: "Acessório",
+                accessoryType: "Capa de Tablet",
+                brand: "OtterBox",
+                colors: ["black", "pink"],
+                image: "https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Capa elegante com proteção contra quedas e arranhões.",
+                rating: 4.6,
+                discount: 0.10,
+                featured: false,
+                popularity: 84,
+                dateAdded: "2023-06-20"
+            },
+            {
+                id: 32,
+                link: "https://www.example.com/product32",
+                name: "Película Matte iPad Pro 11\"",
+                price: 99.99,
+                category: "eletronicos",
+                type: "Acessório",
+                accessoryType: "Película de Tablet",
+                brand: "Belkin",
+                colors: ["clear"],
+                image: "https://images.unsplash.com/photo-1585771724684-38269d6639fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Película anti-reflexo com acabamento mate para melhor experiência com a caneta.",
+                rating: 4.7,
+                discount: 0.15,
+                featured: false,
+                popularity: 86,
+                dateAdded: "2023-06-15"
+            },
+            {
+                id: 33,
+                link: "https://www.example.com/product1",
+                name: "Smartphone Samsung Galaxy S23 Ultra",
+                price: 7999.99,
+                category: "eletronicos",
+                type: "Smartphone",
+                brand: "Samsung",
+                colors: ["black", "white", "green"],
+                image: "https://images.unsplash.com/photo-1610792516307-ea5acd9c3b00?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Smartphone top de linha com câmera de 200MP e S Pen integrado.",
+                rating: 4.9,
+                discount: 0.10,
+                featured: true,
+                popularity: 98,
+                dateAdded: "2023-05-15"
+            },
+            {
+                id: 34,
+                link: "https://www.example.com/product2",
+                name: "iPhone 14 Pro Max",
+                price: 8999.99,
+                category: "eletronicos",
+                type: "Smartphone",
+                brand: "Apple",
+                colors: ["black", "white", "gold"],
+                image: "https://images.unsplash.com/photo-1664478546384-d57ffe74a78c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "O mais avançado iPhone com tela Dynamic Island e câmera de 48MP.",
+                rating: 4.9,
+                discount: 0.05,
+                featured: true,
+                popularity: 99,
+                dateAdded: "2023-06-20"
+            },
+            {
+                id: 35,
+                link: "https://www.example.com/product3",
+                name: "Notebook Dell XPS 15",
+                price: 12499.99,
+                category: "eletronicos",
+                type: "Notebook",
+                brand: "Dell",
+                colors: ["black"],
+                image: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Notebook premium com tela 4K OLED e processador Intel Core i9.",
+                rating: 4.8,
+                discount: 0.15,
+                featured: true,
+                popularity: 95,
+                dateAdded: "2023-04-10"
+            },
+            {
+                id: 36,
+                link: "https://www.example.com/product4",
+                name: "Smart TV LG OLED C2 55\"",
+                price: 5999.99,
+                category: "eletronicos",
+                type: "TV",
+                brand: "LG",
+                colors: ["black"],
+                image: "https://images.unsplash.com/photo-1593784991095-a205069470b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "TV OLED com tecnologia evo e processador α9 Gen 5 AI.",
+                rating: 4.9,
+                discount: 0.20,
+                featured: true,
+                popularity: 97,
+                dateAdded: "2023-03-05"
+            },
+            {
+                id: 37,
+                link: "https://www.example.com/product5",
+                name: "Apple Watch Series 8",
+                price: 4999.99,
+                category: "eletronicos",
+                type: "Smartwatch",
+                brand: "Apple",
+                colors: ["black", "white", "blue"],
+                image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Relógio inteligente com monitoramento de saúde avançado.",
+                rating: 4.7,
+                discount: 0.05,
+                featured: true,
+                popularity: 90,
+                dateAdded: "2023-02-18"
+            },
+            {
+                id: 38,
+                link: "https://www.example.com/product6",
+                name: "Xiaomi Redmi Note 12 Pro",
+                price: 2499.99,
+                category: "eletronicos",
+                type: "Smartphone",
                 brand: "Xiaomi",
-                type: "smartphone",
-                price: 1499.00,
-                oldPrice: 1799.00,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.3,
-                reviews: 156,
-                features: ["5g", "bluetooth", "nfc"],
-                storage: 128,
-                ram: 6,
-                specs: "6.67\" AMOLED • Snapdragon 685 • 50MP",
-                bestSeller: false,
-                newArrival: true
+                colors: ["black", "blue", "white"],
+                image: "https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Smartphone intermediário com câmera de 108MP e AMOLED 120Hz.",
+                rating: 4.5,
+                discount: 0.10,
+                featured: false,
+                popularity: 85,
+                dateAdded: "2023-07-12"
             },
             {
-                id: 11,
-                title: "Apple Watch Series 8 45mm",
-                brand: "Apple",
-                type: "smartwatch",
-                price: 3999.00,
-                oldPrice: 4499.00,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.6,
-                reviews: 231,
-                features: ["bluetooth", "wireless", "waterproof"],
-                storage: 32,
-                ram: 1,
-                specs: "1.9\" OLED • watchOS • ECG",
-                bestSeller: true,
-                newArrival: false
-            },
-            {
-                id: 12,
-                title: "Notebook Dell XPS 13 512GB",
-                brand: "Dell",
-                type: "notebook",
-                price: 7999.00,
-                oldPrice: 8999.00,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.7,
-                reviews: 98,
-                features: ["bluetooth", "wireless"],
-                storage: 512,
-                ram: 16,
-                specs: "13.4\" 4K • i7 • 16GB RAM",
-                bestSeller: false,
-                newArrival: true
-            },
-            {
-                id: 13,
-                title: "Fone de Ouvido Sony WH-1000XM5",
-                brand: "Sony",
-                type: "fone",
-                price: 1999.00,
-                oldPrice: 2299.00,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.9,
-                reviews: 421,
-                features: ["bluetooth", "wireless"],
-                storage: 0,
-                ram: 0,
-                specs: "ANC • 30h bateria • Toque sensível",
-                bestSeller: true,
-                newArrival: false
-            },
-            {
-                id: 14,
-                title: "TV LG OLED 55\" 4K",
-                brand: "LG",
-                type: "tv",
-                price: 4999.00,
-                oldPrice: 5999.00,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.8,
-                reviews: 187,
-                features: ["bluetooth", "wireless"],
-                storage: 0,
-                ram: 3,
-                specs: "OLED • WebOS • Dolby Vision",
-                bestSeller: false,
-                newArrival: true
-            },
-            {
-                id: 15,
-                title: "PC Gamer Asus ROG 1TB",
+                id: 39,
+                link: "https://www.example.com/product7",
+                name: "Notebook Asus ROG Zephyrus G14",
+                price: 10999.99,
+                category: "eletronicos",
+                type: "Notebook",
                 brand: "Asus",
-                type: "pc",
-                price: 8999.00,
-                oldPrice: 9999.00,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.6,
-                reviews: 76,
-                features: [],
-                storage: 1024,
-                ram: 32,
-                specs: "RTX 4070 • i7 • 32GB RAM",
-                bestSeller: false,
-                newArrival: false
-            },
-            {
-                id: 16,
-                title: "Mouse Pad HyperX Fury S",
-                brand: "HyperX",
-                type: "mousepad",
-                price: 129.90,
-                oldPrice: 159.90,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.4,
-                reviews: 143,
-                features: [],
-                storage: 0,
-                ram: 0,
-                specs: "90x40cm • Anti-slip • Costurado",
-                bestSeller: false,
-                newArrival: true
-            },
-            {
-                id: 17,
-                title: "Motorola Edge 30 128GB",
-                brand: "Motorola",
-                type: "smartphone",
-                price: 1999.00,
-                oldPrice: 2499.00,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.2,
-                reviews: 87,
-                features: ["5g", "bluetooth", "nfc"],
-                storage: 128,
-                ram: 8,
-                specs: "6.5\" OLED • Snapdragon 778 • 50MP",
-                bestSeller: false,
-                newArrival: false
-            },
-            {
-                id: 18,
-                title: "Notebook HP Pavilion 15 256GB",
-                brand: "HP",
-                type: "notebook",
-                price: 3499.00,
-                oldPrice: 3999.00,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.1,
-                reviews: 64,
-                features: ["bluetooth", "wireless"],
-                storage: 256,
-                ram: 8,
-                specs: "15.6\" FHD • i5 • 8GB RAM",
-                bestSeller: false,
-                newArrival: true
-            },
-            {
-                id: 19,
-                title: "Teclado Mecânico Razer BlackWidow",
-                brand: "Razer",
-                type: "teclado",
-                price: 799.00,
-                oldPrice: 899.00,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.7,
-                reviews: 198,
-                features: ["wireless"],
-                storage: 0,
-                ram: 0,
-                specs: "Switch Razer Green • RGB • Anti-ghosting",
-                bestSeller: true,
-                newArrival: false
-            },
-            {
-                id: 20,
-                title: "Monitor Samsung Odyssey 32\" 240Hz",
-                brand: "Samsung",
-                type: "monitor",
-                price: 3999.00,
-                oldPrice: 4499.00,
-                image: "https://via.placeholder.com/300x300",
+                colors: ["black", "white"],
+                image: "https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Notebook gamer com AMD Ryzen 9 e RTX 3060.",
                 rating: 4.8,
-                reviews: 112,
-                features: [],
-                storage: 0,
-                ram: 0,
-                specs: "QHD • 1ms • HDMI/DP • Curvo",
-                bestSeller: false,
-                newArrival: true
+                discount: 0,
+                featured: false,
+                popularity: 92,
+                dateAdded: "2023-06-25"
             },
             {
-                id: 21,
-                title: "iPad Pro 12.9\" 1TB",
-                brand: "Apple",
-                type: "tablet",
-                price: 10999.00,
-                oldPrice: 11999.00,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.9,
-                reviews: 156,
-                features: ["bluetooth", "wireless"],
-                storage: 1024,
-                ram: 16,
-                specs: "M2 • Mini-LED • 5G",
-                bestSeller: true,
-                newArrival: false
-            },
-            {
-                id: 22,
-                title: "Fone de Ouvido JBL Tune 510BT",
-                brand: "JBL",
-                type: "fone",
-                price: 299.00,
-                oldPrice: 399.00,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.3,
-                reviews: 287,
-                features: ["bluetooth", "wireless"],
-                storage: 0,
-                ram: 0,
-                specs: "Bluetooth • 40h bateria • Bass Boost",
-                bestSeller: false,
-                newArrival: false
-            },
-            {
-                id: 23,
-                title: "Smart TV Samsung 65\" 4K QLED",
+                id: 40,
+                link: "https://www.example.com/product8",
+                name: "Tablet Samsung Galaxy Tab S8 Ultra",
+                price: 6999.99,
+                category: "eletronicos",
+                type: "Tablet",
                 brand: "Samsung",
-                type: "tv",
-                price: 4999.00,
-                oldPrice: 5999.00,
-                image: "https://via.placeholder.com/300x300",
+                colors: ["black", "white"],
+                image: "https://images.unsplash.com/photo-1546054454-aa26e2b734c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Tablet premium com tela AMOLED de 14.6\" e S Pen incluído.",
                 rating: 4.7,
-                reviews: 134,
-                features: ["bluetooth", "wireless"],
-                storage: 0,
-                ram: 3,
-                specs: "QLED • Tizen • HDR10+",
-                bestSeller: true,
-                newArrival: true
+                discount: 0.15,
+                featured: false,
+                popularity: 88,
+                dateAdded: "2023-05-30"
             },
             {
-                id: 24,
-                title: "PC Gamer Dell G15 512GB",
+                id: 41,
+                link: "https://www.example.com/product9",
+                name: "Headset Sony WH-1000XM5",
+                price: 2499.99,
+                category: "eletronicos",
+                type: "Headset",
+                brand: "Sony",
+                colors: ["black", "white"],
+                image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Fones de ouvido com cancelamento de ruído líder do mercado.",
+                rating: 4.9,
+                discount: 0.10,
+                featured: false,
+                popularity: 94,
+                dateAdded: "2023-04-22"
+            },
+            {
+                id: 42,
+                link: "https://www.example.com/product10",
+                name: "Fone de Ouvido Apple AirPods Pro 2",
+                price: 1999.99,
+                category: "eletronicos",
+                type: "Fone de Ouvido",
+                brand: "Apple",
+                colors: ["white"],
+                image: "https://images.unsplash.com/photo-1593784991095-a205069470b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Fones sem fio com cancelamento de ruído ativo e som espacial.",
+                rating: 4.8,
+                discount: 0,
+                featured: false,
+                popularity: 93,
+                dateAdded: "2023-07-05"
+            },
+            {
+                id: 43,
+                link: "https://www.example.com/product11",
+                name: "Monitor Dell 27\" 4K",
+                price: 2999.99,
+                category: "eletronicos",
+                type: "Monitor",
                 brand: "Dell",
-                type: "pc",
-                price: 5999.00,
-                oldPrice: 6999.00,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.4,
-                reviews: 87,
-                features: [],
-                storage: 512,
-                ram: 16,
-                specs: "RTX 3060 • i7 • 16GB RAM",
-                bestSeller: false,
-                newArrival: false
+                colors: ["black"],
+                image: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Monitor profissional com resolução 4K e cores precisas.",
+                rating: 4.7,
+                discount: 0.05,
+                featured: false,
+                popularity: 87,
+                dateAdded: "2023-01-15"
+            },
+            {
+                id: 44,
+                link: "https://www.example.com/product12",
+                name: "Teclado Mecânico Logitech G915",
+                price: 1499.99,
+                category: "eletronicos",
+                type: "Periférico",
+                brand: "Logitech",
+                colors: ["black", "white"],
+                image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Teclado sem fio mecânico de baixo perfil com RGB LIGHTSYNC.",
+                rating: 4.8,
+                discount: 0.10,
+                featured: false,
+                popularity: 89,
+                dateAdded: "2023-03-20"
+            },
+            {
+                id: 45,
+                link: "https://www.example.com/product13",
+                name: "Mouse Logitech MX Master 3S",
+                price: 699.99,
+                category: "eletronicos",
+                type: "Periférico",
+                brand: "Logitech",
+                colors: ["black", "white"],
+                image: "https://images.unsplash.com/photo-1527814050087-3793815479db?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Mouse ergonômico premium com rolagem ultrarrápida.",
+                rating: 4.8,
+                discount: 0,
+                featured: false,
+                popularity: 91,
+                dateAdded: "2023-06-10"
+            },
+            {
+                id: 46,
+                link: "https://www.example.com/product14",
+                name: "Carregador USB-C 65W",
+                price: 199.99,
+                category: "eletronicos",
+                type: "Carregador",
+                brand: "Xiaomi",
+                colors: ["white"],
+                image: "https://images.unsplash.com/photo-1605236453806-6ff36851218e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Carregador rápido compacto com tecnologia GaN.",
+                rating: 4.6,
+                discount: 0.20,
+                featured: false,
+                popularity: 84,
+                dateAdded: "2023-05-05"
+            },
+            {
+                id: 47,
+                link: "https://www.example.com/product15",
+                name: "Pilha Recarregável Eneloop Pro",
+                price: 149.99,
+                category: "eletronicos",
+                type: "Pilha",
+                brand: "Panasonic",
+                colors: ["black"],
+                image: "https://images.unsplash.com/photo-1605236453806-6ff36851218e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Kit com 4 pilhas AA recarregáveis de alta capacidade.",
+                rating: 4.7,
+                discount: 0.15,
+                featured: false,
+                popularity: 86,
+                dateAdded: "2023-04-15"
+            },
+            {
+                id: 48,
+                link: "https://www.example.com/product16",
+                name: "Smartphone Motorola Edge 30 Ultra",
+                price: 3999.99,
+                category: "eletronicos",
+                type: "Smartphone",
+                brand: "Motorola",
+                colors: ["black", "white", "blue"],
+                image: "https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Smartphone premium com câmera de 200MP e Snapdragon 8+ Gen 1.",
+                rating: 4.6,
+                discount: 0.10,
+                featured: false,
+                popularity: 88,
+                dateAdded: "2023-03-28"
+            },
+            {
+                id: 49,
+                link: "https://www.example.com/product17",
+                name: "Notebook HP Spectre x360",
+                price: 8999.99,
+                category: "eletronicos",
+                type: "Notebook",
+                brand: "HP",
+                colors: ["black", "blue"],
+                image: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Notebook conversível premium com tela OLED 4K.",
+                rating: 4.7,
+                discount: 0.05,
+                featured: false,
+                popularity: 89,
+                dateAdded: "2023-02-10"
+            },
+            {
+                id: 50,
+                link: "https://www.example.com/product18",
+                name: "TV Samsung QN90B Neo QLED 65\"",
+                price: 8999.99,
+                category: "eletronicos",
+                type: "TV",
+                brand: "Samsung",
+                colors: ["black"],
+                image: "https://images.unsplash.com/photo-1593784991095-a205069470b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "TV 4K com tecnologia Neo QLED e processador Neural Quantum 4K.",
+                rating: 4.8,
+                discount: 0.15,
+                featured: false,
+                popularity: 94,
+                dateAdded: "2023-01-25"
+            },
+            {
+                id: 51,
+                link: "https://www.example.com/product19",
+                name: "Smartwatch Samsung Galaxy Watch 5 Pro",
+                price: 2999.99,
+                category: "eletronicos",
+                type: "Smartwatch",
+                brand: "Samsung",
+                colors: ["black", "silver"],
+                image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Relógio inteligente com Wear OS e bateria de longa duração.",
+                rating: 4.7,
+                discount: 0,
+                featured: false,
+                popularity: 90,
+                dateAdded: "2023-05-18"
+            },
+            {
+                id: 52,
+                link: "https://www.example.com/product20",
+                name: "Carregador por Indução Samsung 15W",
+                price: 299.99,
+                category: "eletronicos",
+                type: "Carregador",
+                brand: "Samsung",
+                colors: ["black", "white"],
+                image: "https://images.unsplash.com/photo-1605236453806-6ff36851218e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Carregador sem fio rápido para smartphones compatíveis.",
+                rating: 4.5,
+                discount: 0.10,
+                featured: false,
+                popularity: 83,
+                dateAdded: "2023-04-05"
+            },
+            {
+                id: 53,
+                link: "https://www.example.com/product21",
+                name: "Mouse Pad Logitech Powerplay",
+                price: 599.99,
+                category: "eletronicos",
+                type: "Periférico",
+                brand: "Logitech",
+                colors: ["black"],
+                image: "https://images.unsplash.com/photo-1527814050087-3793815479db?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Mouse pad com carregamento sem fio para mouses compatíveis.",
+                rating: 4.6,
+                discount: 0,
+                featured: false,
+                popularity: 85,
+                dateAdded: "2023-03-15"
+            },
+            {
+                id: 54,
+                link: "https://www.example.com/product22",
+                name: "Microfone HyperX QuadCast",
+                price: 999.99,
+                category: "eletronicos",
+                type: "Periférico",
+                brand: "HyperX",
+                colors: ["black", "red"],
+                image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Microfone condensador USB para streamers e criadores de conteúdo.",
+                rating: 4.7,
+                discount: 0.05,
+                featured: false,
+                popularity: 87,
+                dateAdded: "2023-02-28"
+            },
+            {
+                id: 55,
+                link: "https://www.example.com/product23",
+                name: "Fone de Ouvido Sony WH-XB910N",
+                price: 1499.99,
+                category: "eletronicos",
+                type: "Fone de Ouvido",
+                brand: "Sony",
+                colors: ["black", "blue"],
+                image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Fones com cancelamento de ruído e bass extra.",
+                rating: 4.6,
+                discount: 0.15,
+                featured: false,
+                popularity: 86,
+                dateAdded: "2023-01-10"
+            },
+            {
+                id: 56,
+                link: "https://www.example.com/product24",
+                name: "Tablet Apple iPad Pro 12.9\"",
+                price: 10999.99,
+                category: "eletronicos",
+                type: "Tablet",
+                brand: "Apple",
+                colors: ["black", "white"],
+                image: "https://images.unsplash.com/photo-1546054454-aa26e2b734c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Tablet premium com chip M2 e tela Liquid Retina XDR.",
+                rating: 4.9,
+                discount: 0,
+                featured: false,
+                popularity: 96,
+                dateAdded: "2023-06-15"
             }
         ];
 
-        // Current state
-        let currentState = {
-            filteredProducts: [...productsDatabase],
-            currentPage: 1,
-            productsPerPage: 8,
-            filters: {
-                minPrice: 100,
-                maxPrice: 10000,
-                types: ["smartphone"],
-                brands: ["Apple", "Samsung"],
-                features: ["5g", "bluetooth"],
-                storage: 128,
-                ram: 8,
-                searchQuery: "",
-                sortBy: "best-sellers"
-            }
-        };
-
         // DOM elements
-        const elements = {
-            productsGrid: document.getElementById('products-grid'),
-            productCount: document.getElementById('product-count'),
-            loadingSpinner: document.getElementById('loading-spinner'),
-            pagination: document.getElementById('pagination'),
-            priceRange: document.getElementById('price-range'),
-            minPriceDisplay: document.getElementById('min-price-display'),
-            maxPriceDisplay: document.getElementById('max-price-display'),
-            typeFilter: document.getElementById('type-filter'),
-            brandFilter: document.getElementById('brand-filter'),
-            featuresFilter: document.getElementById('features-filter'),
-            storageFilter: document.getElementById('storage-filter'),
-            ramFilter: document.getElementById('ram-filter'),
-            applyFilters: document.getElementById('apply-filters'),
-            resetFilters: document.getElementById('reset-filters'),
-            searchInput: document.getElementById('search-input'),
-            searchBtn: document.getElementById('search-btn'),
-            sortBy: document.getElementById('sort-by'),
-            carouselTrack: document.getElementById('carousel-track'),
-            carouselPrev: document.getElementById('carousel-prev'),
-            carouselNext: document.getElementById('carousel-next')
+        const carouselTrack = document.getElementById('carousel-track');
+        const carouselPrev = document.getElementById('carousel-prev');
+        const carouselNext = document.getElementById('carousel-next');
+        const carousel = document.getElementById('carousel');
+        const categoriesBtn = document.getElementById('categories-btn');
+        const categoryDropdown = document.getElementById('category-dropdown');
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const productsGrid = document.getElementById('products-grid');
+        const accessoriesGrid = document.getElementById('accessories-grid');
+        const priceRange = document.getElementById('price-range');
+        const maxPriceDisplay = document.getElementById('max-price-display');
+        const applyFiltersBtn = document.getElementById('apply-filters');
+        const resetFiltersBtn = document.getElementById('reset-filters');
+        const sortBy = document.getElementById('sort-by');
+        const productCount = document.getElementById('product-count');
+        const pagination = document.getElementById('pagination');
+        
+        // Current state
+        let currentFilters = {
+            types: [],
+            accessories: [],
+            brands: [],
+            maxPrice: 20000,
+            searchTerm: '',
+            sortBy: 'popular'
         };
+        
+        let currentPage = 1;
+        const productsPerPage = 12;
+        let filteredProducts = [...electronicsProducts];
 
-        // Initialize the page
-        function init() {
-            // Set up event listeners
-            setupEventListeners();
+        // Format price to BRL
+        function formatPrice(price) {
+            return new Intl.NumberFormat('pt-BR', { 
+                style: 'currency', 
+                currency: 'BRL' 
+            }).format(price);
+        }
+
+        // Initialize carousel with featured electronics
+        function initCarousel() {
+            // Clear any existing items
+            carouselTrack.innerHTML = '';
             
-            // Load featured products carousel
-            loadFeaturedProducts();
+            // Get featured electronics (including accessories)
+            const featuredElectronics = electronicsProducts.filter(product => product.featured);
             
-            // Apply initial filters and render products
-            applyFilters();
-        }
-
-        // Set up all event listeners
-        function setupEventListeners() {
-            // Price range filter
-            elements.priceRange.addEventListener('input', function() {
-                currentState.filters.minPrice = parseInt(this.value);
-                elements.minPriceDisplay.textContent = `R$ ${this.value}`;
+            // Add products to carousel
+            featuredElectronics.forEach(product => {
+                const item = document.createElement('div');
+                item.className = 'carousel-item';
+                
+                // Calculate discounted price if applicable
+                const discountedPrice = product.discount > 0 
+                    ? product.price * (1 - product.discount)
+                    : null;
+                
+                item.innerHTML = `
+                    <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition h-full flex flex-col product-card">
+                        ${product.discount > 0 ? 
+                            `<div class="absolute bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-br-lg">
+                                ${Math.round(product.discount * 100)}% OFF
+                            </div>` : ''}
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+                        <div class="p-4 flex-grow">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-1">${product.name}</h3>
+                            <p class="text-gray-600 text-sm mb-3">${product.description}</p>
+                            <div class="flex flex-col">
+                                ${discountedPrice ? 
+                                    `<div class="flex items-center">
+                                        <span class="text-lg font-bold text-blue-500">${formatPrice(discountedPrice)}</span>
+                                        <span class="text-sm text-gray-500 line-through ml-2">${formatPrice(product.price)}</span>
+                                    </div>` :
+                                    `<span class="text-lg font-bold text-blue-500">${formatPrice(product.price)}</span>`
+                                }
+                                <div class="flex items-center mt-1">
+                                    ${Array.from({ length: 5 }).map((_, i) => 
+                                        `<i class="fas fa-star ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}"></i>`
+                                    ).join('')}
+                                    <span class="text-xs text-gray-500 ml-1">(${product.rating})</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-4 pb-4">
+                            <a href="${product.link}" class="block w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                                <i class="fas fa-shopping-cart mr-2"></i> Comprar
+                            </a>
+                        </div>
+                    </div>
+                `;
+                carouselTrack.appendChild(item);
             });
-
-            // Type filter
-            elements.typeFilter.addEventListener('click', function(e) {
-                if (e.target.classList.contains('type-option')) {
-                    e.target.classList.toggle('selected');
-                    updateTypeFilters();
-                }
-            });
-
-            // Brand filter
-            elements.brandFilter.addEventListener('change', function() {
-                updateBrandFilters();
-            });
-
-            // Features filter
-            elements.featuresFilter.addEventListener('change', function() {
-                updateFeatureFilters();
-            });
-
-            // Storage filter
-            elements.storageFilter.addEventListener('click', function(e) {
-                if (e.target.classList.contains('type-option')) {
-                    document.querySelectorAll('#storage-filter .type-option').forEach(opt => opt.classList.remove('selected'));
-                    e.target.classList.add('selected');
-                    currentState.filters.storage = parseInt(e.target.dataset.storage);
-                }
-            });
-
-            // RAM filter
-            elements.ramFilter.addEventListener('click', function(e) {
-                if (e.target.classList.contains('type-option')) {
-                    document.querySelectorAll('#ram-filter .type-option').forEach(opt => opt.classList.remove('selected'));
-                    e.target.classList.add('selected');
-                    currentState.filters.ram = parseInt(e.target.dataset.ram);
-                }
-            });
-
-            // Apply filters button
-            elements.applyFilters.addEventListener('click', function() {
-                currentState.currentPage = 1;
-                applyFilters();
-            });
-
-            // Reset filters button
-            elements.resetFilters.addEventListener('click', resetFilters);
-
-            // Search functionality
-            elements.searchBtn.addEventListener('click', function() {
-                currentState.filters.searchQuery = elements.searchInput.value.trim().toLowerCase();
-                currentState.currentPage = 1;
-                applyFilters();
-            });
-
-            elements.searchInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    currentState.filters.searchQuery = elements.searchInput.value.trim().toLowerCase();
-                    currentState.currentPage = 1;
-                    applyFilters();
-                }
-            });
-
-            // Sorting
-            elements.sortBy.addEventListener('change', function() {
-                currentState.filters.sortBy = this.value;
-                applyFilters();
-            });
-
-            // Carousel navigation
-            elements.carouselPrev.addEventListener('click', navigateCarousel);
-            elements.carouselNext.addEventListener('click', navigateCarousel);
-
-            // Categories dropdown
-            document.getElementById('categories-btn').addEventListener('click', function() {
-                document.getElementById('category-dropdown').parentElement.classList.toggle('show-categories');
-            });
-
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function(event) {
-                if (!event.target.closest('.relative')) {
-                    document.getElementById('category-dropdown').parentElement.classList.remove('show-categories');
-                }
-            });
-
-            // Logout button
-            document.getElementById('logout-btn').addEventListener('click', function() {
-                alert('Você foi desconectado com sucesso!');
-            });
-        }
-
-        // Update type filters based on selected options
-        function updateTypeFilters() {
-            const selectedTypes = Array.from(document.querySelectorAll('#type-filter .type-option.selected'));
-            currentState.filters.types = selectedTypes.map(el => el.dataset.type);
-        }
-
-        // Update brand filters based on checked boxes
-        function updateBrandFilters() {
-            const checkedBrands = Array.from(document.querySelectorAll('.brand-checkbox:checked'));
-            currentState.filters.brands = checkedBrands.map(el => el.value);
-        }
-
-        // Update feature filters based on checked boxes
-        function updateFeatureFilters() {
-            const checkedFeatures = Array.from(document.querySelectorAll('#features-filter input:checked'));
-            currentState.filters.features = checkedFeatures.map(el => el.value);
-        }
-
-        // Apply all filters and render products
-        function applyFilters() {
-            // Show loading spinner
-            elements.loadingSpinner.style.display = 'block';
-            elements.productsGrid.style.display = 'none';
+                    
+            // Set carousel width based on number of items
+            const itemCount = featuredElectronics.length;
+            const itemWidth = 100 / 3; // Show 3 items at a time
+            carouselTrack.style.width = `${itemCount * itemWidth}%`;
             
-            // Simulate API call delay
-            setTimeout(() => {
-                // Filter products based on current filters
-                currentState.filteredProducts = productsDatabase.filter(product => {
-                    // Price filter
-                    if (product.price < currentState.filters.minPrice || product.price > currentState.filters.maxPrice) {
-                        return false;
+            // Initialize carousel position
+            let currentPosition = 0;
+            const maxPosition = Math.max(0, itemCount - 3);
+            
+            // Update carousel position
+            function updateCarousel() {
+                carouselTrack.style.transform = `translateX(-${currentPosition * itemWidth}%)`;
+            }
+            
+            // Next button click handler
+            carouselNext.addEventListener('click', () => {
+                if (currentPosition < maxPosition) {
+                    currentPosition++;
+                } else {
+                    currentPosition = 0; // Loop back to start
+                }
+                updateCarousel();
+            });
+            
+            // Previous button click handler
+            carouselPrev.addEventListener('click', () => {
+                if (currentPosition > 0) {
+                    currentPosition--;
+                } else {
+                    currentPosition = maxPosition; // Loop to end
+                }
+                updateCarousel();
+            });
+            
+            // Auto-advance carousel
+            let autoAdvance = setInterval(() => {
+                if (currentPosition < maxPosition) {
+                    currentPosition++;
+                } else {
+                    currentPosition = 0;
+                }
+                updateCarousel();
+            }, 5000);
+            
+            // Pause auto-advance on hover
+            carousel.addEventListener('mouseenter', () => {
+                clearInterval(autoAdvance);
+            });
+            
+            // Resume auto-advance when mouse leaves
+            carousel.addEventListener('mouseleave', () => {
+                autoAdvance = setInterval(() => {
+                    if (currentPosition < maxPosition) {
+                        currentPosition++;
+                    } else {
+                        currentPosition = 0;
                     }
-                    
-                    // Type filter
-                    if (currentState.filters.types.length > 0 && !currentState.filters.types.includes(product.type)) {
-                        return false;
-                    }
-                    
-                    // Brand filter
-                    if (currentState.filters.brands.length > 0 && !currentState.filters.brands.includes(product.brand)) {
-                        return false;
-                    }
-                    
-                    // Features filter
-                    if (currentState.filters.features.length > 0) {
-                        const hasAllFeatures = currentState.filters.features.every(feature => 
-                            product.features.includes(feature)
-                        );
-                        if (!hasAllFeatures) return false;
-                    }
-                    
-                    // Storage filter (only for products with storage)
-                    if (currentState.filters.storage && product.storage > 0 && product.storage < currentState.filters.storage) {
-                        return false;
-                    }
-                    
-                    // RAM filter (only for products with RAM)
-                    if (currentState.filters.ram && product.ram > 0 && product.ram < currentState.filters.ram) {
-                        return false;
-                    }
-                    
-                    // Search query
-                    if (currentState.filters.searchQuery && 
-                        !product.title.toLowerCase().includes(currentState.filters.searchQuery) &&
-                        !product.brand.toLowerCase().includes(currentState.filters.searchQuery)) {
-                        return false;
-                    }
-                    
-                    return true;
-                });
+                    updateCarousel();
+                }, 5000);
+            });
+            
+            // Initialize carousel position
+            updateCarousel();
+        }
+
+        // Render accessories section
+        function renderAccessories() {
+            accessoriesGrid.innerHTML = '';
+            
+            // Get only accessories
+            const accessories = electronicsProducts.filter(product => 
+                product.type === "Acessório" && 
+                (product.accessoryType === "Capa de Celular" || 
+                 product.accessoryType === "Capa de Tablet" || 
+                 product.accessoryType === "Película de Celular" || 
+                 product.accessoryType === "Película de Tablet")
+            );
+            
+            // Show first 8 accessories
+            const accessoriesToShow = accessories.slice(0, 8);
+            
+            accessoriesToShow.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition h-full flex flex-col product-card';
                 
-                // Sort products
-                sortProducts();
+                // Calculate discounted price if applicable
+                const discountedPrice = product.discount > 0 
+                    ? product.price * (1 - product.discount)
+                    : null;
                 
-                // Update product count
-                updateProductCount();
+                productCard.innerHTML = `
+                    ${product.discount > 0 ? 
+                        `<div class="absolute bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-br-lg">
+                            ${Math.round(product.discount * 100)}% OFF
+                        </div>` : ''}
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+                    <div class="p-4 flex-grow">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-1">${product.name}</h3>
+                        <p class="text-gray-600 text-sm mb-2">${product.brand} - ${product.accessoryType}</p>
+                        <div class="flex flex-col">
+                            ${discountedPrice ? 
+                                `<div class="flex items-center">
+                                    <span class="text-lg font-bold text-blue-500">${formatPrice(discountedPrice)}</span>
+                                    <span class="text-sm text-gray-500 line-through ml-2">${formatPrice(product.price)}</span>
+                                </div>` :
+                                `<span class="text-lg font-bold text-blue-500">${formatPrice(product.price)}</span>`
+                            }
+                            <div class="flex items-center mt-1">
+                                ${Array.from({ length: 5 }).map((_, i) => 
+                                    `<i class="fas fa-star ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}"></i>`
+                                ).join('')}
+                                <span class="text-xs text-gray-500 ml-1">(${product.rating})</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-4 pb-4">
+                        <a href="${product.link}" class="block w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                            <i class="fas fa-shopping-cart mr-2"></i> Comprar
+                        </a>
+                    </div>
+                `;
+                accessoriesGrid.appendChild(productCard);
+            });
+        }
+
+        // Filter products based on current filters
+        function filterProducts() {
+            filteredProducts = electronicsProducts.filter(product => {
+                // Filter by price
+                const priceToCompare = product.discount > 0 
+                    ? product.price * (1 - product.discount)
+                    : product.price;
                 
-                // Render products
-                renderProducts();
+                if (priceToCompare > currentFilters.maxPrice) {
+                    return false;
+                }
                 
-                // Render pagination
-                renderPagination();
+                // Filter by type
+                if (currentFilters.types.length > 0 && 
+                    !currentFilters.types.includes(product.type)) {
+                    return false;
+                }
                 
-                // Hide loading spinner
-                elements.loadingSpinner.style.display = 'none';
-                elements.productsGrid.style.display = 'grid';
-            }, 500);
+                // Filter by accessory type
+                if (currentFilters.accessories.length > 0 && product.type === "Acessório" && 
+                    !currentFilters.accessories.some(accessory => product.accessoryType === accessory)) {
+                    return false;
+                }
+                
+                // Filter by brand
+                if (currentFilters.brands.length > 0 && 
+                    !currentFilters.brands.includes(product.brand)) {
+                    return false;
+                }
+                
+                // Filter by search term
+                if (currentFilters.searchTerm && 
+                    !product.name.toLowerCase().includes(currentFilters.searchTerm.toLowerCase()) &&
+                    !product.brand.toLowerCase().includes(currentFilters.searchTerm.toLowerCase())) {
+                    return false;
+                }
+                
+                return true;
+            });
+            
+            // Sort products
+            sortProducts();
+            
+            // Update product count
+            updateProductCount();
+            
+            // Render products
+            renderProducts();
+            
+            // Update pagination
+            updatePagination();
         }
 
         // Sort products based on current sort option
         function sortProducts() {
-            switch(currentState.filters.sortBy) {
+            switch(currentFilters.sortBy) {
                 case 'price-low':
-                    currentState.filteredProducts.sort((a, b) => a.price - b.price);
+                    filteredProducts.sort((a, b) => {
+                        const priceA = a.discount > 0 ? a.price * (1 - a.discount) : a.price;
+                        const priceB = b.discount > 0 ? b.price * (1 - b.discount) : b.price;
+                        return priceA - priceB;
+                    });
                     break;
                 case 'price-high':
-                    currentState.filteredProducts.sort((a, b) => b.price - a.price);
+                    filteredProducts.sort((a, b) => {
+                        const priceA = a.discount > 0 ? a.price * (1 - a.discount) : a.price;
+                        const priceB = b.discount > 0 ? b.price * (1 - b.discount) : b.price;
+                        return priceB - priceA;
+                    });
                     break;
-                case 'best-rated':
-                    currentState.filteredProducts.sort((a, b) => b.rating - a.rating);
+                case 'rating':
+                    filteredProducts.sort((a, b) => b.rating - a.rating);
                     break;
                 case 'newest':
-                    // Assuming newer products have higher IDs (for demo purposes)
-                    currentState.filteredProducts.sort((a, b) => b.id - a.id);
+                    filteredProducts.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
                     break;
-                case 'best-sellers':
+                case 'popular':
                 default:
-                    currentState.filteredProducts.sort((a, b) => {
-                        // Sort by bestSeller first, then by reviews count
-                        if (a.bestSeller && !b.bestSeller) return -1;
-                        if (!a.bestSeller && b.bestSeller) return 1;
-                        return b.reviews - a.reviews;
-                    });
+                    filteredProducts.sort((a, b) => b.popularity - a.popularity);
+                    break;
             }
         }
 
-        // Update the product count display
-        function updateProductCount() {
-            const count = currentState.filteredProducts.length;
-            const start = (currentState.currentPage - 1) * currentState.productsPerPage + 1;
-            const end = Math.min(start + currentState.productsPerPage - 1, count);
-            
-            elements.productCount.textContent = count === 0 ? 
-                'Nenhum produto encontrado' : 
-                `Mostrando ${start}-${end} de ${count} produtos`;
-        }
-
-        // Render products to the grid
+        // Render products based on current filters and page
         function renderProducts() {
-            elements.productsGrid.innerHTML = '';
+            productsGrid.innerHTML = '';
             
-            const startIndex = (currentState.currentPage - 1) * currentState.productsPerPage;
-            const endIndex = startIndex + currentState.productsPerPage;
-            const productsToDisplay = currentState.filteredProducts.slice(startIndex, endIndex);
+            // Calculate pagination
+            const startIndex = (currentPage - 1) * productsPerPage;
+            const endIndex = startIndex + productsPerPage;
+            const productsToShow = filteredProducts.slice(startIndex, endIndex);
             
-            if (productsToDisplay.length === 0) {
-                elements.productsGrid.innerHTML = `
+            if (productsToShow.length === 0) {
+                productsGrid.innerHTML = `
                     <div class="col-span-full text-center py-10">
-                        <i class="fas fa-search fa-3x text-gray-300 mb-4"></i>
+                        <i class="fas fa-box-open text-4xl text-gray-300 mb-4"></i>
                         <h3 class="text-xl font-medium text-gray-700">Nenhum produto encontrado</h3>
                         <p class="text-gray-500 mt-2">Tente ajustar seus filtros de busca</p>
-                        <button id="reset-filters-btn" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
-                            Limpar Filtros
-                        </button>
                     </div>
                 `;
-                
-                document.getElementById('reset-filters-btn').addEventListener('click', resetFilters);
                 return;
             }
             
-            productsToDisplay.forEach(product => {
-                const productCard = createProductCard(product);
-                elements.productsGrid.appendChild(productCard);
-            });
-        }
-
-        // Create a product card element
-        function createProductCard(product) {
-            const discountPercent = product.oldPrice ? 
-                Math.round((1 - product.price / product.oldPrice) * 100) : 0;
-            
-            const card = document.createElement('div');
-            card.className = 'bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition relative';
-            card.innerHTML = `
-                ${discountPercent > 0 ? `<div class="discount-badge">-${discountPercent}%</div>` : ''}
-                <div class="p-4">
-                    <img src="${product.image}" alt="${product.title}" class="w-full h-64 object-contain">
-                    <div class="mt-4">
-                        <h3 class="font-semibold text-lg text-gray-800">${product.title}</h3>
-                        <p class="text-gray-500 text-sm">${product.brand}</p>
-                        <div class="tech-specs">${product.specs}</div>
-                        <div class="flex items-center mt-2">
-                            ${generateRatingStars(product.rating)}
-                            <span class="text-gray-500 text-sm ml-2">(${product.reviews})</span>
-                        </div>
-                        <div class="mt-3">
-                            ${product.oldPrice ? `<span class="text-gray-500 line-through text-sm">R$ ${product.oldPrice.toFixed(2).replace('.', ',')}</span>` : ''}
-                            <div class="flex items-baseline">
-                                <span class="text-xl font-bold text-gray-800">R$ ${product.price.toFixed(2).replace('.', ',')}</span>
-                                <span class="text-green-600 text-sm ml-2">à vista</span>
+            productsToShow.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition h-full flex flex-col product-card';
+                
+                // Calculate discounted price if applicable
+                const discountedPrice = product.discount > 0 
+                    ? product.price * (1 - product.discount)
+                    : null;
+                
+                productCard.innerHTML = `
+                    ${product.discount > 0 ? 
+                        `<div class="absolute bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-br-lg">
+                            ${Math.round(product.discount * 100)}% OFF
+                        </div>` : ''}
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+                    <div class="p-4 flex-grow">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-1">${product.name}</h3>
+                        <p class="text-gray-600 text-sm mb-2">${product.brand} - ${product.type}${product.accessoryType ? ` (${product.accessoryType})` : ''}</p>
+                        <div class="flex flex-col">
+                            ${discountedPrice ? 
+                                `<div class="flex items-center">
+                                    <span class="text-lg font-bold text-blue-500">${formatPrice(discountedPrice)}</span>
+                                    <span class="text-sm text-gray-500 line-through ml-2">${formatPrice(product.price)}</span>
+                                </div>` :
+                                `<span class="text-lg font-bold text-blue-500">${formatPrice(product.price)}</span>`
+                            }
+                            <div class="flex items-center mt-1">
+                                ${Array.from({ length: 5 }).map((_, i) => 
+                                    `<i class="fas fa-star ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}"></i>`
+                                ).join('')}
+                                <span class="text-xs text-gray-500 ml-1">(${product.rating})</span>
                             </div>
-                            <p class="text-gray-500 text-sm">ou ${Math.ceil(product.price / 300)}x de R$ ${(product.price / Math.ceil(product.price / 300)).toFixed(2).replace('.', ',')}</p>
                         </div>
                     </div>
-                </div>
-                <div class="product-actions p-4 bg-gray-50 border-t border-gray-200">
-                    <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center add-to-cart" data-id="${product.id}">
-                        <i class="fas fa-shopping-cart mr-2"></i> Adicionar ao Carrinho
-                    </button>
-                    <button class="w-full mt-2 bg-white border border-blue-500 text-blue-500 py-2 rounded-lg hover:bg-blue-50 transition flex items-center justify-center add-to-wishlist" data-id="${product.id}">
-                        <i class="fas fa-heart mr-2"></i> Favoritar
-                    </button>
-                </div>
-            `;
-            
-            // Add event listeners to buttons
-            card.querySelector('.add-to-cart').addEventListener('click', function() {
-                addToCart(product.id);
+                    <div class="px-4 pb-4">
+                        <a href="${product.link}" class="block w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                            <i class="fas fa-shopping-cart mr-2"></i> Comprar
+                        </a>
+                    </div>
+                `;
+                productsGrid.appendChild(productCard);
             });
-            
-            card.querySelector('.add-to-wishlist').addEventListener('click', function() {
-                addToWishlist(product.id);
-            });
-            
-            return card;
         }
 
-        // Generate rating stars HTML
-        function generateRatingStars(rating) {
-            let stars = '';
-            const fullStars = Math.floor(rating);
-            const hasHalfStar = rating % 1 >= 0.5;
-            
-            for (let i = 0; i < fullStars; i++) {
-                stars += '<i class="fas fa-star"></i>';
-            }
-            
-            if (hasHalfStar) {
-                stars += '<i class="fas fa-star-half-alt"></i>';
-            }
-            
-            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-            for (let i = 0; i < emptyStars; i++) {
-                stars += '<i class="far fa-star"></i>';
-            }
-            
-            return stars;
+        // Update product count display
+        function updateProductCount() {
+            const totalProducts = filteredProducts.length;
+            const showingProducts = Math.min(productsPerPage, totalProducts - (currentPage - 1) * productsPerPage);
+            productCount.textContent = `Mostrando ${showingProducts} de ${totalProducts} produtos`;
         }
 
-        // Render pagination controls
-        function renderPagination() {
-            elements.pagination.innerHTML = '';
+        // Update pagination controls
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+            pagination.innerHTML = '';
             
-            const pageCount = Math.ceil(currentState.filteredProducts.length / currentState.productsPerPage);
-            
-            if (pageCount <= 1) return;
+            if (totalPages <= 1) return;
             
             // Previous button
-            const prevButton = document.createElement('a');
-            prevButton.href = '#';
-            prevButton.className = `px-3 py-2 rounded-l-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 ${currentState.currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}`;
-            prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
-            prevButton.addEventListener('click', function(e) {
-                e.preventDefault();
-                if (currentState.currentPage > 1) {
-                    currentState.currentPage--;
-                    applyFilters();
-                    window.scrollTo({ top: elements.productsGrid.offsetTop - 100, behavior: 'smooth' });
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 prev-btn';
+            prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderProducts();
+                    updatePagination();
                 }
             });
-            elements.pagination.appendChild(prevButton);
+            pagination.appendChild(prevBtn);
             
-            // Page numbers
-            for (let i = 1; i <= pageCount; i++) {
-                const pageLink = document.createElement('a');
-                pageLink.href = '#';
-                pageLink.className = `px-4 py-2 border-t border-b border-gray-300 bg-white ${currentState.currentPage === i ? 'text-blue-600 font-medium' : 'text-gray-500 hover:bg-gray-50'}`;
-                pageLink.textContent = i;
-                pageLink.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    currentState.currentPage = i;
-                    applyFilters();
-                    window.scrollTo({ top: elements.productsGrid.offsetTop - 100, behavior: 'smooth' });
+            // Page buttons
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = startPage + maxVisiblePages - 1;
+            
+            if (endPage > totalPages) {
+                endPage = totalPages;
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+            
+            if (startPage > 1) {
+                const firstPageBtn = document.createElement('button');
+                firstPageBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100';
+                firstPageBtn.textContent = '1';
+                firstPageBtn.addEventListener('click', () => {
+                    currentPage = 1;
+                    renderProducts();
+                    updatePagination();
                 });
-                elements.pagination.appendChild(pageLink);
+                pagination.appendChild(firstPageBtn);
+                
+                if (startPage > 2) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.className = 'px-2';
+                    ellipsis.textContent = '...';
+                    pagination.appendChild(ellipsis);
+                }
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100 ${i === currentPage ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.addEventListener('click', () => {
+                    currentPage = i;
+                    renderProducts();
+                    updatePagination();
+                });
+                pagination.appendChild(pageBtn);
+            }
+            
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.className = 'px-2';
+                    ellipsis.textContent = '...';
+                    pagination.appendChild(ellipsis);
+                }
+                
+                const lastPageBtn = document.createElement('button');
+                lastPageBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100';
+                lastPageBtn.textContent = totalPages;
+                lastPageBtn.addEventListener('click', () => {
+                    currentPage = totalPages;
+                    renderProducts();
+                    updatePagination();
+                });
+                pagination.appendChild(lastPageBtn);
             }
             
             // Next button
-            const nextButton = document.createElement('a');
-            nextButton.href = '#';
-            nextButton.className = `px-3 py-2 rounded-r-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 ${currentState.currentPage === pageCount ? 'opacity-50 cursor-not-allowed' : ''}`;
-            nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
-            nextButton.addEventListener('click', function(e) {
-                e.preventDefault();
-                if (currentState.currentPage < pageCount) {
-                    currentState.currentPage++;
-                    applyFilters();
-                    window.scrollTo({ top: elements.productsGrid.offsetTop - 100, behavior: 'smooth' });
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 next-btn';
+            nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderProducts();
+                    updatePagination();
                 }
             });
-            elements.pagination.appendChild(nextButton);
+            pagination.appendChild(nextBtn);
         }
 
-        // Reset all filters to default
-        function resetFilters() {
-            // Reset price range
-            elements.priceRange.value = 2000;
-            currentState.filters.minPrice = 100;
-            currentState.filters.maxPrice = 10000;
-            elements.minPriceDisplay.textContent = 'R$ 100';
-            
-            // Reset type filter
-            document.querySelectorAll('#type-filter .type-option').forEach(option => {
-                option.classList.remove('selected');
-            });
-            document.querySelector('#type-filter .type-option[data-type="smartphone"]').classList.add('selected');
-            currentState.filters.types = ["smartphone"];
-            
-            // Reset brand filter
-            document.querySelectorAll('.brand-checkbox').forEach(checkbox => {
-                checkbox.checked = false;
-            });
-            document.getElementById('apple').checked = true;
-            document.getElementById('samsung').checked = true;
-            currentState.filters.brands = ["Apple", "Samsung"];
-            
-            // Reset features filter
-            document.querySelectorAll('#features-filter input').forEach(checkbox => {
-                checkbox.checked = false;
-            });
-            document.getElementById('5g').checked = true;
-            document.getElementById('bluetooth').checked = true;
-            currentState.filters.features = ["5g", "bluetooth"];
-            
-            // Reset storage filter
-            document.querySelectorAll('#storage-filter .type-option').forEach(opt => opt.classList.remove('selected'));
-            document.querySelector('#storage-filter .type-option[data-storage="128"]').classList.add('selected');
-            currentState.filters.storage = 128;
-            
-            // Reset RAM filter
-            document.querySelectorAll('#ram-filter .type-option').forEach(opt => opt.classList.remove('selected'));
-            document.querySelector('#ram-filter .type-option[data-ram="8"]').classList.add('selected');
-            currentState.filters.ram = 8;
-            
-            // Reset search
-            elements.searchInput.value = '';
-            currentState.filters.searchQuery = '';
-            
-            // Reset sort
-            elements.sortBy.value = 'best-sellers';
-            currentState.filters.sortBy = 'best-sellers';
-            
-            // Reset pagination
-            currentState.currentPage = 1;
-            
-            // Apply reset filters
-            applyFilters();
-        }
-
-        // Add product to cart
-        function addToCart(productId) {
-            const product = productsDatabase.find(p => p.id === productId);
-            if (product) {
-                alert(`"${product.title}" foi adicionado ao carrinho!`);
-                // In a real app, you would add to a cart array or make an API call
-            }
-        }
-
-        // Add product to wishlist
-        function addToWishlist(productId) {
-            const product = productsDatabase.find(p => p.id === productId);
-            if (product) {
-                alert(`"${product.title}" foi adicionado aos favoritos!`);
-                // In a real app, you would add to a wishlist array or make an API call
-            }
-        }
-
-        // Load featured products into carousel
-        function loadFeaturedProducts() {
-            // Get 6 best-selling products
-            const featuredProducts = [...productsDatabase]
-                .sort((a, b) => b.reviews - a.reviews)
-                .slice(0, 6);
-            
-            // Clear existing items
-            elements.carouselTrack.innerHTML = '';
-            
-            // Add new items
-            featuredProducts.forEach(product => {
-                const discountPercent = product.oldPrice ? 
-                    Math.round((1 - product.price / product.oldPrice) * 100) : 0;
-                
-                const carouselItem = document.createElement('div');
-                carouselItem.className = 'carousel-item';
-                carouselItem.innerHTML = `
-                    <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition relative">
-                        ${discountPercent > 0 ? `<div class="discount-badge">-${discountPercent}%</div>` : ''}
-                        <div class="p-4">
-                            <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-contain">
-                            <div class="mt-4">
-                                <h3 class="font-semibold text-lg text-gray-800">${product.title}</h3>
-                                <p class="text-gray-500 text-sm">${product.brand}</p>
-                                <div class="tech-specs">${product.specs}</div>
-                                <div class="flex items-center mt-2">
-                                    ${generateRatingStars(product.rating)}
-                                    <span class="text-gray-500 text-sm ml-2">(${product.reviews})</span>
-                                </div>
-                                <div class="mt-3">
-                                    ${product.oldPrice ? `<span class="text-gray-500 line-through text-sm">R$ ${product.oldPrice.toFixed(2).replace('.', ',')}</span>` : ''}
-                                    <div class="flex items-baseline">
-                                        <span class="text-xl font-bold text-gray-800">R$ ${product.price.toFixed(2).replace('.', ',')}</span>
-                                        <span class="text-green-600 text-sm ml-2">à vista</span>
-                                    </div>
-                                    <p class="text-gray-500 text-sm">ou ${Math.ceil(product.price / 300)}x de R$ ${(product.price / Math.ceil(product.price / 300)).toFixed(2).replace('.', ',')}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-actions p-4 bg-gray-50 border-t border-gray-200">
-                            <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center add-to-cart-featured" data-id="${product.id}">
-                                <i class="fas fa-shopping-cart mr-2"></i> Adicionar ao Carrinho
-                            </button>
-                        </div>
-                    </div>
-                `;
-                
-                elements.carouselTrack.appendChild(carouselItem);
-            });
-            
-            // Add event listeners to carousel buttons
-            document.querySelectorAll('.add-to-cart-featured').forEach(button => {
-                button.addEventListener('click', function() {
-                    const productId = parseInt(this.getAttribute('data-id'));
-                    addToCart(productId);
+        // Initialize event listeners
+        function initEventListeners() {
+            // Type filter checkboxes
+            document.querySelectorAll('.type-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateTypeFilters();
                 });
             });
             
-            // Initialize carousel position
-            currentPosition = 0;
-        }
-
-        // Carousel navigation
-        let currentPosition = 0;
-        function navigateCarousel(e) {
-            const carousel = document.getElementById('carousel-track');
-            const itemCount = document.querySelectorAll('.carousel-item').length;
-            const screenWidth = window.innerWidth;
-            let visibleItems, itemWidth;
+            // Accessory filter checkboxes
+            document.querySelectorAll('.accessory-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateAccessoryFilters();
+                });
+            });
             
-            if (screenWidth <= 640) {
-                visibleItems = 1;
-                itemWidth = 100;
-            } else if (screenWidth <= 1024) {
-                visibleItems = 2;
-                itemWidth = 50;
-            } else {
-                visibleItems = 3;
-                itemWidth = 33.333;
-            }
+            // Brand filter checkboxes
+            document.querySelectorAll('.brand-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateBrandFilters();
+                });
+            });
             
-            if (e.target.id === 'carousel-next' || e.target.parentElement.id === 'carousel-next') {
-                if (currentPosition > -(itemWidth * (itemCount - visibleItems))) {
-                    currentPosition -= itemWidth;
-                    carousel.style.transform = `translateX(${currentPosition}%)`;
+            // Price range slider
+            priceRange.addEventListener('input', (e) => {
+                maxPriceDisplay.textContent = formatPrice(parseInt(e.target.value));
+            });
+            
+            // Apply filters button
+            applyFiltersBtn.addEventListener('click', () => {
+                currentFilters.maxPrice = parseInt(priceRange.value);
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Reset filters button
+            resetFiltersBtn.addEventListener('click', () => {
+                // Reset all checkboxes
+                document.querySelectorAll('.type-checkbox').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                
+                document.querySelectorAll('.accessory-checkbox').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                
+                document.querySelectorAll('.brand-checkbox').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                
+                // Reset price range
+                priceRange.value = 20000;
+                maxPriceDisplay.textContent = formatPrice(20000);
+                
+                // Reset search
+                searchInput.value = '';
+                
+                // Reset sort
+                sortBy.value = 'popular';
+                
+                // Reset filters state
+                currentFilters = {
+                    types: [],
+                    accessories: [],
+                    brands: [],
+                    maxPrice: 20000,
+                    searchTerm: '',
+                    sortBy: 'popular'
+                };
+                
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Sort by dropdown
+            sortBy.addEventListener('change', (e) => {
+                currentFilters.sortBy = e.target.value;
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Search functionality
+            searchBtn.addEventListener('click', () => {
+                currentFilters.searchTerm = searchInput.value.trim();
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Allow search on Enter key
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    currentFilters.searchTerm = searchInput.value.trim();
+                    currentPage = 1;
+                    filterProducts();
                 }
-            } else {
-                if (currentPosition < 0) {
-                    currentPosition += itemWidth;
-                    carousel.style.transform = `translateX(${currentPosition}%)`;
+            });
+            
+            // Toggle categories dropdown
+            categoriesBtn.addEventListener('click', () => {
+                document.querySelector('.relative').classList.toggle('show-categories');
+            });
+            
+            // Close categories dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.relative') && !e.target.closest('#categories-btn')) {
+                    document.querySelector('.relative').classList.remove('show-categories');
                 }
-            }
+            });
+            
+            // Logout button
+            logoutBtn.addEventListener('click', () => {
+                if (confirm('Tem certeza que deseja sair?')) {
+                    // In a real application, this would clear session and redirect
+                    alert('Você foi desconectado.');
+                    // window.location.href = 'login.html';
+                }
+            });
+        }
+        
+        // Update type filters based on checked types
+        function updateTypeFilters() {
+            currentFilters.types = Array.from(document.querySelectorAll('.type-checkbox:checked'))
+                .map(checkbox => checkbox.value);
+        }
+        
+        // Update accessory filters based on checked accessories
+        function updateAccessoryFilters() {
+            currentFilters.accessories = Array.from(document.querySelectorAll('.accessory-checkbox:checked'))
+                .map(checkbox => checkbox.value);
+        }
+        
+        // Update brand filters based on checked brands
+        function updateBrandFilters() {
+            currentFilters.brands = Array.from(document.querySelectorAll('.brand-checkbox:checked'))
+                .map(checkbox => checkbox.value);
         }
 
-        // Responsive carousel
-        function updateCarousel() {
-            const screenWidth = window.innerWidth;
-            const carouselTrack = document.getElementById('carousel-track');
-            const itemCount = document.querySelectorAll('.carousel-item').length;
-            
-            if (screenWidth <= 640) {
-                carouselTrack.style.width = `${itemCount * 100}%`;
-            } else if (screenWidth <= 1024) {
-                carouselTrack.style.width = `${itemCount * 50}%`;
-            } else {
-                carouselTrack.style.width = `${itemCount * 33.333}%`;
-            }
-            
-            // Reset position on resize
-            currentPosition = 0;
-            carouselTrack.style.transform = `translateX(${currentPosition}%)`;
+        // Initialize the page
+        function init() {
+            initCarousel();
+            filterProducts();
+            initEventListeners();
         }
 
-        // Initialize the page when loaded
-        window.addEventListener('load', init);
-        window.addEventListener('resize', updateCarousel);
+        // Start the application
+        init();
     </script>
 </body>
 </html>

@@ -88,81 +88,62 @@
             cursor: pointer;
         }
 
-        .type-option {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin: 5px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-        }
-
-        .type-option.selected {
-            background-color: #3b82f6;
-            color: white;
-            border-color: #3b82f6;
-        }
-
-        .product-card:hover .product-actions {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .product-actions {
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.3s ease;
-        }
-
-        .discount-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: #ef4444;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .brand-checkbox {
+        .type-checkbox {
             display: none;
         }
 
-        .brand-label {
+        .type-label {
             display: inline-block;
             padding: 8px 12px;
+            text-align: center;
             border: 1px solid #ddd;
             border-radius: 4px;
             margin: 5px;
             cursor: pointer;
             transition: all 0.3s;
-            text-align: center;
-            font-size: 14px;
         }
 
-        .brand-checkbox:checked + .brand-label {
+        .type-checkbox:checked + .type-label {
             background-color: #3b82f6;
             color: white;
             border-color: #3b82f6;
         }
 
-        /* Loading spinner */
-        .loading-spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
+        .color-option {
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
-            border-top: 4px solid #3b82f6;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
+            margin: 5px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .color-option.selected {
+            border-color: #3b82f6;
+            transform: scale(1.1);
+        }
+        
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .pagination-btn {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .pagination-btn:hover:not(.active) {
+            background-color: #f1f5f9;
+        }
+        
+        .active {
+            background-color: #3b82f6;
+            color: white;
         }
     </style>
 </head>
@@ -173,7 +154,7 @@
             <!-- Logo on the left -->
             <div class="flex items-center mb-4 md:mb-0">
                 <img src="https://via.placeholder.com/50x50" alt="SuperStore Logo" class="h-10 mr-2">
-                <h1 class="text-xl font-bold text-gray-800">SuperStore</h1>
+                <h1 class="text-xl font-bold text-gray-800">SuperStore Music</h1>
             </div>
             
             <!-- Navigation and search in the middle -->
@@ -188,22 +169,22 @@
                         <!-- Categories dropdown -->
                         <div id="category-dropdown" class="category-dropdown p-4 rounded-lg mt-1 w-full md:w-96">
                             <div>
-                                <h3 class="font-bold mb-2">Eletrônicos</h3>
-                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">Celulares</a>
-                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">Notebooks</a>
-                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">TVs</a>
+                                <h3 class="font-bold mb-2">Cordas</h3>
+                                <a href="guitarras.html" class="block py-1 text-gray-600 hover:text-blue-500">Guitarras</a>
+                                <a href="violoes.html" class="block py-1 text-gray-600 hover:text-blue-500">Violões</a>
+                                <a href="baixos.html" class="block py-1 text-gray-600 hover:text-blue-500">Baixos</a>
                             </div>
                             <div>
-                                <h3 class="font-bold mb-2">Eletrodomésticos</h3>
-                                <a href="eletrodomesticos.html" class="block py-1 text-gray-600 hover:text-blue-500">Geladeiras</a>
-                                <a href="eletrodomesticos.html" class="block py-1 text-gray-600 hover:text-blue-500">Fogões</a>
-                                <a href="eletrodomesticos.html" class="block py-1 text-gray-600 hover:text-blue-500">Microondas</a>
+                                <h3 class="font-bold mb-2">Teclas</h3>
+                                <a href="teclados.html" class="block py-1 text-gray-600 hover:text-blue-500">Teclados</a>
+                                <a href="pianos.html" class="block py-1 text-gray-600 hover:text-blue-500">Pianos</a>
+                                <a href="midi.html" class="block py-1 text-gray-600 hover:text-blue-500">Controladores MIDI</a>
                             </div>
                             <div>
-                                <h3 class="font-bold mb-2">Moda</h3>
-                                <a href="roupas.html" class="block py-1 text-gray-600 hover:text-blue-500 text-blue-600 font-medium">Camisas</a>
-                                <a href="roupas.html" class="block py-1 text-gray-600 hover:text-blue-500">Calças</a>
-                                <a href="Calçados.html" class="block py-1 text-gray-600 hover:text-blue-500">Calçados</a>
+                                <h3 class="font-bold mb-2">Áudio</h3>
+                                <a href="amplificadores.html" class="block py-1 text-gray-600 hover:text-blue-500 text-blue-600 font-medium">Amplificadores</a>
+                                <a href="interfaces.html" class="block py-1 text-gray-600 hover:text-blue-500">Interfaces de Áudio</a>
+                                <a href="microfones.html" class="block py-1 text-gray-600 hover:text-blue-500">Microfones</a>
                             </div>
                         </div>
                     </div>
@@ -234,9 +215,9 @@
         <div class="flex items-center text-sm text-gray-500 mb-6">
             <a href="index.html" class="hover:text-blue-500">Início</a>
             <span class="mx-2">/</span>
-            <a href="musica.html" class="hover:text-blue-500">Música</a>
+            <a href="musica.html" class="hover:text-blue-500">Instrumentos Musicais</a>
             <span class="mx-2">/</span>
-            <span class="text-gray-700">Instrumentos Musicais</span>
+            <span class="text-gray-700">Todos</span>
         </div>
 
         <!-- Page title and sorting options -->
@@ -245,10 +226,10 @@
             <div class="flex items-center">
                 <span class="text-gray-600 mr-2">Ordenar por:</span>
                 <select id="sort-by" class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="best-sellers">Mais vendidos</option>
+                    <option value="popular">Mais vendidos</option>
                     <option value="price-low">Menor preço</option>
                     <option value="price-high">Maior preço</option>
-                    <option value="best-rated">Melhor avaliados</option>
+                    <option value="rating">Melhor avaliados</option>
                     <option value="newest">Novidades</option>
                 </select>
             </div>
@@ -263,105 +244,86 @@
                     <!-- Price range filter -->
                     <div class="mb-6">
                         <h3 class="font-medium mb-3 text-gray-700">Faixa de preço</h3>
-                        <div class="flex justify-between mb-2">
-                            <span id="min-price-display" class="text-sm text-gray-600">R$ 100</span>
-                            <span id="max-price-display" class="text-sm text-gray-600">R$ 10.000</span>
-                        </div>
-                        <input type="range" min="100" max="10000" value="2500" class="price-range-slider mb-3" id="price-range">
+                        <input type="range" id="price-range" min="100" max="10000" value="10000" class="price-range-slider mb-3">
                         <div class="flex justify-between text-sm text-gray-600">
                             <span>R$ 100</span>
-                            <span>R$ 10.000</span>
+                            <span id="max-price-display">R$ 10000</span>
                         </div>
                     </div>
                     
                     <!-- Type filter -->
                     <div class="mb-6">
-                        <h3 class="font-medium mb-3 text-gray-700">Tipo de Instrumento</h3>
-                        <div class="flex flex-wrap" id="type-filter">
-                            <div class="type-option" data-type="guitarra">Guitarra</div>
-                            <div class="type-option" data-type="violao">Violão</div>
-                            <div class="type-option" data-type="baixo">Baixo</div>
-                            <div class="type-option" data-type="bateria">Bateria</div>
-                            <div class="type-option" data-type="teclado">Teclado</div>
-                            <div class="type-option" data-type="amplificador">Amplificador</div>
-                            <div class="type-option" data-type="microfone">Microfone</div>
-                            <div class="type-option" data-type="pedal">Pedal</div>
-                            <div class="type-option" data-type="interface">Interface</div>
+                        <h3 class="font-medium mb-3 text-gray-700">Tipo</h3>
+                        <div class="flex flex-wrap" id="type-filters">
+                            <input type="checkbox" id="type-guitarra" class="type-checkbox" value="Guitarra">
+                            <label for="type-guitarra" class="type-label">Guitarra</label>
+                            
+                            <input type="checkbox" id="type-violao" class="type-checkbox" value="Violão">
+                            <label for="type-violao" class="type-label">Violão</label>
+                            
+                            <input type="checkbox" id="type-baixo" class="type-checkbox" value="Baixo">
+                            <label for="type-baixo" class="type-label">Baixo</label>
+                            
+                            <input type="checkbox" id="type-teclado" class="type-checkbox" value="Teclado">
+                            <label for="type-teclado" class="type-label">Teclado</label>
+                            
+                            <input type="checkbox" id="type-amplificador" class="type-checkbox" value="Amplificador">
+                            <label for="type-amplificador" class="type-label">Amplificador</label>
+                            
+                            <input type="checkbox" id="type-pedaleira" class="type-checkbox" value="Pedaleira">
+                            <label for="type-pedaleira" class="type-label">Pedaleira</label>
+                            
+                            <input type="checkbox" id="type-interface" class="type-checkbox" value="Interface">
+                            <label for="type-interface" class="type-label">Interface</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Color filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Cor</h3>
+                        <div class="flex flex-wrap" id="color-filters">
+                            <div class="color-option bg-black selected" data-color="black"></div>
+                            <div class="color-option bg-white border border-gray-300" data-color="white"></div>
+                            <div class="color-option bg-gray-500" data-color="gray"></div>
+                            <div class="color-option bg-blue-500" data-color="blue"></div>
+                            <div class="color-option bg-red-500" data-color="red"></div>
+                            <div class="color-option bg-yellow-400" data-color="yellow"></div>
+                            <div class="color-option bg-amber-700" data-color="brown"></div>
+                            <div class="color-option bg-green-500" data-color="green"></div>
                         </div>
                     </div>
                     
                     <!-- Brand filter -->
                     <div class="mb-6">
                         <h3 class="font-medium mb-3 text-gray-700">Marca</h3>
-                        <div class="flex flex-wrap" id="brand-filter">
-                            <input type="checkbox" id="fender" class="brand-checkbox" value="Fender" checked>
-                            <label for="fender" class="brand-label">Fender</label>
-                            
-                            <input type="checkbox" id="gibson" class="brand-checkbox" value="Gibson">
-                            <label for="gibson" class="brand-label">Gibson</label>
-                            
-                            <input type="checkbox" id="ibanez" class="brand-checkbox" value="Ibanez">
-                            <label for="ibanez" class="brand-label">Ibanez</label>
-                            
-                            <input type="checkbox" id="yamaha" class="brand-checkbox" value="Yamaha" checked>
-                            <label for="yamaha" class="brand-label">Yamaha</label>
-                            
-                            <input type="checkbox" id="roland" class="brand-checkbox" value="Roland">
-                            <label for="roland" class="brand-label">Roland</label>
-                            
-                            <input type="checkbox" id="shure" class="brand-checkbox" value="Shure">
-                            <label for="shure" class="brand-label">Shure</label>
-                            
-                            <input type="checkbox" id="boss" class="brand-checkbox" value="BOSS">
-                            <label for="boss" class="brand-label">BOSS</label>
-                            
-                            <input type="checkbox" id="marshall" class="brand-checkbox" value="Marshall">
-                            <label for="marshall" class="brand-label">Marshall</label>
-                        </div>
-                    </div>
-                    
-                    <!-- Condition filter -->
-                    <div class="mb-6">
-                        <h3 class="font-medium mb-3 text-gray-700">Condição</h3>
-                        <div class="space-y-2" id="condition-filter">
+                        <div class="space-y-2" id="brand-filters">
                             <div class="flex items-center">
-                                <input type="checkbox" id="new" class="mr-2" value="new" checked>
-                                <label for="new" class="text-gray-600">Novo</label>
+                                <input type="checkbox" id="fender" class="mr-2" value="Fender">
+                                <label for="fender" class="text-gray-600">Fender</label>
                             </div>
                             <div class="flex items-center">
-                                <input type="checkbox" id="used" class="mr-2" value="used">
-                                <label for="used" class="text-gray-600">Usado</label>
+                                <input type="checkbox" id="gibson" class="mr-2" value="Gibson">
+                                <label for="gibson" class="text-gray-600">Gibson</label>
                             </div>
                             <div class="flex items-center">
-                                <input type="checkbox" id="refurbished" class="mr-2" value="refurbished">
-                                <label for="refurbished" class="text-gray-600">Recondicionado</label>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Features filter -->
-                    <div class="mb-6">
-                        <h3 class="font-medium mb-3 text-gray-700">Recursos</h3>
-                        <div class="space-y-2" id="features-filter">
-                            <div class="flex items-center">
-                                <input type="checkbox" id="wireless" class="mr-2" value="wireless">
-                                <label for="wireless" class="text-gray-600">Sem fio</label>
+                                <input type="checkbox" id="ibanez" class="mr-2" value="Ibanez">
+                                <label for="ibanez" class="text-gray-600">Ibanez</label>
                             </div>
                             <div class="flex items-center">
-                                <input type="checkbox" id="digital" class="mr-2" value="digital">
-                                <label for="digital" class="text-gray-600">Digital</label>
+                                <input type="checkbox" id="yamaha" class="mr-2" value="Yamaha">
+                                <label for="yamaha" class="text-gray-600">Yamaha</label>
                             </div>
                             <div class="flex items-center">
-                                <input type="checkbox" id="acoustic" class="mr-2" value="acoustic" checked>
-                                <label for="acoustic" class="text-gray-600">Acústico</label>
+                                <input type="checkbox" id="roland" class="mr-2" value="Roland">
+                                <label for="roland" class="text-gray-600">Roland</label>
                             </div>
                             <div class="flex items-center">
-                                <input type="checkbox" id="electric" class="mr-2" value="electric" checked>
-                                <label for="electric" class="text-gray-600">Elétrico</label>
+                                <input type="checkbox" id="boss" class="mr-2" value="BOSS">
+                                <label for="boss" class="text-gray-600">BOSS</label>
                             </div>
                             <div class="flex items-center">
-                                <input type="checkbox" id="midi" class="mr-2" value="midi">
-                                <label for="midi" class="text-gray-600">Compatível MIDI</label>
+                                <input type="checkbox" id="focusrite" class="mr-2" value="Focusrite">
+                                <label for="focusrite" class="text-gray-600">Focusrite</label>
                             </div>
                         </div>
                     </div>
@@ -385,7 +347,7 @@
                             </div>
                             <div>
                                 <p class="text-sm font-medium">Até 30% OFF</p>
-                                <p class="text-xs text-gray-500">Em guitarras e violões</p>
+                                <p class="text-xs text-gray-500">Em guitarras selecionadas</p>
                             </div>
                         </div>
                         <div class="flex items-center">
@@ -430,23 +392,31 @@
                     </div>
                 </section>
                 
-                <!-- All products grid -->
+                <!-- All music products -->
                 <section>
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-bold text-gray-800">Todos os Instrumentos</h2>
-                        <span id="product-count" class="text-gray-600">Carregando produtos...</span>
+                        <span id="product-count" class="text-gray-500">Mostrando 12 de 12 produtos</span>
                     </div>
                     
-                    <div id="loading-spinner" class="loading-spinner"></div>
-                    
-                    <div id="products-grid" class="product-grid">
-                        <!-- Products will be loaded here by JavaScript -->
+                    <div class="product-grid" id="products-grid">
+                        <!-- Products will be added by JavaScript -->
                     </div>
                     
                     <!-- Pagination -->
-                    <div class="flex justify-center mt-10">
-                        <nav class="inline-flex rounded-md shadow" id="pagination">
-                            <!-- Pagination will be loaded here by JavaScript -->
+                    <div class="flex justify-center mt-8">
+                        <nav class="flex items-center space-x-1" id="pagination">
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 prev-btn">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100 active">1</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">2</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">3</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">4</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">5</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 next-btn">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
                         </nav>
                     </div>
                 </section>
@@ -454,1033 +424,1015 @@
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-10">
+    <!-- Footer with social media links -->
+    <footer class="bg-gray-800 text-white py-8">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">SuperStore</h3>
-                    <p class="text-gray-400">A melhor loja online para músicos, com os melhores instrumentos e equipamentos musicais.</p>
-                    <div class="flex space-x-4 mt-4">
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-youtube"></i></a>
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center">
+                        <img src="https://via.placeholder.com/50x50" alt="SuperStore Logo" class="h-10 mr-2">
+                        <h2 class="text-xl font-bold">SuperStore Music</h2>
                     </div>
+                    <p class="mt-2 text-gray-400">Sua loja online completa com os melhores instrumentos musicais.</p>
                 </div>
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Institucional</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Quem Somos</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Nossas Lojas</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Política de Privacidade</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Termos de Uso</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Trabalhe Conosco</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Atendimento</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Central de Ajuda</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Meus Pedidos</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Trocas e Devoluções</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Formas de Pagamento</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Fale Conosco</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Newsletter</h3>
-                    <p class="text-gray-400 mb-4">Cadastre-se e receba ofertas exclusivas</p>
-                    <div class="flex">
-                        <input type="email" placeholder="Seu e-mail" class="px-4 py-2 w-full rounded-l-md focus:outline-none text-gray-800">
-                        <button class="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600 transition">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
-                    <div class="mt-4 flex items-center">
-                        <i class="fas fa-credit-card text-gray-400 mr-2"></i>
-                        <div class="flex space-x-2">
-                            <img src="https://via.placeholder.com/30x20" alt="Visa" class="h-5">
-                            <img src="https://via.placeholder.com/30x20" alt="Mastercard" class="h-5">
-                            <img src="https://via.placeholder.com/30x20" alt="American Express" class="h-5">
-                            <img src="https://via.placeholder.com/30x20" alt="Elo" class="h-5">
-                        </div>
-                    </div>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
                 </div>
             </div>
+            
             <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-                <p>© 2023 SuperStore. Todos os direitos reservados.</p>
+                <p>&copy; 2023 SuperStore Music. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Database of products
-        const productsDatabase = [
+        // Sample product data for musical instruments
+        const musicProducts = [
             {
                 id: 1,
-                title: "Guitarra Fender Stratocaster",
+                link: "#",
+                name: "Guitarra Fender Stratocaster",
+                price: 7999.99,
+                category: "cordas",
+                type: "Guitarra",
                 brand: "Fender",
-                type: "guitarra",
-                price: 5099.90,
-                oldPrice: 5999.90,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.5,
-                reviews: 128,
-                condition: "new",
-                features: ["electric"],
-                bestSeller: true,
-                newArrival: false
+                colors: ["black", "white", "blue"],
+                image: "https://images.unsplash.com/photo-1516924962500-2b4b3b99ea02?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Guitarra elétrica modelo Stratocaster, cor preta, captadores single coil.",
+                rating: 4.9,
+                discount: 0.10,
+                featured: true,
+                popularity: 98,
+                dateAdded: "2023-05-15"
             },
             {
                 id: 2,
-                title: "Violão Yamaha FG800",
+                link: "#",
+                name: "Violão Yamaha FG800",
+                price: 2499.99,
+                category: "cordas",
+                type: "Violão",
                 brand: "Yamaha",
-                type: "violao",
-                price: 2499.90,
-                oldPrice: 0,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4,
-                reviews: 87,
-                condition: "new",
-                features: ["acoustic"],
-                bestSeller: true,
-                newArrival: false
+                colors: ["brown"],
+                image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a5d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Violão acústico com tampo em spruce sólido e laterais em nato.",
+                rating: 4.7,
+                discount: 0.05,
+                featured: true,
+                popularity: 95,
+                dateAdded: "2023-06-20"
             },
             {
                 id: 3,
-                title: "Amplificador Marshall MG15",
-                brand: "Marshall",
-                type: "amplificador",
-                price: 899.90,
-                oldPrice: 1199.90,
-                image: "https://via.placeholder.com/300x300",
-                rating: 5,
-                reviews: 215,
-                condition: "new",
-                features: ["electric"],
-                bestSeller: true,
-                newArrival: false
+                link: "#",
+                name: "Baixo Ibanez SR300",
+                price: 3499.99,
+                category: "cordas",
+                type: "Baixo",
+                brand: "Ibanez",
+                colors: ["black", "blue"],
+                image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Baixo elétrico de 4 cordas com captadores Bartolini.",
+                rating: 4.6,
+                discount: 0.15,
+                featured: true,
+                popularity: 90,
+                dateAdded: "2023-04-10"
             },
             {
                 id: 4,
-                title: "Baixo Ibanez GSR200",
-                brand: "Ibanez",
-                type: "baixo",
-                price: 3499.90,
-                oldPrice: 0,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.5,
-                reviews: 64,
-                condition: "new",
-                features: ["electric"],
-                bestSeller: false,
-                newArrival: true
+                link: "#",
+                name: "Teclado Yamaha P-45",
+                price: 3999.99,
+                category: "teclas",
+                type: "Teclado",
+                brand: "Yamaha",
+                colors: ["black"],
+                image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a5d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Teclado digital com 88 teclas ponderadas e ação martelo.",
+                rating: 4.8,
+                discount: 0,
+                featured: true,
+                popularity: 92,
+                dateAdded: "2023-03-05"
             },
             {
                 id: 5,
-                title: "Teclado Roland GO:PIANO",
-                brand: "Roland",
-                type: "teclado",
-                price: 2519.90,
-                oldPrice: 2799.90,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4,
-                reviews: 142,
-                condition: "new",
-                features: ["digital", "midi"],
-                bestSeller: false,
-                newArrival: true
+                link: "#",
+                name: "Amplificador Fender Champion 20",
+                price: 1299.99,
+                category: "audio",
+                type: "Amplificador",
+                brand: "Fender",
+                colors: ["black"],
+                image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Amplificador de guitarra de 20W com efeitos embutidos.",
+                rating: 4.5,
+                discount: 0.10,
+                featured: true,
+                popularity: 85,
+                dateAdded: "2023-02-18"
             },
             {
                 id: 6,
-                title: "Microfone Shure SM58",
-                brand: "Shure",
-                type: "microfone",
-                price: 1099.90,
-                oldPrice: 0,
-                image: "https://via.placeholder.com/300x300",
-                rating: 3.5,
-                reviews: 53,
-                condition: "new",
-                features: [],
-                bestSeller: false,
-                newArrival: false
+                link: "#",
+                name: "Guitarra Gibson Les Paul",
+                price: 10999.99,
+                category: "cordas",
+                type: "Guitarra",
+                brand: "Gibson",
+                colors: ["brown", "yellow"],
+                image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a5d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Guitarra elétrica modelo Les Paul Standard, cor sunburst.",
+                rating: 4.9,
+                discount: 0,
+                featured: false,
+                popularity: 97,
+                dateAdded: "2023-07-12"
             },
             {
                 id: 7,
-                title: "Pedal BOSS DS-1",
+                link: "#",
+                name: "Pedaleira BOSS GT-1",
+                price: 1999.99,
+                category: "audio",
+                type: "Pedaleira",
                 brand: "BOSS",
-                type: "pedal",
-                price: 559.90,
-                oldPrice: 699.90,
-                image: "https://via.placeholder.com/300x300",
-                rating: 5,
-                reviews: 187,
-                condition: "new",
-                features: ["electric"],
-                bestSeller: true,
-                newArrival: false
+                colors: ["black"],
+                image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Pedaleira multi-efeitos compacta com mais de 100 sons.",
+                rating: 4.6,
+                discount: 0.15,
+                featured: false,
+                popularity: 88,
+                dateAdded: "2023-06-25"
             },
             {
                 id: 8,
-                title: "Interface Focusrite Scarlett",
+                link: "#",
+                name: "Interface Focusrite Scarlett 2i2",
+                price: 899.99,
+                category: "audio",
+                type: "Interface",
                 brand: "Focusrite",
-                type: "interface",
-                price: 1299.90,
-                oldPrice: 0,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.5,
-                reviews: 76,
-                condition: "new",
-                features: ["digital"],
-                bestSeller: false,
-                newArrival: true
+                colors: ["red"],
+                image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a5d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Interface de áudio USB com 2 entradas XLR/TRS combo.",
+                rating: 4.8,
+                discount: 0,
+                featured: false,
+                popularity: 91,
+                dateAdded: "2023-05-30"
             },
             {
                 id: 9,
-                title: "Guitarra Gibson Les Paul",
-                brand: "Gibson",
-                type: "guitarra",
-                price: 8999.90,
-                oldPrice: 9999.90,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.8,
-                reviews: 92,
-                condition: "new",
-                features: ["electric"],
-                bestSeller: true,
-                newArrival: false
+                link: "#",
+                name: "Controlador MIDI AKAI MPK Mini",
+                price: 799.99,
+                category: "teclas",
+                type: "Teclado",
+                brand: "AKAI",
+                colors: ["black", "red"],
+                image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Controlador MIDI compacto com 25 teclas sensíveis à velocidade.",
+                rating: 4.5,
+                discount: 0.10,
+                featured: false,
+                popularity: 82,
+                dateAdded: "2023-04-22"
             },
             {
                 id: 10,
-                title: "Violão Giannini N10",
-                brand: "Giannini",
-                type: "violao",
-                price: 899.90,
-                oldPrice: 0,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.2,
-                reviews: 45,
-                condition: "new",
-                features: ["acoustic"],
-                bestSeller: false,
-                newArrival: false
+                link: "#",
+                name: "Guitarra Ibanez RG550",
+                price: 5999.99,
+                category: "cordas",
+                type: "Guitarra",
+                brand: "Ibanez",
+                colors: ["red", "blue"],
+                image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a5d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Guitarra elétrica com braço Wizard e captadores DiMarzio.",
+                rating: 4.7,
+                discount: 0.20,
+                featured: false,
+                popularity: 87,
+                dateAdded: "2023-07-05"
             },
             {
                 id: 11,
-                title: "Bateria Pearl Export",
-                brand: "Pearl",
-                type: "bateria",
-                price: 5999.90,
-                oldPrice: 6999.90,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.7,
-                reviews: 68,
-                condition: "new",
-                features: ["acoustic"],
-                bestSeller: false,
-                newArrival: true
+                link: "#",
+                name: "Violão Giannini GD-10",
+                price: 899.99,
+                category: "cordas",
+                type: "Violão",
+                brand: "Giannini",
+                colors: ["brown"],
+                image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Violão acústico folk com tampo em spruce e laterais em mogno.",
+                rating: 4.4,
+                discount: 0,
+                featured: false,
+                popularity: 80,
+                dateAdded: "2023-01-15"
             },
             {
                 id: 12,
-                title: "Teclado Yamaha PSR-E373",
-                brand: "Yamaha",
-                type: "teclado",
-                price: 2199.90,
-                oldPrice: 0,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.3,
-                reviews: 112,
-                condition: "new",
-                features: ["digital", "midi"],
-                bestSeller: true,
-                newArrival: false
+                link: "#",
+                name: "Baixo Fender Precision",
+                price: 7499.99,
+                category: "cordas",
+                type: "Baixo",
+                brand: "Fender",
+                colors: ["black", "white"],
+                image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a5d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Baixo elétrico de 4 cordas com captador split single coil.",
+                rating: 4.8,
+                discount: 0.05,
+                featured: false,
+                popularity: 93,
+                dateAdded: "2023-03-20"
             },
             {
                 id: 13,
-                title: "Guitarra Fender Telecaster Usada",
-                brand: "Fender",
-                type: "guitarra",
-                price: 3999.90,
-                oldPrice: 0,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.6,
-                reviews: 34,
-                condition: "used",
-                features: ["electric"],
-                bestSeller: false,
-                newArrival: false
+                link: "#",
+                name: "Teclado Roland FP-10",
+                price: 3499.99,
+                category: "teclas",
+                type: "Teclado",
+                brand: "Roland",
+                colors: ["black"],
+                image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Piano digital com 88 teclas ponderadas e ação martelo.",
+                rating: 4.7,
+                discount: 0.10,
+                featured: false,
+                popularity: 89,
+                dateAdded: "2023-06-10"
             },
             {
                 id: 14,
-                title: "Microfone Sem Fio Shure BLX288",
-                brand: "Shure",
-                type: "microfone",
-                price: 2599.90,
-                oldPrice: 2999.90,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.4,
-                reviews: 28,
-                condition: "new",
-                features: ["wireless"],
-                bestSeller: false,
-                newArrival: true
+                link: "#",
+                name: "Amplificador Marshall DSL5CR",
+                price: 3999.99,
+                category: "audio",
+                type: "Amplificador",
+                brand: "Marshall",
+                colors: ["black"],
+                image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a5d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Amplificador valvulado de 5W com efeito reverb.",
+                rating: 4.6,
+                discount: 0,
+                featured: false,
+                popularity: 84,
+                dateAdded: "2023-05-05"
             },
             {
                 id: 15,
-                title: "Pedal BOSS Loop Station RC-1",
-                brand: "BOSS",
-                type: "pedal",
-                price: 799.90,
-                oldPrice: 0,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.9,
-                reviews: 156,
-                condition: "new",
-                features: ["electric"],
-                bestSeller: true,
-                newArrival: false
+                link: "#",
+                name: "Pedaleira Zoom G1X Four",
+                price: 899.99,
+                category: "audio",
+                type: "Pedaleira",
+                brand: "Zoom",
+                colors: ["black"],
+                image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Pedaleira multi-efeitos com pedal de expressão.",
+                rating: 4.3,
+                discount: 0.15,
+                featured: false,
+                popularity: 78,
+                dateAdded: "2023-04-15"
             },
             {
                 id: 16,
-                title: "Amplificador Fender Champion 20",
-                brand: "Fender",
-                type: "amplificador",
-                price: 1199.90,
-                oldPrice: 0,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.5,
-                reviews: 89,
-                condition: "new",
-                features: ["electric"],
-                bestSeller: false,
-                newArrival: false
+                link: "#",
+                name: "Interface M-Audio M-Track Duo",
+                price: 599.99,
+                category: "audio",
+                type: "Interface",
+                brand: "M-Audio",
+                colors: ["black"],
+                image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a5d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Interface de áudio USB com 2 entradas XLR/TRS combo.",
+                rating: 4.2,
+                discount: 0.20,
+                featured: false,
+                popularity: 75,
+                dateAdded: "2023-03-28"
             },
             {
                 id: 17,
-                title: "Baixo Fender Precision",
-                brand: "Fender",
-                type: "baixo",
-                price: 5999.90,
-                oldPrice: 6499.90,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.7,
-                reviews: 72,
-                condition: "new",
-                features: ["electric"],
-                bestSeller: true,
-                newArrival: false
+                link: "#",
+                name: "Microfone Shure SM58",
+                price: 799.99,
+                category: "audio",
+                type: "Microfone",
+                brand: "Shure",
+                colors: ["black"],
+                image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Microfone dinâmico vocal com excelente resistência a ruídos.",
+                rating: 4.9,
+                discount: 0,
+                featured: false,
+                popularity: 96,
+                dateAdded: "2023-02-10"
             },
             {
                 id: 18,
-                title: "Violão Takamine GD93CE",
-                brand: "Takamine",
-                type: "violao",
-                price: 3499.90,
-                oldPrice: 0,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.6,
-                reviews: 41,
-                condition: "new",
-                features: ["acoustic", "electric"],
-                bestSeller: false,
-                newArrival: true
+                link: "#",
+                name: "Guitarra Tagima TW55",
+                price: 1599.99,
+                category: "cordas",
+                type: "Guitarra",
+                brand: "Tagima",
+                colors: ["black", "red"],
+                image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a5d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Guitarra elétrica modelo Stratocaster com captadores single coil.",
+                rating: 4.5,
+                discount: 0.10,
+                featured: false,
+                popularity: 83,
+                dateAdded: "2023-01-25"
             },
             {
                 id: 19,
-                title: "Interface de Áudio M-Audio M-Track 2X2",
-                brand: "M-Audio",
-                type: "interface",
-                price: 899.90,
-                oldPrice: 0,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.2,
-                reviews: 63,
-                condition: "new",
-                features: ["digital"],
-                bestSeller: false,
-                newArrival: false
+                link: "#",
+                name: "Violão Takamine GD93CE",
+                price: 3299.99,
+                category: "cordas",
+                type: "Violão",
+                brand: "Takamine",
+                colors: ["brown"],
+                image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Violão eletroacústico com captador e preamp Takamine.",
+                rating: 4.7,
+                discount: 0.05,
+                featured: false,
+                popularity: 86,
+                dateAdded: "2023-05-18"
             },
             {
                 id: 20,
-                title: "Guitarra Ibanez RG550",
-                brand: "Ibanez",
-                type: "guitarra",
-                price: 4999.90,
-                oldPrice: 0,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.8,
-                reviews: 58,
-                condition: "new",
-                features: ["electric"],
-                bestSeller: false,
-                newArrival: true
+                link: "#",
+                name: "Baixo Warwick RockBass",
+                price: 5499.99,
+                category: "cordas",
+                type: "Baixo",
+                brand: "Warwick",
+                colors: ["black", "brown"],
+                image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a5d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Baixo elétrico de 4 cordas com captadores ativos MEC.",
+                rating: 4.6,
+                discount: 0.15,
+                featured: false,
+                popularity: 85,
+                dateAdded: "2023-04-05"
             },
             {
                 id: 21,
-                title: "Bateria Eletrônica Roland TD-07KV",
-                brand: "Roland",
-                type: "bateria",
-                price: 7999.90,
-                oldPrice: 0,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.9,
-                reviews: 37,
-                condition: "new",
-                features: ["digital"],
-                bestSeller: false,
-                newArrival: true
+                link: "#",
+                name: "Teclado Casio CT-X700",
+                price: 1999.99,
+                category: "teclas",
+                type: "Teclado",
+                brand: "Casio",
+                colors: ["black"],
+                image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Teclado arranjador com 61 teclas e 600 timbres.",
+                rating: 4.3,
+                discount: 0.10,
+                featured: false,
+                popularity: 79,
+                dateAdded: "2023-03-15"
             },
             {
                 id: 22,
-                title: "Pedal Tube Screamer TS9 Recondicionado",
-                brand: "Ibanez",
-                type: "pedal",
-                price: 599.90,
-                oldPrice: 799.90,
-                image: "https://via.placeholder.com/300x300",
+                link: "#",
+                name: "Amplificador Vox AC10C1",
+                price: 4599.99,
+                category: "audio",
+                type: "Amplificador",
+                brand: "Vox",
+                colors: ["black"],
+                image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a5d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Amplificador valvulado de 10W com efeito tremolo.",
                 rating: 4.7,
-                reviews: 42,
-                condition: "refurbished",
-                features: ["electric"],
-                bestSeller: false,
-                newArrival: false
+                discount: 0,
+                featured: false,
+                popularity: 88,
+                dateAdded: "2023-02-28"
             },
             {
                 id: 23,
-                title: "Microfone Condensador Rode NT1-A",
-                brand: "Rode",
-                type: "microfone",
-                price: 1299.90,
-                oldPrice: 0,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.5,
-                reviews: 84,
-                condition: "new",
-                features: [],
-                bestSeller: true,
-                newArrival: false
+                link: "#",
+                name: "Pedaleira BOSS ME-80",
+                price: 2999.99,
+                category: "audio",
+                type: "Pedaleira",
+                brand: "BOSS",
+                colors: ["black"],
+                image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Pedaleira multi-efeitos com controles manuais intuitivos.",
+                rating: 4.6,
+                discount: 0.10,
+                featured: false,
+                popularity: 84,
+                dateAdded: "2023-01-10"
             },
             {
                 id: 24,
-                title: "Teclado Casio CT-S300",
-                brand: "Casio",
-                type: "teclado",
-                price: 1599.90,
-                oldPrice: 0,
-                image: "https://via.placeholder.com/300x300",
-                rating: 4.1,
-                reviews: 67,
-                condition: "new",
-                features: ["digital", "midi"],
-                bestSeller: false,
-                newArrival: false
+                link: "#",
+                name: "Interface Behringer UMC202HD",
+                price: 799.99,
+                category: "audio",
+                type: "Interface",
+                brand: "Behringer",
+                colors: ["black"],
+                image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a5d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Interface de áudio USB com 2 entradas XLR/TRS combo.",
+                rating: 4.4,
+                discount: 0.15,
+                featured: false,
+                popularity: 81,
+                dateAdded: "2023-06-15"
             }
         ];
 
-        // Current state
-        let currentState = {
-            filteredProducts: [...productsDatabase],
-            currentPage: 1,
-            productsPerPage: 8,
-            filters: {
-                minPrice: 100,
-                maxPrice: 10000,
-                types: [],
-                brands: ["Fender", "Yamaha"],
-                conditions: ["new"],
-                features: ["acoustic", "electric"],
-                searchQuery: "",
-                sortBy: "best-sellers"
-            }
-        };
-
         // DOM elements
-        const elements = {
-            productsGrid: document.getElementById('products-grid'),
-            productCount: document.getElementById('product-count'),
-            loadingSpinner: document.getElementById('loading-spinner'),
-            pagination: document.getElementById('pagination'),
-            priceRange: document.getElementById('price-range'),
-            minPriceDisplay: document.getElementById('min-price-display'),
-            maxPriceDisplay: document.getElementById('max-price-display'),
-            typeFilter: document.getElementById('type-filter'),
-            brandFilter: document.getElementById('brand-filter'),
-            conditionFilter: document.getElementById('condition-filter'),
-            featuresFilter: document.getElementById('features-filter'),
-            applyFilters: document.getElementById('apply-filters'),
-            resetFilters: document.getElementById('reset-filters'),
-            searchInput: document.getElementById('search-input'),
-            searchBtn: document.getElementById('search-btn'),
-            sortBy: document.getElementById('sort-by'),
-            carouselTrack: document.getElementById('carousel-track'),
-            carouselPrev: document.getElementById('carousel-prev'),
-            carouselNext: document.getElementById('carousel-next')
+        const carouselTrack = document.getElementById('carousel-track');
+        const carouselPrev = document.getElementById('carousel-prev');
+        const carouselNext = document.getElementById('carousel-next');
+        const carousel = document.getElementById('carousel');
+        const categoriesBtn = document.getElementById('categories-btn');
+        const categoryDropdown = document.getElementById('category-dropdown');
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const productsGrid = document.getElementById('products-grid');
+        const colorOptions = document.querySelectorAll('.color-option');
+        const typeFilters = document.getElementById('type-filters');
+        const brandFilters = document.getElementById('brand-filters');
+        const priceRange = document.getElementById('price-range');
+        const maxPriceDisplay = document.getElementById('max-price-display');
+        const applyFiltersBtn = document.getElementById('apply-filters');
+        const resetFiltersBtn = document.getElementById('reset-filters');
+        const sortBy = document.getElementById('sort-by');
+        const productCount = document.getElementById('product-count');
+        const pagination = document.getElementById('pagination');
+        
+        // Current state
+        let currentFilters = {
+            colors: [],
+            types: [],
+            brands: [],
+            maxPrice: 10000,
+            searchTerm: '',
+            sortBy: 'popular'
         };
+        
+        let currentPage = 1;
+        const productsPerPage = 12;
+        let filteredProducts = [...musicProducts];
 
-        // Initialize the page
-        function init() {
-            // Set up event listeners
-            setupEventListeners();
+        // Format price to BRL
+        function formatPrice(price) {
+            return new Intl.NumberFormat('pt-BR', { 
+                style: 'currency', 
+                currency: 'BRL' 
+            }).format(price);
+        }
+
+        // Initialize carousel with featured instruments
+        function initCarousel() {
+            // Clear any existing items
+            carouselTrack.innerHTML = '';
             
-            // Load featured products carousel
-            loadFeaturedProducts();
+            // Get featured instruments
+            const featuredInstruments = musicProducts.filter(product => product.featured);
             
-            // Apply initial filters and render products
-            applyFilters();
-        }
-
-        // Set up all event listeners
-        function setupEventListeners() {
-            // Price range filter
-            elements.priceRange.addEventListener('input', function() {
-                currentState.filters.minPrice = parseInt(this.value);
-                elements.minPriceDisplay.textContent = `R$ ${this.value}`;
+            // Add products to carousel
+            featuredInstruments.forEach(product => {
+                const item = document.createElement('div');
+                item.className = 'carousel-item';
+                
+                // Calculate discounted price if applicable
+                const discountedPrice = product.discount > 0 
+                    ? product.price * (1 - product.discount)
+                    : null;
+                
+                item.innerHTML = `
+                    <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition h-full flex flex-col product-card">
+                        ${product.discount > 0 ? 
+                            `<div class="absolute bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-br-lg">
+                                ${Math.round(product.discount * 100)}% OFF
+                            </div>` : ''}
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+                        <div class="p-4 flex-grow">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-1">${product.name}</h3>
+                            <p class="text-gray-600 text-sm mb-3">${product.description}</p>
+                            <div class="flex flex-col">
+                                ${discountedPrice ? 
+                                    `<div class="flex items-center">
+                                        <span class="text-lg font-bold text-blue-500">${formatPrice(discountedPrice)}</span>
+                                        <span class="text-sm text-gray-500 line-through ml-2">${formatPrice(product.price)}</span>
+                                    </div>` :
+                                    `<span class="text-lg font-bold text-blue-500">${formatPrice(product.price)}</span>`
+                                }
+                                <div class="flex items-center mt-1">
+                                    ${Array.from({ length: 5 }).map((_, i) => 
+                                        `<i class="fas fa-star ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}"></i>`
+                                    ).join('')}
+                                    <span class="text-xs text-gray-500 ml-1">(${product.rating})</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-4 pb-4">
+                            <a href="${product.link}" class="block w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                                <i class="fas fa-shopping-cart mr-2"></i> Comprar
+                            </a>
+                        </div>
+                    </div>
+                `;
+                carouselTrack.appendChild(item);
             });
-
-            // Type filter
-            elements.typeFilter.addEventListener('click', function(e) {
-                if (e.target.classList.contains('type-option')) {
-                    e.target.classList.toggle('selected');
-                    updateTypeFilters();
-                }
-            });
-
-            // Brand filter
-            elements.brandFilter.addEventListener('change', function() {
-                updateBrandFilters();
-            });
-
-            // Condition filter
-            elements.conditionFilter.addEventListener('change', function() {
-                updateConditionFilters();
-            });
-
-            // Features filter
-            elements.featuresFilter.addEventListener('change', function() {
-                updateFeatureFilters();
-            });
-
-            // Apply filters button
-            elements.applyFilters.addEventListener('click', function() {
-                currentState.currentPage = 1;
-                applyFilters();
-            });
-
-            // Reset filters button
-            elements.resetFilters.addEventListener('click', resetFilters);
-
-            // Search functionality
-            elements.searchBtn.addEventListener('click', function() {
-                currentState.filters.searchQuery = elements.searchInput.value.trim().toLowerCase();
-                currentState.currentPage = 1;
-                applyFilters();
-            });
-
-            elements.searchInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    currentState.filters.searchQuery = elements.searchInput.value.trim().toLowerCase();
-                    currentState.currentPage = 1;
-                    applyFilters();
-                }
-            });
-
-            // Sorting
-            elements.sortBy.addEventListener('change', function() {
-                currentState.filters.sortBy = this.value;
-                applyFilters();
-            });
-
-            // Carousel navigation
-            elements.carouselPrev.addEventListener('click', navigateCarousel);
-            elements.carouselNext.addEventListener('click', navigateCarousel);
-
-            // Categories dropdown
-            document.getElementById('categories-btn').addEventListener('click', function() {
-                document.getElementById('category-dropdown').parentElement.classList.toggle('show-categories');
-            });
-
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function(event) {
-                if (!event.target.closest('.relative')) {
-                    document.getElementById('category-dropdown').parentElement.classList.remove('show-categories');
-                }
-            });
-
-            // Logout button
-            document.getElementById('logout-btn').addEventListener('click', function() {
-                alert('Você foi desconectado com sucesso!');
-            });
-        }
-
-        // Update type filters based on selected options
-        function updateTypeFilters() {
-            const selectedTypes = Array.from(document.querySelectorAll('.type-option.selected'));
-            currentState.filters.types = selectedTypes.map(el => el.dataset.type);
-        }
-
-        // Update brand filters based on checked boxes
-        function updateBrandFilters() {
-            const checkedBrands = Array.from(document.querySelectorAll('.brand-checkbox:checked'));
-            currentState.filters.brands = checkedBrands.map(el => el.value);
-        }
-
-        // Update condition filters based on checked boxes
-        function updateConditionFilters() {
-            const checkedConditions = Array.from(document.querySelectorAll('#condition-filter input:checked'));
-            currentState.filters.conditions = checkedConditions.map(el => el.value);
-        }
-
-        // Update feature filters based on checked boxes
-        function updateFeatureFilters() {
-            const checkedFeatures = Array.from(document.querySelectorAll('#features-filter input:checked'));
-            currentState.filters.features = checkedFeatures.map(el => el.value);
-        }
-
-        // Apply all filters and render products
-        function applyFilters() {
-            // Show loading spinner
-            elements.loadingSpinner.style.display = 'block';
-            elements.productsGrid.style.display = 'none';
+                    
+            // Set carousel width based on number of items
+            const itemCount = featuredInstruments.length;
+            const itemWidth = 100 / 3; // Show 3 items at a time
+            carouselTrack.style.width = `${itemCount * itemWidth}%`;
             
-            // Simulate API call delay
-            setTimeout(() => {
-                // Filter products based on current filters
-                currentState.filteredProducts = productsDatabase.filter(product => {
-                    // Price filter
-                    if (product.price < currentState.filters.minPrice || product.price > currentState.filters.maxPrice) {
-                        return false;
+            // Initialize carousel position
+            let currentPosition = 0;
+            const maxPosition = Math.max(0, itemCount - 3);
+            
+            // Update carousel position
+            function updateCarousel() {
+                carouselTrack.style.transform = `translateX(-${currentPosition * itemWidth}%)`;
+            }
+            
+            // Next button click handler
+            carouselNext.addEventListener('click', () => {
+                if (currentPosition < maxPosition) {
+                    currentPosition++;
+                } else {
+                    currentPosition = 0; // Loop back to start
+                }
+                updateCarousel();
+            });
+            
+            // Previous button click handler
+            carouselPrev.addEventListener('click', () => {
+                if (currentPosition > 0) {
+                    currentPosition--;
+                } else {
+                    currentPosition = maxPosition; // Loop to end
+                }
+                updateCarousel();
+            });
+            
+            // Auto-advance carousel
+            let autoAdvance = setInterval(() => {
+                if (currentPosition < maxPosition) {
+                    currentPosition++;
+                } else {
+                    currentPosition = 0;
+                }
+                updateCarousel();
+            }, 5000);
+            
+            // Pause auto-advance on hover
+            carousel.addEventListener('mouseenter', () => {
+                clearInterval(autoAdvance);
+            });
+            
+            // Resume auto-advance when mouse leaves
+            carousel.addEventListener('mouseleave', () => {
+                autoAdvance = setInterval(() => {
+                    if (currentPosition < maxPosition) {
+                        currentPosition++;
+                    } else {
+                        currentPosition = 0;
                     }
-                    
-                    // Type filter
-                    if (currentState.filters.types.length > 0 && !currentState.filters.types.includes(product.type)) {
-                        return false;
-                    }
-                    
-                    // Brand filter
-                    if (currentState.filters.brands.length > 0 && !currentState.filters.brands.includes(product.brand)) {
-                        return false;
-                    }
-                    
-                    // Condition filter
-                    if (currentState.filters.conditions.length > 0 && !currentState.filters.conditions.includes(product.condition)) {
-                        return false;
-                    }
-                    
-                    // Features filter
-                    if (currentState.filters.features.length > 0) {
-                        const hasAllFeatures = currentState.filters.features.every(feature => 
-                            product.features.includes(feature)
-                        );
-                        if (!hasAllFeatures) return false;
-                    }
-                    
-                    // Search query
-                    if (currentState.filters.searchQuery && 
-                        !product.title.toLowerCase().includes(currentState.filters.searchQuery) &&
-                        !product.brand.toLowerCase().includes(currentState.filters.searchQuery)) {
-                        return false;
-                    }
-                    
-                    return true;
-                });
+                    updateCarousel();
+                }, 5000);
+            });
+            
+            // Initialize carousel position
+            updateCarousel();
+        }
+
+        // Filter products based on current filters
+        function filterProducts() {
+            filteredProducts = musicProducts.filter(product => {
+                // Filter by price
+                const priceToCompare = product.discount > 0 
+                    ? product.price * (1 - product.discount)
+                    : product.price;
                 
-                // Sort products
-                sortProducts();
+                if (priceToCompare > currentFilters.maxPrice) {
+                    return false;
+                }
                 
-                // Update product count
-                updateProductCount();
+                // Filter by color
+                if (currentFilters.colors.length > 0 && 
+                    !currentFilters.colors.some(color => product.colors.includes(color))) {
+                    return false;
+                }
                 
-                // Render products
-                renderProducts();
+                // Filter by type
+                if (currentFilters.types.length > 0 && 
+                    !currentFilters.types.includes(product.type)) {
+                    return false;
+                }
                 
-                // Render pagination
-                renderPagination();
+                // Filter by brand
+                if (currentFilters.brands.length > 0 && 
+                    !currentFilters.brands.includes(product.brand)) {
+                    return false;
+                }
                 
-                // Hide loading spinner
-                elements.loadingSpinner.style.display = 'none';
-                elements.productsGrid.style.display = 'grid';
-            }, 500);
+                // Filter by search term
+                if (currentFilters.searchTerm && 
+                    !product.name.toLowerCase().includes(currentFilters.searchTerm.toLowerCase()) &&
+                    !product.brand.toLowerCase().includes(currentFilters.searchTerm.toLowerCase())) {
+                    return false;
+                }
+                
+                return true;
+            });
+            
+            // Sort products
+            sortProducts();
+            
+            // Update product count
+            updateProductCount();
+            
+            // Render products
+            renderProducts();
+            
+            // Update pagination
+            updatePagination();
         }
 
         // Sort products based on current sort option
         function sortProducts() {
-            switch(currentState.filters.sortBy) {
+            switch(currentFilters.sortBy) {
                 case 'price-low':
-                    currentState.filteredProducts.sort((a, b) => a.price - b.price);
+                    filteredProducts.sort((a, b) => {
+                        const priceA = a.discount > 0 ? a.price * (1 - a.discount) : a.price;
+                        const priceB = b.discount > 0 ? b.price * (1 - b.discount) : b.price;
+                        return priceA - priceB;
+                    });
                     break;
                 case 'price-high':
-                    currentState.filteredProducts.sort((a, b) => b.price - a.price);
+                    filteredProducts.sort((a, b) => {
+                        const priceA = a.discount > 0 ? a.price * (1 - a.discount) : a.price;
+                        const priceB = b.discount > 0 ? b.price * (1 - b.discount) : b.price;
+                        return priceB - priceA;
+                    });
                     break;
-                case 'best-rated':
-                    currentState.filteredProducts.sort((a, b) => b.rating - a.rating);
+                case 'rating':
+                    filteredProducts.sort((a, b) => b.rating - a.rating);
                     break;
                 case 'newest':
-                    // Assuming newer products have higher IDs (for demo purposes)
-                    currentState.filteredProducts.sort((a, b) => b.id - a.id);
+                    filteredProducts.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
                     break;
-                case 'best-sellers':
+                case 'popular':
                 default:
-                    currentState.filteredProducts.sort((a, b) => {
-                        // Sort by bestSeller first, then by reviews count
-                        if (a.bestSeller && !b.bestSeller) return -1;
-                        if (!a.bestSeller && b.bestSeller) return 1;
-                        return b.reviews - a.reviews;
-                    });
+                    filteredProducts.sort((a, b) => b.popularity - a.popularity);
+                    break;
             }
         }
 
-        // Update the product count display
-        function updateProductCount() {
-            const count = currentState.filteredProducts.length;
-            elements.productCount.textContent = count === 0 ? 
-                'Nenhum produto encontrado' : 
-                `Mostrando ${Math.min(count, currentState.productsPerPage)} de ${count} produtos`;
-        }
-
-        // Render products to the grid
+        // Render products based on current filters and page
         function renderProducts() {
-            elements.productsGrid.innerHTML = '';
+            productsGrid.innerHTML = '';
             
-            const startIndex = (currentState.currentPage - 1) * currentState.productsPerPage;
-            const endIndex = startIndex + currentState.productsPerPage;
-            const productsToDisplay = currentState.filteredProducts.slice(startIndex, endIndex);
+            // Calculate pagination
+            const startIndex = (currentPage - 1) * productsPerPage;
+            const endIndex = startIndex + productsPerPage;
+            const productsToShow = filteredProducts.slice(startIndex, endIndex);
             
-            if (productsToDisplay.length === 0) {
-                elements.productsGrid.innerHTML = `
+            if (productsToShow.length === 0) {
+                productsGrid.innerHTML = `
                     <div class="col-span-full text-center py-10">
-                        <i class="fas fa-search fa-3x text-gray-300 mb-4"></i>
+                        <i class="fas fa-guitar text-4xl text-gray-300 mb-4"></i>
                         <h3 class="text-xl font-medium text-gray-700">Nenhum produto encontrado</h3>
                         <p class="text-gray-500 mt-2">Tente ajustar seus filtros de busca</p>
-                        <button id="reset-filters-btn" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
-                            Limpar Filtros
-                        </button>
                     </div>
                 `;
-                
-                document.getElementById('reset-filters-btn').addEventListener('click', resetFilters);
                 return;
             }
             
-            productsToDisplay.forEach(product => {
-                const productCard = createProductCard(product);
-                elements.productsGrid.appendChild(productCard);
-            });
-        }
-
-        // Create a product card element
-        function createProductCard(product) {
-            const discountPercent = product.oldPrice ? 
-                Math.round((1 - product.price / product.oldPrice) * 100) : 0;
-            
-            const card = document.createElement('div');
-            card.className = 'bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition relative';
-            card.innerHTML = `
-                ${discountPercent > 0 ? `<div class="discount-badge">-${discountPercent}%</div>` : ''}
-                <div class="p-4">
-                    <img src="${product.image}" alt="${product.title}" class="w-full h-64 object-cover">
-                    <div class="mt-4">
-                        <h3 class="font-semibold text-lg text-gray-800">${product.title}</h3>
-                        <p class="text-gray-500 text-sm">${product.brand}</p>
-                        <div class="flex items-center mt-2">
-                            ${generateRatingStars(product.rating)}
-                            <span class="text-gray-500 text-sm ml-2">(${product.reviews})</span>
-                        </div>
-                        <div class="mt-3">
-                            ${product.oldPrice ? `<span class="text-gray-500 line-through text-sm">R$ ${product.oldPrice.toFixed(2).replace('.', ',')}</span>` : ''}
-                            <div class="flex items-baseline">
-                                <span class="text-xl font-bold text-gray-800">R$ ${product.price.toFixed(2).replace('.', ',')}</span>
-                                <span class="text-green-600 text-sm ml-2">à vista</span>
+            productsToShow.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition h-full flex flex-col product-card';
+                
+                // Calculate discounted price if applicable
+                const discountedPrice = product.discount > 0 
+                    ? product.price * (1 - product.discount)
+                    : null;
+                
+                productCard.innerHTML = `
+                    ${product.discount > 0 ? 
+                        `<div class="absolute bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-br-lg">
+                            ${Math.round(product.discount * 100)}% OFF
+                        </div>` : ''}
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+                    <div class="p-4 flex-grow">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-1">${product.name}</h3>
+                        <p class="text-gray-600 text-sm mb-2">${product.brand}</p>
+                        <div class="flex flex-col">
+                            ${discountedPrice ? 
+                                `<div class="flex items-center">
+                                    <span class="text-lg font-bold text-blue-500">${formatPrice(discountedPrice)}</span>
+                                    <span class="text-sm text-gray-500 line-through ml-2">${formatPrice(product.price)}</span>
+                                </div>` :
+                                `<span class="text-lg font-bold text-blue-500">${formatPrice(product.price)}</span>`
+                            }
+                            <div class="flex items-center mt-1">
+                                ${Array.from({ length: 5 }).map((_, i) => 
+                                    `<i class="fas fa-star ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}"></i>`
+                                ).join('')}
+                                <span class="text-xs text-gray-500 ml-1">(${product.rating})</span>
                             </div>
-                            <p class="text-gray-500 text-sm">ou ${Math.ceil(product.price / 300)}x de R$ ${(product.price / Math.ceil(product.price / 300)).toFixed(2).replace('.', ',')}</p>
                         </div>
                     </div>
-                </div>
-                <div class="product-actions p-4 bg-gray-50 border-t border-gray-200">
-                    <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center add-to-cart" data-id="${product.id}">
-                        <i class="fas fa-shopping-cart mr-2"></i> Adicionar ao Carrinho
-                    </button>
-                    <button class="w-full mt-2 bg-white border border-blue-500 text-blue-500 py-2 rounded-lg hover:bg-blue-50 transition flex items-center justify-center add-to-wishlist" data-id="${product.id}">
-                        <i class="fas fa-heart mr-2"></i> Favoritar
-                    </button>
-                </div>
-            `;
-            
-            // Add event listeners to buttons
-            card.querySelector('.add-to-cart').addEventListener('click', function() {
-                addToCart(product.id);
+                    <div class="px-4 pb-4">
+                        <a href="${product.link}" class="block w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                            <i class="fas fa-shopping-cart mr-2"></i> Comprar
+                        </a>
+                    </div>
+                `;
+                productsGrid.appendChild(productCard);
             });
-            
-            card.querySelector('.add-to-wishlist').addEventListener('click', function() {
-                addToWishlist(product.id);
-            });
-            
-            return card;
         }
 
-        // Generate rating stars HTML
-        function generateRatingStars(rating) {
-            let stars = '';
-            const fullStars = Math.floor(rating);
-            const hasHalfStar = rating % 1 >= 0.5;
-            
-            for (let i = 0; i < fullStars; i++) {
-                stars += '<i class="fas fa-star"></i>';
-            }
-            
-            if (hasHalfStar) {
-                stars += '<i class="fas fa-star-half-alt"></i>';
-            }
-            
-            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-            for (let i = 0; i < emptyStars; i++) {
-                stars += '<i class="far fa-star"></i>';
-            }
-            
-            return stars;
+        // Update product count display
+        function updateProductCount() {
+            const totalProducts = filteredProducts.length;
+            const showingProducts = Math.min(productsPerPage, totalProducts - (currentPage - 1) * productsPerPage);
+            productCount.textContent = `Mostrando ${showingProducts} de ${totalProducts} produtos`;
         }
 
-        // Render pagination controls
-        function renderPagination() {
-            elements.pagination.innerHTML = '';
+        // Update pagination controls
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+            pagination.innerHTML = '';
             
-            const pageCount = Math.ceil(currentState.filteredProducts.length / currentState.productsPerPage);
-            
-            if (pageCount <= 1) return;
+            if (totalPages <= 1) return;
             
             // Previous button
-            const prevButton = document.createElement('a');
-            prevButton.href = '#';
-            prevButton.className = `px-3 py-2 rounded-l-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 ${currentState.currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}`;
-            prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
-            prevButton.addEventListener('click', function(e) {
-                e.preventDefault();
-                if (currentState.currentPage > 1) {
-                    currentState.currentPage--;
-                    applyFilters();
-                    window.scrollTo({ top: elements.productsGrid.offsetTop - 100, behavior: 'smooth' });
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 prev-btn';
+            prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderProducts();
+                    updatePagination();
                 }
             });
-            elements.pagination.appendChild(prevButton);
+            pagination.appendChild(prevBtn);
             
-            // Page numbers
-            for (let i = 1; i <= pageCount; i++) {
-                const pageLink = document.createElement('a');
-                pageLink.href = '#';
-                pageLink.className = `px-4 py-2 border-t border-b border-gray-300 bg-white ${currentState.currentPage === i ? 'text-blue-600 font-medium' : 'text-gray-500 hover:bg-gray-50'}`;
-                pageLink.textContent = i;
-                pageLink.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    currentState.currentPage = i;
-                    applyFilters();
-                    window.scrollTo({ top: elements.productsGrid.offsetTop - 100, behavior: 'smooth' });
+            // Page buttons
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = startPage + maxVisiblePages - 1;
+            
+            if (endPage > totalPages) {
+                endPage = totalPages;
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+            
+            if (startPage > 1) {
+                const firstPageBtn = document.createElement('button');
+                firstPageBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100';
+                firstPageBtn.textContent = '1';
+                firstPageBtn.addEventListener('click', () => {
+                    currentPage = 1;
+                    renderProducts();
+                    updatePagination();
                 });
-                elements.pagination.appendChild(pageLink);
+                pagination.appendChild(firstPageBtn);
+                
+                if (startPage > 2) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.className = 'px-2';
+                    ellipsis.textContent = '...';
+                    pagination.appendChild(ellipsis);
+                }
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100 ${i === currentPage ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.addEventListener('click', () => {
+                    currentPage = i;
+                    renderProducts();
+                    updatePagination();
+                });
+                pagination.appendChild(pageBtn);
+            }
+            
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.className = 'px-2';
+                    ellipsis.textContent = '...';
+                    pagination.appendChild(ellipsis);
+                }
+                
+                const lastPageBtn = document.createElement('button');
+                lastPageBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100';
+                lastPageBtn.textContent = totalPages;
+                lastPageBtn.addEventListener('click', () => {
+                    currentPage = totalPages;
+                    renderProducts();
+                    updatePagination();
+                });
+                pagination.appendChild(lastPageBtn);
             }
             
             // Next button
-            const nextButton = document.createElement('a');
-            nextButton.href = '#';
-            nextButton.className = `px-3 py-2 rounded-r-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50 ${currentState.currentPage === pageCount ? 'opacity-50 cursor-not-allowed' : ''}`;
-            nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
-            nextButton.addEventListener('click', function(e) {
-                e.preventDefault();
-                if (currentState.currentPage < pageCount) {
-                    currentState.currentPage++;
-                    applyFilters();
-                    window.scrollTo({ top: elements.productsGrid.offsetTop - 100, behavior: 'smooth' });
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 next-btn';
+            nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderProducts();
+                    updatePagination();
                 }
             });
-            elements.pagination.appendChild(nextButton);
+            pagination.appendChild(nextBtn);
         }
 
-        // Reset all filters to default
-        function resetFilters() {
-            // Reset price range
-            elements.priceRange.value = 2500;
-            currentState.filters.minPrice = 100;
-            currentState.filters.maxPrice = 10000;
-            elements.minPriceDisplay.textContent = 'R$ 100';
-            
-            // Reset type filter
-            document.querySelectorAll('.type-option').forEach(option => {
-                option.classList.remove('selected');
-            });
-            currentState.filters.types = [];
-            
-            // Reset brand filter
-            document.querySelectorAll('.brand-checkbox').forEach(checkbox => {
-                checkbox.checked = false;
-            });
-            document.getElementById('fender').checked = true;
-            document.getElementById('yamaha').checked = true;
-            currentState.filters.brands = ['Fender', 'Yamaha'];
-            
-            // Reset condition filter
-            document.querySelectorAll('#condition-filter input').forEach(checkbox => {
-                checkbox.checked = false;
-            });
-            document.getElementById('new').checked = true;
-            currentState.filters.conditions = ['new'];
-            
-            // Reset features filter
-            document.querySelectorAll('#features-filter input').forEach(checkbox => {
-                checkbox.checked = false;
-            });
-            document.getElementById('acoustic').checked = true;
-            document.getElementById('electric').checked = true;
-            currentState.filters.features = ['acoustic', 'electric'];
-            
-            // Reset search
-            elements.searchInput.value = '';
-            currentState.filters.searchQuery = '';
-            
-            // Reset sort
-            elements.sortBy.value = 'best-sellers';
-            currentState.filters.sortBy = 'best-sellers';
-            
-            // Reset pagination
-            currentState.currentPage = 1;
-            
-            // Apply reset filters
-            applyFilters();
-        }
-
-        // Add product to cart
-        function addToCart(productId) {
-            const product = productsDatabase.find(p => p.id === productId);
-            if (product) {
-                alert(`"${product.title}" foi adicionado ao carrinho!`);
-                // In a real app, you would add to a cart array or make an API call
-            }
-        }
-
-        // Add product to wishlist
-        function addToWishlist(productId) {
-            const product = productsDatabase.find(p => p.id === productId);
-            if (product) {
-                alert(`"${product.title}" foi adicionado aos favoritos!`);
-                // In a real app, you would add to a wishlist array or make an API call
-            }
-        }
-
-        // Load featured products into carousel
-        function loadFeaturedProducts() {
-            // Get 6 best-selling products
-            const featuredProducts = [...productsDatabase]
-                .sort((a, b) => b.reviews - a.reviews)
-                .slice(0, 6);
-            
-            // Clear existing items
-            elements.carouselTrack.innerHTML = '';
-            
-            // Add new items
-            featuredProducts.forEach(product => {
-                const discountPercent = product.oldPrice ? 
-                    Math.round((1 - product.price / product.oldPrice) * 100) : 0;
-                
-                const carouselItem = document.createElement('div');
-                carouselItem.className = 'carousel-item';
-                carouselItem.innerHTML = `
-                    <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition relative">
-                        ${discountPercent > 0 ? `<div class="discount-badge">-${discountPercent}%</div>` : ''}
-                        <div class="p-4">
-                            <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-cover">
-                            <div class="mt-4">
-                                <h3 class="font-semibold text-lg text-gray-800">${product.title}</h3>
-                                <p class="text-gray-500 text-sm">${product.brand}</p>
-                                <div class="flex items-center mt-2">
-                                    ${generateRatingStars(product.rating)}
-                                    <span class="text-gray-500 text-sm ml-2">(${product.reviews})</span>
-                                </div>
-                                <div class="mt-3">
-                                    ${product.oldPrice ? `<span class="text-gray-500 line-through text-sm">R$ ${product.oldPrice.toFixed(2).replace('.', ',')}</span>` : ''}
-                                    <div class="flex items-baseline">
-                                        <span class="text-xl font-bold text-gray-800">R$ ${product.price.toFixed(2).replace('.', ',')}</span>
-                                        <span class="text-green-600 text-sm ml-2">à vista</span>
-                                    </div>
-                                    <p class="text-gray-500 text-sm">ou ${Math.ceil(product.price / 300)}x de R$ ${(product.price / Math.ceil(product.price / 300)).toFixed(2).replace('.', ',')}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="product-actions p-4 bg-gray-50 border-t border-gray-200">
-                            <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center add-to-cart-featured" data-id="${product.id}">
-                                <i class="fas fa-shopping-cart mr-2"></i> Adicionar ao Carrinho
-                            </button>
-                        </div>
-                    </div>
-                `;
-                
-                elements.carouselTrack.appendChild(carouselItem);
-            });
-            
-            // Add event listeners to carousel buttons
-            document.querySelectorAll('.add-to-cart-featured').forEach(button => {
-                button.addEventListener('click', function() {
-                    const productId = parseInt(this.getAttribute('data-id'));
-                    addToCart(productId);
+        // Initialize event listeners
+        function initEventListeners() {
+            // Color selection functionality
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    option.classList.toggle('selected');
+                    updateColorFilters();
                 });
             });
             
-            // Initialize carousel position
-            currentPosition = 0;
-        }
-
-        // Carousel navigation
-        let currentPosition = 0;
-        function navigateCarousel(e) {
-            const carousel = document.getElementById('carousel-track');
-            const itemCount = document.querySelectorAll('.carousel-item').length;
-            const screenWidth = window.innerWidth;
-            let visibleItems, itemWidth;
+            // Type filter checkboxes
+            document.querySelectorAll('.type-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateTypeFilters();
+                });
+            });
             
-            if (screenWidth <= 640) {
-                visibleItems = 1;
-                itemWidth = 100;
-            } else if (screenWidth <= 1024) {
-                visibleItems = 2;
-                itemWidth = 50;
-            } else {
-                visibleItems = 3;
-                itemWidth = 33.333;
-            }
+            // Brand filter checkboxes
+            document.querySelectorAll('#brand-filters input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateBrandFilters();
+                });
+            });
             
-            if (e.target.id === 'carousel-next' || e.target.parentElement.id === 'carousel-next') {
-                if (currentPosition > -(itemWidth * (itemCount - visibleItems))) {
-                    currentPosition -= itemWidth;
-                    carousel.style.transform = `translateX(${currentPosition}%)`;
+            // Price range slider
+            priceRange.addEventListener('input', (e) => {
+                maxPriceDisplay.textContent = `R$ ${e.target.value}`;
+            });
+            
+            // Apply filters button
+            applyFiltersBtn.addEventListener('click', () => {
+                currentFilters.maxPrice = parseInt(priceRange.value);
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Reset filters button
+            resetFiltersBtn.addEventListener('click', () => {
+                // Reset all checkboxes
+                document.querySelectorAll('.type-checkbox').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                
+                document.querySelectorAll('#brand-filters input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                
+                // Reset color selections
+                document.querySelectorAll('.color-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                
+                // Reset price range
+                priceRange.value = 10000;
+                maxPriceDisplay.textContent = 'R$ 10000';
+                
+                // Reset search
+                searchInput.value = '';
+                
+                // Reset sort
+                sortBy.value = 'popular';
+                
+                // Reset filters state
+                currentFilters = {
+                    colors: [],
+                    types: [],
+                    brands: [],
+                    maxPrice: 10000,
+                    searchTerm: '',
+                    sortBy: 'popular'
+                };
+                
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Sort by dropdown
+            sortBy.addEventListener('change', (e) => {
+                currentFilters.sortBy = e.target.value;
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Search functionality
+            searchBtn.addEventListener('click', () => {
+                currentFilters.searchTerm = searchInput.value.trim();
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Allow search on Enter key
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    currentFilters.searchTerm = searchInput.value.trim();
+                    currentPage = 1;
+                    filterProducts();
                 }
-            } else {
-                if (currentPosition < 0) {
-                    currentPosition += itemWidth;
-                    carousel.style.transform = `translateX(${currentPosition}%)`;
+            });
+            
+            // Toggle categories dropdown
+            categoriesBtn.addEventListener('click', () => {
+                document.querySelector('.relative').classList.toggle('show-categories');
+            });
+            
+            // Close categories dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.relative') && !e.target.closest('#categories-btn')) {
+                    document.querySelector('.relative').classList.remove('show-categories');
                 }
-            }
+            });
+            
+            // Logout button
+            logoutBtn.addEventListener('click', () => {
+                if (confirm('Tem certeza que deseja sair?')) {
+                    // In a real application, this would clear session and redirect
+                    alert('Você foi desconectado.');
+                    // window.location.href = 'login.html';
+                }
+            });
+        }
+        
+        // Update color filters based on selected colors
+        function updateColorFilters() {
+            currentFilters.colors = Array.from(document.querySelectorAll('.color-option.selected'))
+                .map(option => option.getAttribute('data-color'));
+        }
+        
+        // Update type filters based on checked types
+        function updateTypeFilters() {
+            currentFilters.types = Array.from(document.querySelectorAll('.type-checkbox:checked'))
+                .map(checkbox => checkbox.value);
+        }
+        
+        // Update brand filters based on checked brands
+        function updateBrandFilters() {
+            currentFilters.brands = Array.from(document.querySelectorAll('#brand-filters input[type="checkbox"]:checked'))
+                .map(checkbox => checkbox.value);
         }
 
-        // Responsive carousel
-        function updateCarousel() {
-            const screenWidth = window.innerWidth;
-            const carouselTrack = document.getElementById('carousel-track');
-            const itemCount = document.querySelectorAll('.carousel-item').length;
-            
-            if (screenWidth <= 640) {
-                carouselTrack.style.width = `${itemCount * 100}%`;
-            } else if (screenWidth <= 1024) {
-                carouselTrack.style.width = `${itemCount * 50}%`;
-            } else {
-                carouselTrack.style.width = `${itemCount * 33.333}%`;
-            }
-            
-            // Reset position on resize
-            currentPosition = 0;
-            carouselTrack.style.transform = `translateX(${currentPosition}%)`;
+        // Initialize the page
+        function init() {
+            initCarousel();
+            filterProducts();
+            initEventListeners();
         }
 
-        // Initialize the page when loaded
-        window.addEventListener('load', init);
-        window.addEventListener('resize', updateCarousel);
+        // Start the application
+        init();
     </script>
 </body>
 </html>

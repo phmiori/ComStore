@@ -125,6 +125,28 @@
             border-color: #3b82f6;
             transform: scale(1.1);
         }
+        
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .pagination-btn {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .pagination-btn:hover:not(.active) {
+            background-color: #f1f5f9;
+        }
+        
+        .active {
+            background-color: #3b82f6;
+            color: white;
+        }
     </style>
 </head>
 <body class="bg-gray-100 font-sans">
@@ -205,12 +227,12 @@
             <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Calçados</h1>
             <div class="flex items-center">
                 <span class="text-gray-600 mr-2">Ordenar por:</span>
-                <select class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option>Mais vendidos</option>
-                    <option>Menor preço</option>
-                    <option>Maior preço</option>
-                    <option>Melhor avaliados</option>
-                    <option>Novidades</option>
+                <select id="sort-by" class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="popular">Mais vendidos</option>
+                    <option value="price-low">Menor preço</option>
+                    <option value="price-high">Maior preço</option>
+                    <option value="rating">Melhor avaliados</option>
+                    <option value="newest">Novidades</option>
                 </select>
             </div>
         </div>
@@ -224,39 +246,39 @@
                     <!-- Price range filter -->
                     <div class="mb-6">
                         <h3 class="font-medium mb-3 text-gray-700">Faixa de preço</h3>
-                        <input type="range" min="50" max="1000" value="500" class="price-range-slider mb-3">
+                        <input type="range" id="price-range" min="50" max="1000" value="1000" class="price-range-slider mb-3">
                         <div class="flex justify-between text-sm text-gray-600">
                             <span>R$ 50</span>
-                            <span>R$ 1000</span>
+                            <span id="max-price-display">R$ 1000</span>
                         </div>
                     </div>
                     
                     <!-- Size filter -->
                     <div class="mb-6">
                         <h3 class="font-medium mb-3 text-gray-700">Tamanho</h3>
-                        <div class="flex flex-wrap">
-                            <input type="checkbox" id="size-36" class="size-checkbox">
+                        <div class="flex flex-wrap" id="size-filters">
+                            <input type="checkbox" id="size-36" class="size-checkbox" value="36">
                             <label for="size-36" class="size-label">36</label>
                             
-                            <input type="checkbox" id="size-37" class="size-checkbox">
+                            <input type="checkbox" id="size-37" class="size-checkbox" value="37">
                             <label for="size-37" class="size-label">37</label>
                             
-                            <input type="checkbox" id="size-38" class="size-checkbox">
+                            <input type="checkbox" id="size-38" class="size-checkbox" value="38">
                             <label for="size-38" class="size-label">38</label>
                             
-                            <input type="checkbox" id="size-39" class="size-checkbox">
+                            <input type="checkbox" id="size-39" class="size-checkbox" value="39">
                             <label for="size-39" class="size-label">39</label>
                             
-                            <input type="checkbox" id="size-40" class="size-checkbox">
+                            <input type="checkbox" id="size-40" class="size-checkbox" value="40">
                             <label for="size-40" class="size-label">40</label>
                             
-                            <input type="checkbox" id="size-41" class="size-checkbox">
+                            <input type="checkbox" id="size-41" class="size-checkbox" value="41">
                             <label for="size-41" class="size-label">41</label>
                             
-                            <input type="checkbox" id="size-42" class="size-checkbox">
+                            <input type="checkbox" id="size-42" class="size-checkbox" value="42">
                             <label for="size-42" class="size-label">42</label>
                             
-                            <input type="checkbox" id="size-43" class="size-checkbox">
+                            <input type="checkbox" id="size-43" class="size-checkbox" value="43">
                             <label for="size-43" class="size-label">43</label>
                         </div>
                     </div>
@@ -264,7 +286,7 @@
                     <!-- Color filter -->
                     <div class="mb-6">
                         <h3 class="font-medium mb-3 text-gray-700">Cor</h3>
-                        <div class="flex flex-wrap">
+                        <div class="flex flex-wrap" id="color-filters">
                             <div class="color-option bg-black selected" data-color="black"></div>
                             <div class="color-option bg-white border border-gray-300" data-color="white"></div>
                             <div class="color-option bg-gray-500" data-color="gray"></div>
@@ -279,33 +301,36 @@
                     <!-- Brand filter -->
                     <div class="mb-6">
                         <h3 class="font-medium mb-3 text-gray-700">Marca</h3>
-                        <div class="space-y-2">
+                        <div class="space-y-2" id="brand-filters">
                             <div class="flex items-center">
-                                <input type="checkbox" id="nike" class="mr-2">
+                                <input type="checkbox" id="nike" class="mr-2" value="Nike">
                                 <label for="nike" class="text-gray-600">Nike</label>
                             </div>
                             <div class="flex items-center">
-                                <input type="checkbox" id="adidas" class="mr-2">
+                                <input type="checkbox" id="adidas" class="mr-2" value="Adidas">
                                 <label for="adidas" class="text-gray-600">Adidas</label>
                             </div>
                             <div class="flex items-center">
-                                <input type="checkbox" id="puma" class="mr-2">
+                                <input type="checkbox" id="puma" class="mr-2" value="Puma">
                                 <label for="puma" class="text-gray-600">Puma</label>
                             </div>
                             <div class="flex items-center">
-                                <input type="checkbox" id="vans" class="mr-2">
+                                <input type="checkbox" id="vans" class="mr-2" value="Vans">
                                 <label for="vans" class="text-gray-600">Vans</label>
                             </div>
                             <div class="flex items-center">
-                                <input type="checkbox" id="converse" class="mr-2">
+                                <input type="checkbox" id="converse" class="mr-2" value="Converse">
                                 <label for="converse" class="text-gray-600">Converse</label>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Apply filters button -->
-                    <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
+                    <button id="apply-filters" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
                         Aplicar Filtros
+                    </button>
+                    <button id="reset-filters" class="w-full mt-2 bg-gray-200 text-gray-800 py-2 rounded-lg hover:bg-gray-300 transition">
+                        Limpar Filtros
                     </button>
                 </div>
                 
@@ -368,7 +393,7 @@
                 <section>
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-2xl font-bold text-gray-800">Todos os Calçados</h2>
-                        <span class="text-gray-500">Mostrando 24 de 120 produtos</span>
+                        <span id="product-count" class="text-gray-500">Mostrando 12 de 12 produtos</span>
                     </div>
                     
                     <div class="product-grid" id="products-grid">
@@ -377,16 +402,16 @@
                     
                     <!-- Pagination -->
                     <div class="flex justify-center mt-8">
-                        <nav class="flex items-center space-x-1">
-                            <button class="px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100">
+                        <nav class="flex items-center space-x-1" id="pagination">
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 prev-btn">
                                 <i class="fas fa-chevron-left"></i>
                             </button>
-                            <button class="px-3 py-1 rounded-lg bg-blue-500 text-white">1</button>
-                            <button class="px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">2</button>
-                            <button class="px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">3</button>
-                            <button class="px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">4</button>
-                            <button class="px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">5</button>
-                            <button class="px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100">
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100 active">1</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">2</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">3</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">4</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">5</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 next-btn">
                                 <i class="fas fa-chevron-right"></i>
                             </button>
                         </nav>
@@ -444,6 +469,7 @@
         const shoesProducts = [
             {
                 id: 1,
+                link: "https://www.mercadolivre.com.br/faca-tatica-c-baioneta-m16-explorer-sobrevivncia-militar-cor-verde-escuro/p/MLB28889175?searchVariation=MLB28889175#polycard_client=search-nordic&searchVariation=MLB28889175&wid=MLB3545197265&position=7&search_layout=stack&type=product&tracking_id=e2e127f6-ab5a-4dd2-b323-693a7bd8029d&sid=search",
                 name: "Tênis Nike Air Max",
                 price: 799.99,
                 category: "calcados",
@@ -453,10 +479,14 @@
                 image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
                 description: "Tênis esportivo com tecnologia Air Max para máximo conforto.",
                 rating: 4.8,
-                discount: 0.15
+                discount: 0.15,
+                featured: true,
+                popularity: 95,
+                dateAdded: "2023-05-15"
             },
             {
                 id: 2,
+                link: "https://produto.mercadolivre.com.br/MLB-3925542968-kit-pistola-taurus-247-airgun-c02-45mm-esfe-co2-oleo-_JM?variation=178540574598#reco_item_pos=1&reco_backend=item_decorator&reco_backend_type=function&reco_client=home_items-decorator-legacy&reco_id=94e8be45-3cfb-4d7a-85ff-866d4cbd0a84&reco_model=&c_id=/home/navigation-trends-recommendations/element&c_uid=43b544d0-b4c1-44d6-9d17-3aabe8228c5c&da_id=navigation_trend&da_position=3&id_origin=/home/dynamic_access&da_sort_algorithm=ranker",
                 name: "Tênis Adidas Ultraboost",
                 price: 899.99,
                 category: "calcados",
@@ -466,7 +496,10 @@
                 image: "https://images.unsplash.com/photo-1600269452121-1f5d14148cd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
                 description: "Tênis de corrida com amortecimento responsivo.",
                 rating: 4.9,
-                discount: 0.10
+                discount: 0.10,
+                featured: true,
+                popularity: 98,
+                dateAdded: "2023-06-20"
             },
             {
                 id: 3,
@@ -479,7 +512,10 @@
                 image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
                 description: "Tênis casual com design retrô e conforto moderno.",
                 rating: 4.5,
-                discount: 0.20
+                discount: 0.20,
+                featured: true,
+                popularity: 85,
+                dateAdded: "2023-04-10"
             },
             {
                 id: 4,
@@ -492,7 +528,10 @@
                 image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
                 description: "Clássico tênis skate com design icônico.",
                 rating: 4.7,
-                discount: 0
+                discount: 0,
+                featured: true,
+                popularity: 92,
+                dateAdded: "2023-03-05"
             },
             {
                 id: 5,
@@ -505,7 +544,10 @@
                 image: "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
                 description: "O clássico tênis All Star em versão moderna.",
                 rating: 4.6,
-                discount: 0.05
+                discount: 0.05,
+                featured: true,
+                popularity: 90,
+                dateAdded: "2023-02-18"
             },
             {
                 id: 6,
@@ -518,7 +560,10 @@
                 image: "https://images.unsplash.com/photo-1600269452121-1f5d14148cd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
                 description: "Tênis de corrida com amortecimento macio.",
                 rating: 4.4,
-                discount: 0.15
+                discount: 0.15,
+                featured: false,
+                popularity: 80,
+                dateAdded: "2023-07-12"
             },
             {
                 id: 7,
@@ -531,7 +576,10 @@
                 image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
                 description: "O icônico tênis com design de casca de bode.",
                 rating: 4.8,
-                discount: 0
+                discount: 0,
+                featured: false,
+                popularity: 88,
+                dateAdded: "2023-06-25"
             },
             {
                 id: 8,
@@ -544,7 +592,10 @@
                 image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
                 description: "Tênis casual com sola vulcanizada e design clássico.",
                 rating: 4.3,
-                discount: 0.25
+                discount: 0.25,
+                featured: false,
+                popularity: 75,
+                dateAdded: "2023-05-30"
             },
             {
                 id: 9,
@@ -557,7 +608,10 @@
                 image: "https://images.unsplash.com/photo-1600269452121-1f5d14148cd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
                 description: "Tênis cano alto com design clássico de skate.",
                 rating: 4.6,
-                discount: 0.10
+                discount: 0.10,
+                featured: false,
+                popularity: 82,
+                dateAdded: "2023-04-22"
             },
             {
                 id: 10,
@@ -570,7 +624,10 @@
                 image: "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
                 description: "Design inovador com sola plataforma.",
                 rating: 4.7,
-                discount: 0.15
+                discount: 0.15,
+                featured: false,
+                popularity: 87,
+                dateAdded: "2023-07-05"
             },
             {
                 id: 11,
@@ -583,7 +640,10 @@
                 image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
                 description: "O clássico tênis de basquete em couro premium.",
                 rating: 4.9,
-                discount: 0
+                discount: 0,
+                featured: false,
+                popularity: 96,
+                dateAdded: "2023-01-15"
             },
             {
                 id: 12,
@@ -596,7 +656,202 @@
                 image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
                 description: "Tênis urbano com tecnologia Boost para conforto.",
                 rating: 4.8,
-                discount: 0.20
+                discount: 0.20,
+                featured: false,
+                popularity: 93,
+                dateAdded: "2023-03-20"
+            },
+            {
+                id: 13,
+                name: "Tênis Nike Dunk Low",
+                price: 699.99,
+                category: "calcados",
+                brand: "Nike",
+                colors: ["black", "white", "green"],
+                sizes: [37, 38, 39, 40, 41, 42],
+                image: "https://images.unsplash.com/photo-1600269452121-1f5d14148cd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Tênis casual inspirado no basquete dos anos 80.",
+                rating: 4.7,
+                discount: 0,
+                featured: false,
+                popularity: 89,
+                dateAdded: "2023-06-10"
+            },
+            {
+                id: 14,
+                name: "Tênis Adidas Forum Low",
+                price: 649.99,
+                category: "calcados",
+                brand: "Adidas",
+                colors: ["white", "black", "blue"],
+                sizes: [37, 38, 39, 40, 41, 42],
+                image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Tênis clássico com alças de velcro.",
+                rating: 4.6,
+                discount: 0.10,
+                featured: false,
+                popularity: 84,
+                dateAdded: "2023-05-05"
+            },
+            {
+                id: 15,
+                name: "Tênis Puma Suede Classic",
+                price: 429.99,
+                category: "calcados",
+                brand: "Puma",
+                colors: ["black", "white", "red"],
+                sizes: [36, 37, 38, 39, 40, 41],
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Tênis icônico com cabedal em suede.",
+                rating: 4.4,
+                discount: 0.15,
+                featured: false,
+                popularity: 78,
+                dateAdded: "2023-04-15"
+            },
+            {
+                id: 16,
+                name: "Tênis Vans Authentic",
+                price: 349.99,
+                category: "calcados",
+                brand: "Vans",
+                colors: ["black", "white", "blue"],
+                sizes: [37, 38, 39, 40, 41, 42],
+                image: "https://images.unsplash.com/photo-1600269452121-1f5d14148cd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Tênis skate básico com solado waffle.",
+                rating: 4.5,
+                discount: 0,
+                featured: false,
+                popularity: 81,
+                dateAdded: "2023-03-28"
+            },
+            {
+                id: 17,
+                name: "Tênis Converse One Star",
+                price: 479.99,
+                category: "calcados",
+                brand: "Converse",
+                colors: ["black", "white", "yellow"],
+                sizes: [36, 37, 38, 39, 40, 41, 42],
+                image: "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Tênis casual com estrela lateral icônica.",
+                rating: 4.5,
+                discount: 0.05,
+                featured: false,
+                popularity: 79,
+                dateAdded: "2023-02-10"
+            },
+            {
+                id: 18,
+                name: "Tênis Nike Blazer Mid",
+                price: 749.99,
+                category: "calcados",
+                brand: "Nike",
+                colors: ["white", "black"],
+                sizes: [38, 39, 40, 41, 42, 43],
+                image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Tênis cano médio com design retrô.",
+                rating: 4.7,
+                discount: 0,
+                featured: false,
+                popularity: 86,
+                dateAdded: "2023-01-25"
+            },
+            {
+                id: 19,
+                name: "Tênis Adidas Stan Smith",
+                price: 499.99,
+                category: "calcados",
+                brand: "Adidas",
+                colors: ["white", "green"],
+                sizes: [37, 38, 39, 40, 41, 42],
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Tênis casual com detalhes em couro e logo verde.",
+                rating: 4.6,
+                discount: 0.10,
+                featured: false,
+                popularity: 83,
+                dateAdded: "2023-05-18"
+            },
+            {
+                id: 20,
+                name: "Tênis Puma Cali",
+                price: 529.99,
+                category: "calcados",
+                brand: "Puma",
+                colors: ["white", "black", "pink"],
+                sizes: [36, 37, 38, 39, 40, 41],
+                image: "https://images.unsplash.com/photo-1600269452121-1f5d14148cd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Tênis feminino com design inspirado na Califórnia.",
+                rating: 4.5,
+                discount: 0.15,
+                featured: false,
+                popularity: 77,
+                dateAdded: "2023-04-05"
+            },
+            {
+                id: 21,
+                name: "Tênis Vans Slip-On",
+                price: 379.99,
+                category: "calcados",
+                brand: "Vans",
+                colors: ["black", "white", "checkerboard"],
+                sizes: [37, 38, 39, 40, 41, 42],
+                image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Tênis slip-on prático e confortável.",
+                rating: 4.4,
+                discount: 0,
+                featured: false,
+                popularity: 80,
+                dateAdded: "2023-03-15"
+            },
+            {
+                id: 22,
+                name: "Tênis Converse Jack Purcell",
+                price: 429.99,
+                category: "calcados",
+                brand: "Converse",
+                colors: ["white", "black", "blue"],
+                sizes: [36, 37, 38, 39, 40, 41, 42],
+                image: "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Tênis casual com sorriso característico no bico.",
+                rating: 4.5,
+                discount: 0.05,
+                featured: false,
+                popularity: 76,
+                dateAdded: "2023-02-28"
+            },
+            {
+                id: 23,
+                name: "Tênis Nike Jordan 1 Low",
+                price: 899.99,
+                category: "calcados",
+                brand: "Nike",
+                colors: ["black", "white", "red"],
+                sizes: [38, 39, 40, 41, 42, 43],
+                image: "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Tênis basquete cano baixo da linha Jordan.",
+                rating: 4.9,
+                discount: 0,
+                featured: false,
+                popularity: 97,
+                dateAdded: "2023-01-10"
+            },
+            {
+                id: 24,
+                name: "Tênis Adidas Ozweego",
+                price: 699.99,
+                category: "calcados",
+                brand: "Adidas",
+                colors: ["black", "white", "gray"],
+                sizes: [37, 38, 39, 40, 41, 42],
+                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+                description: "Tênis futurista com tecnologia de amortecimento.",
+                rating: 4.7,
+                discount: 0.15,
+                featured: false,
+                popularity: 91,
+                dateAdded: "2023-06-15"
             }
         ];
 
@@ -612,6 +867,29 @@
         const logoutBtn = document.getElementById('logout-btn');
         const productsGrid = document.getElementById('products-grid');
         const colorOptions = document.querySelectorAll('.color-option');
+        const sizeFilters = document.getElementById('size-filters');
+        const brandFilters = document.getElementById('brand-filters');
+        const priceRange = document.getElementById('price-range');
+        const maxPriceDisplay = document.getElementById('max-price-display');
+        const applyFiltersBtn = document.getElementById('apply-filters');
+        const resetFiltersBtn = document.getElementById('reset-filters');
+        const sortBy = document.getElementById('sort-by');
+        const productCount = document.getElementById('product-count');
+        const pagination = document.getElementById('pagination');
+        
+        // Current state
+        let currentFilters = {
+            colors: [],
+            sizes: [],
+            brands: [],
+            maxPrice: 1000,
+            searchTerm: '',
+            sortBy: 'popular'
+        };
+        
+        let currentPage = 1;
+        const productsPerPage = 12;
+        let filteredProducts = [...shoesProducts];
 
         // Format price to BRL
         function formatPrice(price) {
@@ -623,57 +901,57 @@
 
         // Initialize carousel with featured shoes
         function initCarousel() {
-            // Clear any existing items
-            carouselTrack.innerHTML = '';
-            
-            // Get featured shoes (first 6 products)
-            const featuredShoes = shoesProducts.slice(0, 6);
-            
-            // Add products to carousel
-            featuredShoes.forEach(product => {
-                const item = document.createElement('div');
-                item.className = 'carousel-item';
-                
-                // Calculate discounted price if applicable
-                const discountedPrice = product.discount > 0 
-                    ? product.price * (1 - product.discount)
-                    : null;
-                
-                item.innerHTML = `
-                    <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition h-full flex flex-col">
-                        ${product.discount > 0 ? 
-                            `<div class="absolute bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-br-lg">
-                                ${Math.round(product.discount * 100)}% OFF
-                            </div>` : ''}
-                        <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
-                        <div class="p-4 flex-grow">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-1">${product.name}</h3>
-                            <p class="text-gray-600 text-sm mb-3">${product.description}</p>
-                            <div class="flex flex-col">
-                                ${discountedPrice ? 
-                                    `<div class="flex items-center">
-                                        <span class="text-lg font-bold text-blue-500">${formatPrice(discountedPrice)}</span>
-                                        <span class="text-sm text-gray-500 line-through ml-2">${formatPrice(product.price)}</span>
-                                    </div>` :
-                                    `<span class="text-lg font-bold text-blue-500">${formatPrice(product.price)}</span>`
-                                }
-                                <div class="flex items-center mt-1">
-                                    ${Array.from({ length: 5 }).map((_, i) => 
-                                        `<i class="fas fa-star ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}"></i>`
-                                    ).join('')}
-                                    <span class="text-xs text-gray-500 ml-1">(${product.rating})</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="px-4 pb-4">
-                            <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
-                                <i class="fas fa-shopping-cart mr-2"></i> Comprar
-                            </button>
+    // Clear any existing items
+    carouselTrack.innerHTML = '';
+    
+    // Get featured shoes
+    const featuredShoes = shoesProducts.filter(product => product.featured);
+    
+    // Add products to carousel
+    featuredShoes.forEach(product => {
+        const item = document.createElement('div');
+        item.className = 'carousel-item';
+        
+        // Calculate discounted price if applicable
+        const discountedPrice = product.discount > 0 
+            ? product.price * (1 - product.discount)
+            : null;
+        
+        item.innerHTML = `
+            <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition h-full flex flex-col product-card">
+                ${product.discount > 0 ? 
+                    `<div class="absolute bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-br-lg">
+                        ${Math.round(product.discount * 100)}% OFF
+                    </div>` : ''}
+                <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+                <div class="p-4 flex-grow">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-1">${product.name}</h3>
+                    <p class="text-gray-600 text-sm mb-3">${product.description}</p>
+                    <div class="flex flex-col">
+                        ${discountedPrice ? 
+                            `<div class="flex items-center">
+                                <span class="text-lg font-bold text-blue-500">${formatPrice(discountedPrice)}</span>
+                                <span class="text-sm text-gray-500 line-through ml-2">${formatPrice(product.price)}</span>
+                            </div>` :
+                            `<span class="text-lg font-bold text-blue-500">${formatPrice(product.price)}</span>`
+                        }
+                        <div class="flex items-center mt-1">
+                            ${Array.from({ length: 5 }).map((_, i) => 
+                                `<i class="fas fa-star ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}"></i>`
+                            ).join('')}
+                            <span class="text-xs text-gray-500 ml-1">(${product.rating})</span>
                         </div>
                     </div>
-                `;
-                carouselTrack.appendChild(item);
-            });
+                </div>
+                <div class="px-4 pb-4">
+        <a href="${product.link}" class="block w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+            <i class="fas fa-shopping-cart mr-2"></i> Comprar
+        </a>
+    </div>
+            </div>
+        `;
+        carouselTrack.appendChild(item);
+    });
             
             // Set carousel width based on number of items
             const itemCount = featuredShoes.length;
@@ -682,7 +960,7 @@
             
             // Initialize carousel position
             let currentPosition = 0;
-            const maxPosition = itemCount - 3;
+            const maxPosition = Math.max(0, itemCount - 3);
             
             // Update carousel position
             function updateCarousel() {
@@ -735,107 +1013,407 @@
                     updateCarousel();
                 }, 5000);
             });
-        }
-
-        // Initialize products grid
-        function initProductsGrid() {
-            productsGrid.innerHTML = '';
             
-            shoesProducts.forEach(product => {
-                const productCard = document.createElement('div');
-                productCard.className = 'bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition h-full flex flex-col';
-                
-                // Calculate discounted price if applicable
-                const discountedPrice = product.discount > 0 
-                    ? product.price * (1 - product.discount)
-                    : null;
-                
-                productCard.innerHTML = `
-                    ${product.discount > 0 ? 
-                        `<div class="absolute bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-br-lg">
-                            ${Math.round(product.discount * 100)}% OFF
-                        </div>` : ''}
-                    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
-                    <div class="p-4 flex-grow">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-1">${product.name}</h3>
-                        <p class="text-gray-600 text-sm mb-2">${product.brand}</p>
-                        <div class="flex flex-col">
-                            ${discountedPrice ? 
-                                `<div class="flex items-center">
-                                    <span class="text-lg font-bold text-blue-500">${formatPrice(discountedPrice)}</span>
-                                    <span class="text-sm text-gray-500 line-through ml-2">${formatPrice(product.price)}</span>
-                                </div>` :
-                                `<span class="text-lg font-bold text-blue-500">${formatPrice(product.price)}</span>`
-                            }
-                            <div class="flex items-center mt-1">
-                                ${Array.from({ length: 5 }).map((_, i) => 
-                                    `<i class="fas fa-star ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}"></i>`
-                                ).join('')}
-                                <span class="text-xs text-gray-500 ml-1">(${product.rating})</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="px-4 pb-4">
-                        <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
-                            <i class="fas fa-shopping-cart mr-2"></i> Comprar
-                        </button>
-                    </div>
-                `;
-                productsGrid.appendChild(productCard);
-            });
+            // Initialize carousel position
+            updateCarousel();
         }
 
-        // Color selection functionality
-        colorOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                // Remove selected class from all options
-                colorOptions.forEach(opt => opt.classList.remove('selected'));
-                // Add selected class to clicked option
-                option.classList.add('selected');
+        // Filter products based on current filters
+        function filterProducts() {
+            filteredProducts = shoesProducts.filter(product => {
+                // Filter by price
+                const priceToCompare = product.discount > 0 
+                    ? product.price * (1 - product.discount)
+                    : product.price;
+                
+                if (priceToCompare > currentFilters.maxPrice) {
+                    return false;
+                }
+                
+                // Filter by color
+                if (currentFilters.colors.length > 0 && 
+                    !currentFilters.colors.some(color => product.colors.includes(color))) {
+                    return false;
+                }
+                
+                // Filter by size
+                if (currentFilters.sizes.length > 0 && 
+                    !currentFilters.sizes.some(size => product.sizes.includes(parseInt(size)))) {
+                    return false;
+                }
+                
+                // Filter by brand
+                if (currentFilters.brands.length > 0 && 
+                    !currentFilters.brands.includes(product.brand)) {
+                    return false;
+                }
+                
+                // Filter by search term
+                if (currentFilters.searchTerm && 
+                    !product.name.toLowerCase().includes(currentFilters.searchTerm.toLowerCase()) &&
+                    !product.brand.toLowerCase().includes(currentFilters.searchTerm.toLowerCase())) {
+                    return false;
+                }
+                
+                return true;
             });
-        });
+            
+            // Sort products
+            sortProducts();
+            
+            // Update product count
+            updateProductCount();
+            
+            // Render products
+            renderProducts();
+            
+            // Update pagination
+            updatePagination();
+        }
 
-        // Toggle categories dropdown
-        categoriesBtn.addEventListener('click', () => {
-            document.querySelector('.relative').classList.toggle('show-categories');
-        });
-
-        // Close categories dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.relative') && !e.target.closest('#categories-btn')) {
-                document.querySelector('.relative').classList.remove('show-categories');
+        // Sort products based on current sort option
+        function sortProducts() {
+            switch(currentFilters.sortBy) {
+                case 'price-low':
+                    filteredProducts.sort((a, b) => {
+                        const priceA = a.discount > 0 ? a.price * (1 - a.discount) : a.price;
+                        const priceB = b.discount > 0 ? b.price * (1 - b.discount) : b.price;
+                        return priceA - priceB;
+                    });
+                    break;
+                case 'price-high':
+                    filteredProducts.sort((a, b) => {
+                        const priceA = a.discount > 0 ? a.price * (1 - a.discount) : a.price;
+                        const priceB = b.discount > 0 ? b.price * (1 - b.discount) : b.price;
+                        return priceB - priceA;
+                    });
+                    break;
+                case 'rating':
+                    filteredProducts.sort((a, b) => b.rating - a.rating);
+                    break;
+                case 'newest':
+                    filteredProducts.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+                    break;
+                case 'popular':
+                default:
+                    filteredProducts.sort((a, b) => b.popularity - a.popularity);
+                    break;
             }
-        });
+        }
 
-        // Search functionality
-        searchBtn.addEventListener('click', () => {
-            const searchTerm = searchInput.value.trim().toLowerCase();
-            if (searchTerm) {
-                // In a real application, this would redirect to search results
-                alert(`Buscando por: ${searchTerm}`);
-                // window.location.href = `search.html?q=${encodeURIComponent(searchTerm)}`;
+        // Render products based on current filters and page
+        function renderProducts() {
+    productsGrid.innerHTML = '';
+    
+    // Calculate pagination
+    const startIndex = (currentPage - 1) * productsPerPage;
+    const endIndex = startIndex + productsPerPage;
+    const productsToShow = filteredProducts.slice(startIndex, endIndex);
+    
+    if (productsToShow.length === 0) {
+        productsGrid.innerHTML = `
+            <div class="col-span-full text-center py-10">
+                <i class="fas fa-shoe-prints text-4xl text-gray-300 mb-4"></i>
+                <h3 class="text-xl font-medium text-gray-700">Nenhum produto encontrado</h3>
+                <p class="text-gray-500 mt-2">Tente ajustar seus filtros de busca</p>
+            </div>
+        `;
+        return;
+    }
+    
+    productsToShow.forEach(product => {
+        const productCard = document.createElement('div');
+        productCard.className = 'bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition h-full flex flex-col product-card';
+        
+        // Calculate discounted price if applicable
+        const discountedPrice = product.discount > 0 
+            ? product.price * (1 - product.discount)
+            : null;
+        
+            productCard.innerHTML = `
+    ${product.discount > 0 ? 
+        `<div class="absolute bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-br-lg">
+            ${Math.round(product.discount * 100)}% OFF
+        </div>` : ''}
+    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+    <div class="p-4 flex-grow">
+        <h3 class="text-lg font-semibold text-gray-800 mb-1">${product.name}</h3>
+        <p class="text-gray-600 text-sm mb-2">${product.brand}</p>
+        <div class="flex flex-col">
+            ${discountedPrice ? 
+                `<div class="flex items-center">
+                    <span class="text-lg font-bold text-blue-500">${formatPrice(discountedPrice)}</span>
+                    <span class="text-sm text-gray-500 line-through ml-2">${formatPrice(product.price)}</span>
+                </div>` :
+                `<span class="text-lg font-bold text-blue-500">${formatPrice(product.price)}</span>`
             }
-        });
+            <div class="flex items-center mt-1">
+                ${Array.from({ length: 5 }).map((_, i) => 
+                    `<i class="fas fa-star ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}"></i>`
+                ).join('')}
+                <span class="text-xs text-gray-500 ml-1">(${product.rating})</span>
+            </div>
+        </div>
+    </div>
+    <div class="px-4 pb-4">
+        <a href="${product.link}" class="block w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+            <i class="fas fa-shopping-cart mr-2"></i> Comprar
+        </a>
+    </div>
+        `;
+        productsGrid.appendChild(productCard);
+    });
+        }
 
-        // Allow search on Enter key
-        searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                searchBtn.click();
-            }
-        });
+        // Update product count display
+        function updateProductCount() {
+            const totalProducts = filteredProducts.length;
+            const showingProducts = Math.min(productsPerPage, totalProducts - (currentPage - 1) * productsPerPage);
+            productCount.textContent = `Mostrando ${showingProducts} de ${totalProducts} produtos`;
+        }
 
-        // Logout button
-        logoutBtn.addEventListener('click', () => {
-            if (confirm('Tem certeza que deseja sair?')) {
-                // In a real application, this would clear session and redirect
-                alert('Você foi desconectado.');
-                // window.location.href = 'login.html';
+        // Update pagination controls
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+            pagination.innerHTML = '';
+            
+            if (totalPages <= 1) return;
+            
+            // Previous button
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 prev-btn';
+            prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderProducts();
+                    updatePagination();
+                }
+            });
+            pagination.appendChild(prevBtn);
+            
+            // Page buttons
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = startPage + maxVisiblePages - 1;
+            
+            if (endPage > totalPages) {
+                endPage = totalPages;
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
             }
-        });
+            
+            if (startPage > 1) {
+                const firstPageBtn = document.createElement('button');
+                firstPageBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100';
+                firstPageBtn.textContent = '1';
+                firstPageBtn.addEventListener('click', () => {
+                    currentPage = 1;
+                    renderProducts();
+                    updatePagination();
+                });
+                pagination.appendChild(firstPageBtn);
+                
+                if (startPage > 2) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.className = 'px-2';
+                    ellipsis.textContent = '...';
+                    pagination.appendChild(ellipsis);
+                }
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100 ${i === currentPage ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.addEventListener('click', () => {
+                    currentPage = i;
+                    renderProducts();
+                    updatePagination();
+                });
+                pagination.appendChild(pageBtn);
+            }
+            
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.className = 'px-2';
+                    ellipsis.textContent = '...';
+                    pagination.appendChild(ellipsis);
+                }
+                
+                const lastPageBtn = document.createElement('button');
+                lastPageBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100';
+                lastPageBtn.textContent = totalPages;
+                lastPageBtn.addEventListener('click', () => {
+                    currentPage = totalPages;
+                    renderProducts();
+                    updatePagination();
+                });
+                pagination.appendChild(lastPageBtn);
+            }
+            
+            // Next button
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 next-btn';
+            nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderProducts();
+                    updatePagination();
+                }
+            });
+            pagination.appendChild(nextBtn);
+        }
+
+        // Initialize event listeners
+        function initEventListeners() {
+            // Color selection functionality
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    option.classList.toggle('selected');
+                    updateColorFilters();
+                });
+            });
+            
+            // Size filter checkboxes
+            document.querySelectorAll('.size-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateSizeFilters();
+                });
+            });
+            
+            // Brand filter checkboxes
+            document.querySelectorAll('#brand-filters input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateBrandFilters();
+                });
+            });
+            
+            // Price range slider
+            priceRange.addEventListener('input', (e) => {
+                maxPriceDisplay.textContent = `R$ ${e.target.value}`;
+            });
+            
+            // Apply filters button
+            applyFiltersBtn.addEventListener('click', () => {
+                currentFilters.maxPrice = parseInt(priceRange.value);
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Reset filters button
+            resetFiltersBtn.addEventListener('click', () => {
+                // Reset all checkboxes
+                document.querySelectorAll('.size-checkbox').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                
+                document.querySelectorAll('#brand-filters input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                
+                // Reset color selections
+                document.querySelectorAll('.color-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                
+                // Reset price range
+                priceRange.value = 1000;
+                maxPriceDisplay.textContent = 'R$ 1000';
+                
+                // Reset search
+                searchInput.value = '';
+                
+                // Reset sort
+                sortBy.value = 'popular';
+                
+                // Reset filters state
+                currentFilters = {
+                    colors: [],
+                    sizes: [],
+                    brands: [],
+                    maxPrice: 1000,
+                    searchTerm: '',
+                    sortBy: 'popular'
+                };
+                
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Sort by dropdown
+            sortBy.addEventListener('change', (e) => {
+                currentFilters.sortBy = e.target.value;
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Search functionality
+            searchBtn.addEventListener('click', () => {
+                currentFilters.searchTerm = searchInput.value.trim();
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Allow search on Enter key
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    currentFilters.searchTerm = searchInput.value.trim();
+                    currentPage = 1;
+                    filterProducts();
+                }
+            });
+            
+            // Toggle categories dropdown
+            categoriesBtn.addEventListener('click', () => {
+                document.querySelector('.relative').classList.toggle('show-categories');
+            });
+            
+            // Close categories dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.relative') && !e.target.closest('#categories-btn')) {
+                    document.querySelector('.relative').classList.remove('show-categories');
+                }
+            });
+            
+            // Logout button
+            logoutBtn.addEventListener('click', () => {
+                if (confirm('Tem certeza que deseja sair?')) {
+                    // In a real application, this would clear session and redirect
+                    alert('Você foi desconectado.');
+                    // window.location.href = 'login.html';
+                }
+            });
+        }
+        
+        // Update color filters based on selected colors
+        function updateColorFilters() {
+            currentFilters.colors = Array.from(document.querySelectorAll('.color-option.selected'))
+                .map(option => option.getAttribute('data-color'));
+        }
+        
+        // Update size filters based on checked sizes
+        function updateSizeFilters() {
+            currentFilters.sizes = Array.from(document.querySelectorAll('.size-checkbox:checked'))
+                .map(checkbox => checkbox.value);
+        }
+        
+        // Update brand filters based on checked brands
+        function updateBrandFilters() {
+            currentFilters.brands = Array.from(document.querySelectorAll('#brand-filters input[type="checkbox"]:checked'))
+                .map(checkbox => checkbox.value);
+        }
 
         // Initialize the page
-        initCarousel();
-        initProductsGrid();
+        function init() {
+            initCarousel();
+            filterProducts();
+            initEventListeners();
+        }
+
+        // Start the application
+        init();
     </script>
 </body>
 </html>

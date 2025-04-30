@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuperStore - Airsoft e Armas de Pressão</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom styles for the carousel and other elements */
+        .carousel-container {
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .carousel-item {
+            flex: 0 0 33.333%;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+        
+        @media (max-width: 1024px) {
+            .carousel-item {
+                flex: 0 0 50%;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .carousel-item {
+                flex: 0 0 100%;
+            }
+        }
+        
+        .category-dropdown {
+            display: none;
+            position: absolute;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        
+        .show-categories .category-dropdown {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .niche-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .filter-section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .price-range-slider {
+            width: 100%;
+            height: 5px;
+            -webkit-appearance: none;
+            background: #ddd;
+            outline: none;
+            border-radius: 5px;
+        }
+
+        .price-range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #3b82f6;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .pagination-btn {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .pagination-btn:hover:not(.active) {
+            background-color: #f1f5f9;
+        }
+        
+        .active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        .age-warning {
+            background-color: #ffebee;
+            border-left: 4px solid #f44336;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Header with logo, navigation, and search -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between">
+            <!-- Logo on the left -->
+            <div class="flex items-center mb-4 md:mb-0">
+                <img src="https://via.placeholder.com/50x50" alt="SuperStore Logo" class="h-10 mr-2">
+                <h1 class="text-xl font-bold text-gray-800">SuperStore</h1>
+            </div>
+            
+            <!-- Navigation and search in the middle -->
+            <div class="flex-1 flex flex-col md:flex-row items-center justify-center mx-0 md:mx-8 w-full md:w-auto">
+                <!-- Navigation buttons -->
+                <div class="flex space-x-4 mb-4 md:mb-0">
+                    <a href="index.html" class="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium">Início</a>
+                    <div class="relative">
+                        <button id="categories-btn" class="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                            Categorias <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <!-- Categories dropdown -->
+                        <div id="category-dropdown" class="category-dropdown p-4 rounded-lg mt-1 w-full md:w-96">
+                            <div>
+                                <h3 class="font-bold mb-2">Eletrônicos</h3>
+                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">Celulares</a>
+                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">Notebooks</a>
+                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">TVs</a>
+                            </div>
+                            <div>
+                                <h3 class="font-bold mb-2">Esportes</h3>
+                                <a href="airsoft.html" class="block py-1 text-gray-600 hover:text-blue-500 text-blue-600 font-medium">Airsoft</a>
+                                <a href="airgun.html" class="block py-1 text-gray-600 hover:text-blue-500">Airgun</a>
+                                <a href="carabinas.html" class="block py-1 text-gray-600 hover:text-blue-500">Carabinas</a>
+                            </div>
+                            <div>
+                                <h3 class="font-bold mb-2">Acessórios</h3>
+                                <a href="municoes.html" class="block py-1 text-gray-600 hover:text-blue-500">Munições</a>
+                                <a href="lunetas.html" class="block py-1 text-gray-600 hover:text-blue-500">Lunetas</a>
+                                <a href="acessorios.html" class="block py-1 text-gray-600 hover:text-blue-500">Outros Acessórios</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Search bar -->
+                <div class="relative w-full md:w-96 mb-4 md:mb-0">
+                    <input type="text" id="search-input" placeholder="Buscar produtos..." 
+                           class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button id="search-btn" class="absolute right-3 top-2 text-gray-500 hover:text-blue-600">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Logout button on the right -->
+            <div class="ml-auto">
+                <button id="logout-btn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
+                    Sair <i class="fas fa-sign-out-alt ml-1"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Age warning -->
+        <div class="age-warning p-4 rounded-lg mb-6 flex items-start">
+            <i class="fas fa-exclamation-triangle text-red-500 mr-3 mt-1"></i>
+            <div>
+                <h3 class="font-bold text-red-700">Aviso Importante</h3>
+                <p class="text-sm text-gray-700">Produtos desta categoria são destinados a maiores de 18 anos. A compra só será efetivada mediante apresentação de documento de identidade válido.</p>
+            </div>
+        </div>
+
+        <!-- Breadcrumb navigation -->
+        <div class="flex items-center text-sm text-gray-500 mb-6">
+            <a href="index.html" class="hover:text-blue-500">Início</a>
+            <span class="mx-2">/</span>
+            <a href="esportes.html" class="hover:text-blue-500">Esportes</a>
+            <span class="mx-2">/</span>
+            <span class="text-gray-700">Airsoft e Armas de Pressão</span>
+        </div>
+
+        <!-- Page title and sorting options -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Airsoft e Armas de Pressão</h1>
+            <div class="flex items-center">
+                <span class="text-gray-600 mr-2">Ordenar por:</span>
+                <select id="sort-by" class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="popular">Mais vendidos</option>
+                    <option value="price-low">Menor preço</option>
+                    <option value="price-high">Maior preço</option>
+                    <option value="rating">Melhor avaliados</option>
+                    <option value="newest">Novidades</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Filters sidebar -->
+            <aside class="w-full lg:w-1/4">
+                <div class="filter-section mb-6">
+                    <h2 class="text-lg font-semibold mb-4 text-gray-800">Filtrar por</h2>
+                    
+                    <!-- Price range filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Faixa de preço</h3>
+                        <input type="range" id="price-range" min="100" max="10000" value="10000" class="price-range-slider mb-3">
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>R$ 100</span>
+                            <span id="max-price-display">R$ 10.000</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Type filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Tipo</h3>
+                        <div class="space-y-2" id="type-filters">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="airsoft" class="mr-2" value="Airsoft">
+                                <label for="airsoft" class="text-gray-600">Airsoft</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="airgun" class="mr-2" value="Airgun">
+                                <label for="airgun" class="text-gray-600">Airgun</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="carabina" class="mr-2" value="Carabina">
+                                <label for="carabina" class="text-gray-600">Carabina</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="pcp" class="mr-2" value="PCP">
+                                <label for="pcp" class="text-gray-600">PCP</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="co2" class="mr-2" value="CO2">
+                                <label for="co2" class="text-gray-600">CO2</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Caliber filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Calibre</h3>
+                        <div class="space-y-2" id="caliber-filters">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="4.5mm" class="mr-2" value="4.5mm">
+                                <label for="4.5mm" class="text-gray-600">4.5mm</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="5.5mm" class="mr-2" value="5.5mm">
+                                <label for="5.5mm" class="text-gray-600">5.5mm</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="6mm" class="mr-2" value="6mm">
+                                <label for="6mm" class="text-gray-600">6mm</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Brand filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Marca</h3>
+                        <div class="space-y-2" id="brand-filters">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="taurus" class="mr-2" value="Taurus">
+                                <label for="taurus" class="text-gray-600">Taurus</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="cyma" class="mr-2" value="CYMA">
+                                <label for="cyma" class="text-gray-600">CYMA</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="gamo" class="mr-2" value="Gamo">
+                                <label for="gamo" class="text-gray-600">Gamo</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="umarex" class="mr-2" value="Umarex">
+                                <label for="umarex" class="text-gray-600">Umarex</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="crossman" class="mr-2" value="Crossman">
+                                <label for="crossman" class="text-gray-600">Crossman</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Power source filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Fonte de Energia</h3>
+                        <div class="space-y-2" id="power-filters">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="mola" class="mr-2" value="Mola">
+                                <label for="mola" class="text-gray-600">Mola</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="gas" class="mr-2" value="Gás">
+                                <label for="gas" class="text-gray-600">Gás</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="co2-cart" class="mr-2" value="CO2">
+                                <label for="co2-cart" class="text-gray-600">CO2</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="eletrica" class="mr-2" value="Elétrica">
+                                <label for="eletrica" class="text-gray-600">Elétrica (AEG)</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="manual" class="mr-2" value="Manual">
+                                <label for="manual" class="text-gray-600">Manual</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Apply filters button -->
+                    <button id="apply-filters" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
+                        Aplicar Filtros
+                    </button>
+                    <button id="reset-filters" class="w-full mt-2 bg-gray-200 text-gray-800 py-2 rounded-lg hover:bg-gray-300 transition">
+                        Limpar Filtros
+                    </button>
+                </div>
+                
+                <!-- Special offers -->
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h3 class="font-semibold text-blue-800 mb-3">Ofertas Especiais</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <div class="bg-white p-2 rounded-lg mr-3">
+                                <i class="fas fa-percentage text-blue-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium">Frete Grátis</p>
+                                <p class="text-xs text-gray-500">Para compras acima de R$ 500</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="bg-white p-2 rounded-lg mr-3">
+                                <i class="fas fa-gift text-blue-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium">Kit Completo</p>
+                                <p class="text-xs text-gray-500">Compre uma arma + luneta e ganhe 10% OFF</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="bg-white p-2 rounded-lg mr-3">
+                                <i class="fas fa-credit-card text-blue-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium">Parcele em até 12x</p>
+                                <p class="text-xs text-gray-500">Sem juros no cartão</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            
+            <!-- Products grid -->
+            <div class="w-full lg:w-3/4">
+                <!-- Featured products carousel -->
+                <section class="mb-12">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Destaques</h2>
+                    <div class="carousel-container relative group" id="carousel">
+                        <div class="carousel-track" id="carousel-track">
+                            <!-- Carousel items will be added by JavaScript -->
+                        </div>
+                        
+                        <!-- Carousel navigation arrows -->
+                        <button id="carousel-prev" class="absolute left-0 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 text-gray-800 p-2 rounded-full shadow-md hover:bg-opacity-100 transition opacity-0 group-hover:opacity-100">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button id="carousel-next" class="absolute right-0 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 text-gray-800 p-2 rounded-full shadow-md hover:bg-opacity-100 transition opacity-0 group-hover:opacity-100">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </section>
+                
+                <!-- All products -->
+                <section>
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">Todos os Produtos</h2>
+                        <span id="product-count" class="text-gray-500">Mostrando 12 de 12 produtos</span>
+                    </div>
+                    
+                    <div class="product-grid" id="products-grid">
+                        <!-- Products will be added by JavaScript -->
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="flex justify-center mt-8">
+                        <nav class="flex items-center space-x-1" id="pagination">
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 prev-btn">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100 active">1</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">2</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">3</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">4</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">5</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 next-btn">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </nav>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer with social media links -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center">
+                        <img src="https://via.placeholder.com/50x50" alt="SuperStore Logo" class="h-10 mr-2">
+                        <h2 class="text-xl font-bold">SuperStore</h2>
+                    </div>
+                    <p class="mt-2 text-gray-400">Sua loja online completa com os melhores produtos.</p>
+                </div>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2023 SuperStore. Todos os direitos reservados.</p>
+                <p class="text-xs mt-2">Produtos de airsoft e armas de pressão são vendidos apenas para maiores de 18 anos mediante apresentação de documento de identidade.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample product data for airsoft and airguns
+        const airsoftProducts = [
+            {
+                id: 1,
+                link: "https://www.mercadolivre.com.br/faca-tatica-c-baioneta-m16-explorer-sobrevivncia-militar-cor-verde-escuro/p/MLB28889175?searchVariation=MLB28889175#polycard_client=search-nordic&searchVariation=MLB28889175&wid=MLB3545197265&position=7&search_layout=stack&type=product&tracking_id=e2e127f6-ab5a-4dd2-b323-693a7bd8029d&sid=search",
+                name: "Pistola Taurus 247 Airgun CO2 .45mm",
+                price: 899.99,
+                category: "airgun",
+                type: "CO2",
+                caliber: "4.5mm",
+                brand: "Taurus",
+                powerSource: "CO2",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_614259-MLB72162262949_102023-F.webp",
+                description: "Pistola de pressão Taurus 247 calibre 4.5mm com sistema CO2, capacidade para 18 tiros.",
+                rating: 4.7,
+                discount: 0.10,
+                featured: true,
+                popularity: 95,
+                dateAdded: "2023-05-15"
+            },
+            {
+                id: 2,
+                link: "https://produto.mercadolivre.com.br/MLB-3925542968-kit-pistola-taurus-247-airgun-c02-45mm-esfe-co2-oleo-_JM?variation=178540574598#reco_item_pos=1&reco_backend=item_decorator&reco_backend_type=function&reco_client=home_items-decorator-legacy&reco_id=94e8be45-3cfb-4d7a-85ff-866d4cbd0a84&reco_model=&c_id=/home/navigation-trends-recommendations/element&c_uid=43b544d0-b4c1-44d6-9d17-3aabe8228c5c&da_id=navigation_trend&da_position=3&id_origin=/home/dynamic_access&da_sort_algorithm=ranker",
+                name: "Rifle Airsoft CYMA CM.515 M4 AEG",
+                price: 1499.99,
+                category: "airsoft",
+                type: "Airsoft",
+                caliber: "6mm",
+                brand: "CYMA",
+                powerSource: "Elétrica",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_945760-MLB72162262947_102023-F.webp",
+                description: "Rifle de airsoft CYMA modelo M4 AEG com capacidade para 300 tiros, velocidade de 100m/s.",
+                rating: 4.8,
+                discount: 0.15,
+                featured: true,
+                popularity: 92,
+                dateAdded: "2023-06-20"
+            },
+            {
+                id: 3,
+                name: "Carabina Gamo Hunter 440 .177",
+                price: 2499.99,
+                category: "carabina",
+                type: "Carabina",
+                caliber: "4.5mm",
+                brand: "Gamo",
+                powerSource: "Mola",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_614259-MLB72162262949_102023-F.webp",
+                description: "Carabina de pressão Gamo Hunter 440 calibre 4.5mm com cano de aço e coronha em madeira.",
+                rating: 4.9,
+                discount: 0,
+                featured: true,
+                popularity: 97,
+                dateAdded: "2023-04-10"
+            },
+            {
+                id: 4,
+                name: "Pistola Airsoft Umarex Glock 19 Gen 3",
+                price: 799.99,
+                category: "airsoft",
+                type: "Airsoft",
+                caliber: "6mm",
+                brand: "Umarex",
+                powerSource: "Gás",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_945760-MLB72162262947_102023-F.webp",
+                description: "Réplica da Glock 19 Gen 3 para airsoft, com sistema de blowback e capacidade para 25 tiros.",
+                rating: 4.6,
+                discount: 0.05,
+                featured: true,
+                popularity: 88,
+                dateAdded: "2023-03-05"
+            },
+            {
+                id: 5,
+                name: "Carabina PCP Crossman Benjamin Marauder .22",
+                price: 5999.99,
+                category: "carabina",
+                type: "PCP",
+                caliber: "5.5mm",
+                brand: "Crossman",
+                powerSource: "PCP",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_614259-MLB72162262949_102023-F.webp",
+                description: "Carabina PCP de alta potência com silenciador integrado e capacidade para 10 tiros.",
+                rating: 4.9,
+                discount: 0,
+                featured: true,
+                popularity: 98,
+                dateAdded: "2023-02-18"
+            },
+            {
+                id: 6,
+                name: "Pistola Airsoft Taurus PT92 CO2",
+                price: 699.99,
+                category: "airsoft",
+                type: "Airsoft",
+                caliber: "6mm",
+                brand: "Taurus",
+                powerSource: "CO2",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_945760-MLB72162262947_102023-F.webp",
+                description: "Réplica da Taurus PT92 para airsoft com sistema CO2 e blowback, capacidade para 20 tiros.",
+                rating: 4.5,
+                discount: 0.10,
+                featured: false,
+                popularity: 85,
+                dateAdded: "2023-07-12"
+            },
+            {
+                id: 7,
+                name: "Rifle Airsoft CYMA AK-47 AEG",
+                price: 1299.99,
+                category: "airsoft",
+                type: "Airsoft",
+                caliber: "6mm",
+                brand: "CYMA",
+                powerSource: "Elétrica",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_614259-MLB72162262949_102023-F.webp",
+                description: "Rifle AK-47 para airsoft com capacidade para 600 tiros, velocidade de 110m/s.",
+                rating: 4.7,
+                discount: 0,
+                featured: false,
+                popularity: 89,
+                dateAdded: "2023-06-25"
+            },
+            {
+                id: 8,
+                name: "Carabina Gamo Swarm Magnum .22",
+                price: 3499.99,
+                category: "carabina",
+                type: "Carabina",
+                caliber: "5.5mm",
+                brand: "Gamo",
+                powerSource: "Mola",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_945760-MLB72162262947_102023-F.webp",
+                description: "Carabina de pressão com sistema de carregamento rotativo para 10 tiros.",
+                rating: 4.8,
+                discount: 0.10,
+                featured: false,
+                popularity: 90,
+                dateAdded: "2023-05-30"
+            },
+            {
+                id: 9,
+                name: "Pistola Airgun Umarex Beretta 92FS CO2",
+                price: 999.99,
+                category: "airgun",
+                type: "CO2",
+                caliber: "4.5mm",
+                brand: "Umarex",
+                powerSource: "CO2",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_614259-MLB72162262949_102023-F.webp",
+                description: "Réplica da Beretta 92FS calibre 4.5mm com sistema CO2 e blowback.",
+                rating: 4.6,
+                discount: 0,
+                featured: false,
+                popularity: 87,
+                dateAdded: "2023-04-22"
+            },
+            {
+                id: 10,
+                name: "Rifle Airsoft Specna Arms SA-C07 Core",
+                price: 1799.99,
+                category: "airsoft",
+                type: "Airsoft",
+                caliber: "6mm",
+                brand: "Specna Arms",
+                powerSource: "Elétrica",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_945760-MLB72162262947_102023-F.webp",
+                description: "Rifle M4 para airsoft com corpo em metal e coronha ajustável.",
+                rating: 4.7,
+                discount: 0.15,
+                featured: false,
+                popularity: 91,
+                dateAdded: "2023-07-05"
+            },
+            {
+                id: 11,
+                name: "Carabina PCP Hatsan Galatian .22",
+                price: 6999.99,
+                category: "carabina",
+                type: "PCP",
+                caliber: "5.5mm",
+                brand: "Hatsan",
+                powerSource: "PCP",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_614259-MLB72162262949_102023-F.webp",
+                description: "Carabina PCP de alta precisão com regulador de pressão e silenciador.",
+                rating: 4.9,
+                discount: 0,
+                featured: false,
+                popularity: 96,
+                dateAdded: "2023-01-15"
+            },
+            {
+                id: 12,
+                name: "Pistola Airsoft KWC Desert Eagle CO2",
+                price: 899.99,
+                category: "airsoft",
+                type: "Airsoft",
+                caliber: "6mm",
+                brand: "KWC",
+                powerSource: "CO2",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_945760-MLB72162262947_102023-F.webp",
+                description: "Réplica da Desert Eagle para airsoft com sistema CO2 e blowback forte.",
+                rating: 4.5,
+                discount: 0.10,
+                featured: false,
+                popularity: 84,
+                dateAdded: "2023-03-20"
+            },
+            {
+                id: 13,
+                name: "Carabina Gamo Whisper Fusion Mach 1 .177",
+                price: 2899.99,
+                category: "carabina",
+                type: "Carabina",
+                caliber: "4.5mm",
+                brand: "Gamo",
+                powerSource: "Mola",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_614259-MLB72162262949_102023-F.webp",
+                description: "Carabina de pressão com silenciador integrado e tecnologia IGT.",
+                rating: 4.8,
+                discount: 0,
+                featured: false,
+                popularity: 93,
+                dateAdded: "2023-06-10"
+            },
+            {
+                id: 14,
+                name: "Rifle Airsoft G&G CM16 Raider 2.0",
+                price: 1599.99,
+                category: "airsoft",
+                type: "Airsoft",
+                caliber: "6mm",
+                brand: "G&G",
+                powerSource: "Elétrica",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_945760-MLB72162262947_102023-F.webp",
+                description: "Rifle M4 para airsoft com sistema de hop-up ajustável e coronha retrátil.",
+                rating: 4.7,
+                discount: 0.10,
+                featured: false,
+                popularity: 89,
+                dateAdded: "2023-05-05"
+            },
+            {
+                id: 15,
+                name: "Pistola Airgun Crossman 2240 CO2",
+                price: 799.99,
+                category: "airgun",
+                type: "CO2",
+                caliber: "4.5mm",
+                brand: "Crossman",
+                powerSource: "CO2",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_614259-MLB72162262949_102023-F.webp",
+                description: "Pistola de pressão calibre 4.5mm com sistema CO2 e cano raiado.",
+                rating: 4.6,
+                discount: 0,
+                featured: false,
+                popularity: 86,
+                dateAdded: "2023-04-15"
+            },
+            {
+                id: 16,
+                name: "Carabina PCP Artemis PP700SA .22",
+                price: 3499.99,
+                category: "carabina",
+                type: "PCP",
+                caliber: "5.5mm",
+                brand: "Artemis",
+                powerSource: "PCP",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_945760-MLB72162262947_102023-F.webp",
+                description: "Carabina PCP compacta com regulador de pressão e cano raiado.",
+                rating: 4.7,
+                discount: 0.15,
+                featured: false,
+                popularity: 90,
+                dateAdded: "2023-03-28"
+            },
+            {
+                id: 17,
+                name: "Pistola Airsoft Tokyo Marui Hi-Capa 5.1",
+                price: 1299.99,
+                category: "airsoft",
+                type: "Airsoft",
+                caliber: "6mm",
+                brand: "Tokyo Marui",
+                powerSource: "Gás",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_614259-MLB72162262949_102023-F.webp",
+                description: "Pistola para airsoft com sistema de blowback e carregador de alta capacidade.",
+                rating: 4.8,
+                discount: 0,
+                featured: false,
+                popularity: 94,
+                dateAdded: "2023-02-10"
+            },
+            {
+                id: 18,
+                name: "Carabina Gamo Bone Collector .177",
+                price: 3199.99,
+                category: "carabina",
+                type: "Carabina",
+                caliber: "4.5mm",
+                brand: "Gamo",
+                powerSource: "Mola",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_945760-MLB72162262947_102023-F.webp",
+                description: "Carabina de pressão com coronha em fibra de carbono e mira óptica incluída.",
+                rating: 4.7,
+                discount: 0.10,
+                featured: false,
+                popularity: 91,
+                dateAdded: "2023-01-25"
+            },
+            {
+                id: 19,
+                name: "Rifle Airsoft LCT AK-74MN AEG",
+                price: 3499.99,
+                category: "airsoft",
+                type: "Airsoft",
+                caliber: "6mm",
+                brand: "LCT",
+                powerSource: "Elétrica",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_614259-MLB72162262949_102023-F.webp",
+                description: "Rifle AK-74MN para airsoft com corpo totalmente em metal e madeira real.",
+                rating: 4.9,
+                discount: 0,
+                featured: false,
+                popularity: 97,
+                dateAdded: "2023-05-18"
+            },
+            {
+                id: 20,
+                name: "Pistola Airgun Umarex Walther PPQ CO2",
+                price: 1099.99,
+                category: "airgun",
+                type: "CO2",
+                caliber: "4.5mm",
+                brand: "Umarex",
+                powerSource: "CO2",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_945760-MLB72162262947_102023-F.webp",
+                description: "Réplica da Walther PPQ calibre 4.5mm com sistema CO2 e blowback.",
+                rating: 4.6,
+                discount: 0.05,
+                featured: false,
+                popularity: 88,
+                dateAdded: "2023-04-05"
+            },
+            {
+                id: 21,
+                name: "Carabina PCP Benjamin Marauder .25",
+                price: 6499.99,
+                category: "carabina",
+                type: "PCP",
+                caliber: "6.35mm",
+                brand: "Benjamin",
+                powerSource: "PCP",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_614259-MLB72162262949_102023-F.webp",
+                description: "Carabina PCP de alta potência para caça, calibre .25.",
+                rating: 4.8,
+                discount: 0,
+                featured: false,
+                popularity: 95,
+                dateAdded: "2023-03-15"
+            },
+            {
+                id: 22,
+                name: "Rifle Airsoft Krytac Trident MK2 CRB",
+                price: 3999.99,
+                category: "airsoft",
+                type: "Airsoft",
+                caliber: "6mm",
+                brand: "Krytac",
+                powerSource: "Elétrica",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_945760-MLB72162262947_102023-F.webp",
+                description: "Rifle M4 para airsoft de alta performance com motor de alto torque.",
+                rating: 4.9,
+                discount: 0,
+                featured: false,
+                popularity: 98,
+                dateAdded: "2023-02-28"
+            },
+            {
+                id: 23,
+                name: "Pistola Airsoft WE Glock 18C GBB",
+                price: 999.99,
+                category: "airsoft",
+                type: "Airsoft",
+                caliber: "6mm",
+                brand: "WE",
+                powerSource: "Gás",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_614259-MLB72162262949_102023-F.webp",
+                description: "Réplica da Glock 18C com seleção de tiro semi/automático.",
+                rating: 4.5,
+                discount: 0.10,
+                featured: false,
+                popularity: 87,
+                dateAdded: "2023-01-10"
+            },
+            {
+                id: 24,
+                name: "Carabina Gamo Coyote .177",
+                price: 3799.99,
+                category: "carabina",
+                type: "Carabina",
+                caliber: "4.5mm",
+                brand: "Gamo",
+                powerSource: "Mola",
+                image: "https://http2.mlstatic.com/D_NQ_NP_2X_945760-MLB72162262947_102023-F.webp",
+                description: "Carabina de pressão com coronha ajustável e mira óptica 3-9x40 incluída.",
+                rating: 4.7,
+                discount: 0.15,
+                featured: false,
+                popularity: 92,
+                dateAdded: "2023-06-15"
+            }
+        ];
+
+        // Accessories data
+        const accessories = [
+            {
+                id: 25,
+                name: "Cilindro CO2 12g - 10 unidades",
+                price: 89.99,
+                category: "acessorios",
+                type: "CO2",
+                brand: "Umarex",
+                image: "https://via.placeholder.com/300x200",
+                description: "Cilindros de CO2 12g para armas de pressão, pacote com 10 unidades.",
+                rating: 4.5,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 26,
+                name: "Esferas de Aço 4.5mm - 500 unidades",
+                price: 29.99,
+                category: "municoes",
+                type: "Munição",
+                caliber: "4.5mm",
+                brand: "Gamo",
+                image: "https://via.placeholder.com/300x200",
+                description: "Esferas de aço calibre 4.5mm para armas de pressão, pacote com 500 unidades.",
+                rating: 4.7,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 27,
+                name: "Esferas de Plástico 6mm - 5000 unidades",
+                price: 49.99,
+                category: "municoes",
+                type: "Munição",
+                caliber: "6mm",
+                brand: "Elite Force",
+                image: "https://via.placeholder.com/300x200",
+                description: "Esferas de plástico biodegradáveis para airsoft, pacote com 5000 unidades.",
+                rating: 4.6,
+                discount: 0.10,
+                featured: false
+            },
+            {
+                id: 28,
+                name: "Luneta 4x32 Trilho 11mm",
+                price: 199.99,
+                category: "lunetas",
+                type: "Acessório",
+                brand: "BSA",
+                image: "https://via.placeholder.com/300x200",
+                description: "Luneta 4x32 com retículo iluminado, ajuste de foco e montagem em trilho 11mm.",
+                rating: 4.4,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 29,
+                name: "Red Dot Trilho 11mm",
+                price: 159.99,
+                category: "lunetas",
+                type: "Acessório",
+                brand: "NCStar",
+                image: "https://via.placeholder.com/300x200",
+                description: "Mira red dot com 4 padrões de retículo, ajuste de brilho e montagem em trilho 11mm.",
+                rating: 4.3,
+                discount: 0.05,
+                featured: false
+            },
+            {
+                id: 30,
+                name: "Bandoleira Universal",
+                price: 59.99,
+                category: "acessorios",
+                type: "Acessório",
+                brand: "Condor",
+                image: "https://via.placeholder.com/300x200",
+                description: "Bandoleira ajustável para carabinas e rifles, material resistente e confortável.",
+                rating: 4.5,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 31,
+                name: "Porta Chumbo para Cintura",
+                price: 39.99,
+                category: "acessorios",
+                type: "Acessório",
+                brand: "Allen",
+                image: "https://via.placeholder.com/300x200",
+                description: "Porta chumbos para cintura com capacidade para 100 esferas de 4.5mm.",
+                rating: 4.2,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 32,
+                name: "Capa para Transporte 120cm",
+                price: 129.99,
+                category: "acessorios",
+                type: "Acessório",
+                brand: "Plano",
+                image: "https://via.placeholder.com/300x200",
+                description: "Capa para transporte de armas até 120cm, com alça e bolsos auxiliares.",
+                rating: 4.6,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 33,
+                name: "Case para Pistola",
+                price: 79.99,
+                category: "acessorios",
+                type: "Acessório",
+                brand: "Plano",
+                image: "https://via.placeholder.com/300x200",
+                description: "Case rígido para transporte de pistolas, com espuma interna customizável.",
+                rating: 4.5,
+                discount: 0.10,
+                featured: false
+            },
+            {
+                id: 34,
+                name: "Kit de Limpeza para Armas",
+                price: 49.99,
+                category: "acessorios",
+                type: "Acessório",
+                brand: "Hoppe's",
+                image: "https://via.placeholder.com/300x200",
+                description: "Kit completo para limpeza e manutenção de armas de pressão e airsoft.",
+                rating: 4.7,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 35,
+                name: "Bibe de Proteção para Airsoft",
+                price: 89.99,
+                category: "acessorios",
+                type: "Acessório",
+                brand: "OneTigris",
+                image: "https://via.placeholder.com/300x200",
+                description: "Bibe de proteção para jogos de airsoft, com bolsos para carregadores.",
+                rating: 4.4,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 36,
+                name: "Chumbo 5.5mm - 500 unidades",
+                price: 39.99,
+                category: "municoes",
+                type: "Munição",
+                caliber: "5.5mm",
+                brand: "JSB",
+                image: "https://via.placeholder.com/300x200",
+                description: "Chumbos diabolo precisão calibre 5.5mm, pacote com 500 unidades.",
+                rating: 4.8,
+                discount: 0,
+                featured: false
+            }
+        ];
+
+        // Combine products and accessories
+        const allProducts = [...airsoftProducts, ...accessories];
+
+        // DOM elements
+        const carouselTrack = document.getElementById('carousel-track');
+        const carouselPrev = document.getElementById('carousel-prev');
+        const carouselNext = document.getElementById('carousel-next');
+        const carousel = document.getElementById('carousel');
+        const categoriesBtn = document.getElementById('categories-btn');
+        const categoryDropdown = document.getElementById('category-dropdown');
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const productsGrid = document.getElementById('products-grid');
+        const priceRange = document.getElementById('price-range');
+        const maxPriceDisplay = document.getElementById('max-price-display');
+        const applyFiltersBtn = document.getElementById('apply-filters');
+        const resetFiltersBtn = document.getElementById('reset-filters');
+        const sortBy = document.getElementById('sort-by');
+        const productCount = document.getElementById('product-count');
+        const pagination = document.getElementById('pagination');
+        
+        // Current state
+        let currentFilters = {
+            types: [],
+            calibers: [],
+            brands: [],
+            powerSources: [],
+            maxPrice: 10000,
+            searchTerm: '',
+            sortBy: 'popular'
+        };
+        
+        let currentPage = 1;
+        const productsPerPage = 12;
+        let filteredProducts = [...allProducts];
+
+        // Format price to BRL
+        function formatPrice(price) {
+            return new Intl.NumberFormat('pt-BR', { 
+                style: 'currency', 
+                currency: 'BRL' 
+            }).format(price);
+        }
+
+        // Initialize carousel with featured products
+        function initCarousel() {
+            // Clear any existing items
+            carouselTrack.innerHTML = '';
+            
+            // Get featured products
+            const featuredProducts = allProducts.filter(product => product.featured);
+            
+            // Add products to carousel
+            featuredProducts.forEach(product => {
+                const item = document.createElement('div');
+                item.className = 'carousel-item';
+                
+                // Calculate discounted price if applicable
+                const discountedPrice = product.discount > 0 
+                    ? product.price * (1 - product.discount)
+                    : null;
+                
+                item.innerHTML = `
+                    <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition h-full flex flex-col product-card">
+                        ${product.discount > 0 ? 
+                            `<div class="absolute bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-br-lg">
+                                ${Math.round(product.discount * 100)}% OFF
+                            </div>` : ''}
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+                        <div class="p-4 flex-grow">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-1">${product.name}</h3>
+                            <p class="text-gray-600 text-sm mb-3">${product.description}</p>
+                            <div class="flex flex-col">
+                                ${discountedPrice ? 
+                                    `<div class="flex items-center">
+                                        <span class="text-lg font-bold text-blue-500">${formatPrice(discountedPrice)}</span>
+                                        <span class="text-sm text-gray-500 line-through ml-2">${formatPrice(product.price)}</span>
+                                    </div>` :
+                                    `<span class="text-lg font-bold text-blue-500">${formatPrice(product.price)}</span>`
+                                }
+                                <div class="flex items-center mt-1">
+                                    ${Array.from({ length: 5 }).map((_, i) => 
+                                        `<i class="fas fa-star ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}"></i>`
+                                    ).join('')}
+                                    <span class="text-xs text-gray-500 ml-1">(${product.rating})</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-4 pb-4">
+                            <a href="${product.link}" class="block w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                                <i class="fas fa-shopping-cart mr-2"></i> Comprar
+                            </a>
+                        </div>
+                    </div>
+                `;
+                carouselTrack.appendChild(item);
+            });
+                    
+            // Set carousel width based on number of items
+            const itemCount = featuredProducts.length;
+            const itemWidth = 100 / 3; // Show 3 items at a time
+            carouselTrack.style.width = `${itemCount * itemWidth}%`;
+            
+            // Initialize carousel position
+            let currentPosition = 0;
+            const maxPosition = Math.max(0, itemCount - 3);
+            
+            // Update carousel position
+            function updateCarousel() {
+                carouselTrack.style.transform = `translateX(-${currentPosition * itemWidth}%)`;
+            }
+            
+            // Next button click handler
+            carouselNext.addEventListener('click', () => {
+                if (currentPosition < maxPosition) {
+                    currentPosition++;
+                } else {
+                    currentPosition = 0; // Loop back to start
+                }
+                updateCarousel();
+            });
+            
+            // Previous button click handler
+            carouselPrev.addEventListener('click', () => {
+                if (currentPosition > 0) {
+                    currentPosition--;
+                } else {
+                    currentPosition = maxPosition; // Loop to end
+                }
+                updateCarousel();
+            });
+            
+            // Auto-advance carousel
+            let autoAdvance = setInterval(() => {
+                if (currentPosition < maxPosition) {
+                    currentPosition++;
+                } else {
+                    currentPosition = 0;
+                }
+                updateCarousel();
+            }, 5000);
+            
+            // Pause auto-advance on hover
+            carousel.addEventListener('mouseenter', () => {
+                clearInterval(autoAdvance);
+            });
+            
+            // Resume auto-advance when mouse leaves
+            carousel.addEventListener('mouseleave', () => {
+                autoAdvance = setInterval(() => {
+                    if (currentPosition < maxPosition) {
+                        currentPosition++;
+                    } else {
+                        currentPosition = 0;
+                    }
+                    updateCarousel();
+                }, 5000);
+            });
+            
+            // Initialize carousel position
+            updateCarousel();
+        }
+
+        // Filter products based on current filters
+        function filterProducts() {
+            filteredProducts = allProducts.filter(product => {
+                // Filter by price
+                const priceToCompare = product.discount > 0 
+                    ? product.price * (1 - product.discount)
+                    : product.price;
+                
+                if (priceToCompare > currentFilters.maxPrice) {
+                    return false;
+                }
+                
+                // Filter by type
+                if (currentFilters.types.length > 0 && 
+                    !currentFilters.types.includes(product.type)) {
+                    return false;
+                }
+                
+                // Filter by caliber
+                if (currentFilters.calibers.length > 0 && 
+                    (!product.caliber || !currentFilters.calibers.includes(product.caliber))) {
+                    return false;
+                }
+                
+                // Filter by brand
+                if (currentFilters.brands.length > 0 && 
+                    !currentFilters.brands.includes(product.brand)) {
+                    return false;
+                }
+                
+                // Filter by power source
+                if (currentFilters.powerSources.length > 0 && 
+                    (!product.powerSource || !currentFilters.powerSources.includes(product.powerSource))) {
+                    return false;
+                }
+                
+                // Filter by search term
+                if (currentFilters.searchTerm && 
+                    !product.name.toLowerCase().includes(currentFilters.searchTerm.toLowerCase()) &&
+                    !product.brand.toLowerCase().includes(currentFilters.searchTerm.toLowerCase())) {
+                    return false;
+                }
+                
+                return true;
+            });
+            
+            // Sort products
+            sortProducts();
+            
+            // Update product count
+            updateProductCount();
+            
+            // Render products
+            renderProducts();
+            
+            // Update pagination
+            updatePagination();
+        }
+
+        // Sort products based on current sort option
+        function sortProducts() {
+            switch(currentFilters.sortBy) {
+                case 'price-low':
+                    filteredProducts.sort((a, b) => {
+                        const priceA = a.discount > 0 ? a.price * (1 - a.discount) : a.price;
+                        const priceB = b.discount > 0 ? b.price * (1 - b.discount) : b.price;
+                        return priceA - priceB;
+                    });
+                    break;
+                case 'price-high':
+                    filteredProducts.sort((a, b) => {
+                        const priceA = a.discount > 0 ? a.price * (1 - a.discount) : a.price;
+                        const priceB = b.discount > 0 ? b.price * (1 - b.discount) : b.price;
+                        return priceB - priceA;
+                    });
+                    break;
+                case 'rating':
+                    filteredProducts.sort((a, b) => b.rating - a.rating);
+                    break;
+                case 'newest':
+                    filteredProducts.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+                    break;
+                case 'popular':
+                default:
+                    // For accessories without popularity, use rating
+                    filteredProducts.sort((a, b) => (b.popularity || b.rating * 20) - (a.popularity || a.rating * 20));
+                    break;
+            }
+        }
+
+        // Render products based on current filters and page
+        function renderProducts() {
+            productsGrid.innerHTML = '';
+            
+            // Calculate pagination
+            const startIndex = (currentPage - 1) * productsPerPage;
+            const endIndex = startIndex + productsPerPage;
+            const productsToShow = filteredProducts.slice(startIndex, endIndex);
+            
+            if (productsToShow.length === 0) {
+                productsGrid.innerHTML = `
+                    <div class="col-span-full text-center py-10">
+                        <i class="fas fa-search text-4xl text-gray-300 mb-4"></i>
+                        <h3 class="text-xl font-medium text-gray-700">Nenhum produto encontrado</h3>
+                        <p class="text-gray-500 mt-2">Tente ajustar seus filtros de busca</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            productsToShow.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition h-full flex flex-col product-card';
+                
+                // Calculate discounted price if applicable
+                const discountedPrice = product.discount > 0 
+                    ? product.price * (1 - product.discount)
+                    : null;
+                
+                productCard.innerHTML = `
+                    ${product.discount > 0 ? 
+                        `<div class="absolute bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-br-lg">
+                            ${Math.round(product.discount * 100)}% OFF
+                        </div>` : ''}
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+                    <div class="p-4 flex-grow">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-1">${product.name}</h3>
+                        <p class="text-gray-600 text-sm mb-2">${product.brand} ${product.caliber ? '| ' + product.caliber : ''}</p>
+                        <div class="flex flex-col">
+                            ${discountedPrice ? 
+                                `<div class="flex items-center">
+                                    <span class="text-lg font-bold text-blue-500">${formatPrice(discountedPrice)}</span>
+                                    <span class="text-sm text-gray-500 line-through ml-2">${formatPrice(product.price)}</span>
+                                </div>` :
+                                `<span class="text-lg font-bold text-blue-500">${formatPrice(product.price)}</span>`
+                            }
+                            <div class="flex items-center mt-1">
+                                ${Array.from({ length: 5 }).map((_, i) => 
+                                    `<i class="fas fa-star ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}"></i>`
+                                ).join('')}
+                                <span class="text-xs text-gray-500 ml-1">(${product.rating})</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-4 pb-4">
+                        <a href="${product.link}" class="block w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                            <i class="fas fa-shopping-cart mr-2"></i> Comprar
+                        </a>
+                    </div>
+                `;
+                productsGrid.appendChild(productCard);
+            });
+        }
+
+        // Update product count display
+        function updateProductCount() {
+            const totalProducts = filteredProducts.length;
+            const showingProducts = Math.min(productsPerPage, totalProducts - (currentPage - 1) * productsPerPage);
+            productCount.textContent = `Mostrando ${showingProducts} de ${totalProducts} produtos`;
+        }
+
+        // Update pagination controls
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+            pagination.innerHTML = '';
+            
+            if (totalPages <= 1) return;
+            
+            // Previous button
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 prev-btn';
+            prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderProducts();
+                    updatePagination();
+                }
+            });
+            pagination.appendChild(prevBtn);
+            
+            // Page buttons
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = startPage + maxVisiblePages - 1;
+            
+            if (endPage > totalPages) {
+                endPage = totalPages;
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+            
+            if (startPage > 1) {
+                const firstPageBtn = document.createElement('button');
+                firstPageBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100';
+                firstPageBtn.textContent = '1';
+                firstPageBtn.addEventListener('click', () => {
+                    currentPage = 1;
+                    renderProducts();
+                    updatePagination();
+                });
+                pagination.appendChild(firstPageBtn);
+                
+                if (startPage > 2) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.className = 'px-2';
+                    ellipsis.textContent = '...';
+                    pagination.appendChild(ellipsis);
+                }
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100 ${i === currentPage ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.addEventListener('click', () => {
+                    currentPage = i;
+                    renderProducts();
+                    updatePagination();
+                });
+                pagination.appendChild(pageBtn);
+            }
+            
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.className = 'px-2';
+                    ellipsis.textContent = '...';
+                    pagination.appendChild(ellipsis);
+                }
+                
+                const lastPageBtn = document.createElement('button');
+                lastPageBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100';
+                lastPageBtn.textContent = totalPages;
+                lastPageBtn.addEventListener('click', () => {
+                    currentPage = totalPages;
+                    renderProducts();
+                    updatePagination();
+                });
+                pagination.appendChild(lastPageBtn);
+            }
+            
+            // Next button
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 next-btn';
+            nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderProducts();
+                    updatePagination();
+                }
+            });
+            pagination.appendChild(nextBtn);
+        }
+
+        // Initialize event listeners
+        function initEventListeners() {
+            // Type filter checkboxes
+            document.querySelectorAll('#type-filters input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateTypeFilters();
+                });
+            });
+            
+            // Caliber filter checkboxes
+            document.querySelectorAll('#caliber-filters input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateCaliberFilters();
+                });
+            });
+            
+            // Brand filter checkboxes
+            document.querySelectorAll('#brand-filters input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateBrandFilters();
+                });
+            });
+            
+            // Power source filter checkboxes
+            document.querySelectorAll('#power-filters input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updatePowerSourceFilters();
+                });
+            });
+            
+            // Price range slider
+            priceRange.addEventListener('input', (e) => {
+                maxPriceDisplay.textContent = `R$ ${e.target.value}`;
+            });
+            
+            // Apply filters button
+            applyFiltersBtn.addEventListener('click', () => {
+                currentFilters.maxPrice = parseInt(priceRange.value);
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Reset filters button
+            resetFiltersBtn.addEventListener('click', () => {
+                // Reset all checkboxes
+                document.querySelectorAll('#type-filters input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                
+                document.querySelectorAll('#caliber-filters input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                
+                document.querySelectorAll('#brand-filters input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                
+                document.querySelectorAll('#power-filters input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                
+                // Reset price range
+                priceRange.value = 10000;
+                maxPriceDisplay.textContent = 'R$ 10000';
+                
+                // Reset search
+                searchInput.value = '';
+                
+                // Reset sort
+                sortBy.value = 'popular';
+                
+                // Reset filters state
+                currentFilters = {
+                    types: [],
+                    calibers: [],
+                    brands: [],
+                    powerSources: [],
+                    maxPrice: 10000,
+                    searchTerm: '',
+                    sortBy: 'popular'
+                };
+                
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Sort by dropdown
+            sortBy.addEventListener('change', (e) => {
+                currentFilters.sortBy = e.target.value;
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Search functionality
+            searchBtn.addEventListener('click', () => {
+                currentFilters.searchTerm = searchInput.value.trim();
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Allow search on Enter key
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    currentFilters.searchTerm = searchInput.value.trim();
+                    currentPage = 1;
+                    filterProducts();
+                }
+            });
+            
+            // Toggle categories dropdown
+            categoriesBtn.addEventListener('click', () => {
+                document.querySelector('.relative').classList.toggle('show-categories');
+            });
+            
+            // Close categories dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.relative') && !e.target.closest('#categories-btn')) {
+                    document.querySelector('.relative').classList.remove('show-categories');
+                }
+            });
+            
+            // Logout button
+            logoutBtn.addEventListener('click', () => {
+                if (confirm('Tem certeza que deseja sair?')) {
+                    // In a real application, this would clear session and redirect
+                    alert('Você foi desconectado.');
+                    // window.location.href = 'login.html';
+                }
+            });
+        }
+        
+        // Update type filters based on checked types
+        function updateTypeFilters() {
+            currentFilters.types = Array.from(document.querySelectorAll('#type-filters input[type="checkbox"]:checked'))
+                .map(checkbox => checkbox.value);
+        }
+        
+        // Update caliber filters based on checked calibers
+        function updateCaliberFilters() {
+            currentFilters.calibers = Array.from(document.querySelectorAll('#caliber-filters input[type="checkbox"]:checked'))
+                .map(checkbox => checkbox.value);
+        }
+        
+        // Update brand filters based on checked brands
+        function updateBrandFilters() {
+            currentFilters.brands = Array.from(document.querySelectorAll('#brand-filters input[type="checkbox"]:checked'))
+                .map(checkbox => checkbox.value);
+        }
+        
+        // Update power source filters based on checked power sources
+        function updatePowerSourceFilters() {
+            currentFilters.powerSources = Array.from(document.querySelectorAll('#power-filters input[type="checkbox"]:checked'))
+                .map(checkbox => checkbox.value);
+        }
+
+        // Initialize the page
+        function init() {
+            initCarousel();
+            filterProducts();
+            initEventListeners();
+        }
+
+        // Start the application
+        init();
+    </script>
+</body>
+</html>

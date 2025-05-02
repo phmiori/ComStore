@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuperStore - Pet Shop</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom styles for the carousel and other elements */
+        .carousel-container {
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .carousel-item {
+            flex: 0 0 33.333%;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+        
+        @media (max-width: 1024px) {
+            .carousel-item {
+                flex: 0 0 50%;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .carousel-item {
+                flex: 0 0 100%;
+            }
+        }
+        
+        .category-dropdown {
+            display: none;
+            position: absolute;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        
+        .show-categories .category-dropdown {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .niche-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .filter-section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .price-range-slider {
+            width: 100%;
+            height: 5px;
+            -webkit-appearance: none;
+            background: #ddd;
+            outline: none;
+            border-radius: 5px;
+        }
+
+        .price-range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #3b82f6;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .size-checkbox {
+            display: none;
+        }
+
+        .size-label {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .size-checkbox:checked + .size-label {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin: 5px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .color-option.selected {
+            border-color: #3b82f6;
+            transform: scale(1.1);
+        }
+        
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .pagination-btn {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .pagination-btn:hover:not(.active) {
+            background-color: #f1f5f9;
+        }
+        
+        .active {
+            background-color: #3b82f6;
+            color: white;
+        }
+        
+        .pet-type-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .pet-type-btn.active {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Header with logo, navigation, and search -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between">
+            <!-- Logo on the left -->
+            <div class="flex items-center mb-4 md:mb-0">
+                <img src="https://via.placeholder.com/50x50" alt="SuperStore Logo" class="h-10 mr-2">
+                <h1 class="text-xl font-bold text-gray-800">SuperStore</h1>
+            </div>
+            
+            <!-- Navigation and search in the middle -->
+            <div class="flex-1 flex flex-col md:flex-row items-center justify-center mx-0 md:mx-8 w-full md:w-auto">
+                <!-- Navigation buttons -->
+                <div class="flex space-x-4 mb-4 md:mb-0">
+                    <a href="index.html" class="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium">Início</a>
+                    <div class="relative">
+                        <button id="categories-btn" class="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                            Categorias <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <!-- Categories dropdown -->
+                        <div id="category-dropdown" class="category-dropdown p-4 rounded-lg mt-1 w-full md:w-96">
+                            <div>
+                                <h3 class="font-bold mb-2">Eletrônicos</h3>
+                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">Celulares</a>
+                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">Notebooks</a>
+                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">TVs</a>
+                            </div>
+                            <div>
+                                <h3 class="font-bold mb-2">Eletrodomésticos</h3>
+                                <a href="eletrodomesticos.html" class="block py-1 text-gray-600 hover:text-blue-500">Geladeiras</a>
+                                <a href="eletrodomesticos.html" class="block py-1 text-gray-600 hover:text-blue-500">Fogões</a>
+                                <a href="eletrodomesticos.html" class="block py-1 text-gray-600 hover:text-blue-500">Microondas</a>
+                            </div>
+                            <div>
+                                <h3 class="font-bold mb-2">Pet Shop</h3>
+                                <a href="pets.html" class="block py-1 text-gray-600 hover:text-blue-500 text-blue-600 font-medium">Brinquedos</a>
+                                <a href="pets-acessorios.html" class="block py-1 text-gray-600 hover:text-blue-500">Acessórios</a>
+                                <a href="pets-higiene.html" class="block py-1 text-gray-600 hover:text-blue-500">Higiene</a>
+                                <a href="pets-roupas.html" class="block py-1 text-gray-600 hover:text-blue-500">Roupinhas</a>
+                                <a href="pets-camas.html" class="block py-1 text-gray-600 hover:text-blue-500">Camas</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Search bar -->
+                <div class="relative w-full md:w-96 mb-4 md:mb-0">
+                    <input type="text" id="search-input" placeholder="Buscar produtos..." 
+                           class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button id="search-btn" class="absolute right-3 top-2 text-gray-500 hover:text-blue-600">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Logout button on the right -->
+            <div class="ml-auto">
+                <button id="logout-btn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
+                    Sair <i class="fas fa-sign-out-alt ml-1"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Breadcrumb navigation -->
+        <div class="flex items-center text-sm text-gray-500 mb-6">
+            <a href="index.html" class="hover:text-blue-500">Início</a>
+            <span class="mx-2">/</span>
+            <a href="pets.html" class="hover:text-blue-500">Pet Shop</a>
+            <span class="mx-2">/</span>
+            <span class="text-gray-700">Brinquedos</span>
+        </div>
+
+        <!-- Page title and sorting options -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Pet Shop</h1>
+            <div class="flex items-center">
+                <span class="text-gray-600 mr-2">Ordenar por:</span>
+                <select id="sort-by" class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="popular">Mais vendidos</option>
+                    <option value="price-low">Menor preço</option>
+                    <option value="price-high">Maior preço</option>
+                    <option value="rating">Melhor avaliados</option>
+                    <option value="newest">Novidades</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Pet type filter -->
+        <div class="flex flex-wrap gap-2 mb-8">
+            <button class="pet-type-btn px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100 active" data-pet-type="all">
+                <i class="fas fa-paw mr-2"></i>Todos
+            </button>
+            <button class="pet-type-btn px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100" data-pet-type="dog">
+                <i class="fas fa-dog mr-2"></i>Cachorros
+            </button>
+            <button class="pet-type-btn px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100" data-pet-type="cat">
+                <i class="fas fa-cat mr-2"></i>Gatos
+            </button>
+            <button class="pet-type-btn px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100" data-pet-type="bird">
+                <i class="fas fa-dove mr-2"></i>Pássaros
+            </button>
+            <button class="pet-type-btn px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100" data-pet-type="fish">
+                <i class="fas fa-fish mr-2"></i>Peixes
+            </button>
+            <button class="pet-type-btn px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100" data-pet-type="small">
+                <i class="fas fa-kiwi-bird mr-2"></i>Pequenos Animais
+            </button>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Filters sidebar -->
+            <aside class="w-full lg:w-1/4">
+                <div class="filter-section mb-6">
+                    <h2 class="text-lg font-semibold mb-4 text-gray-800">Filtrar por</h2>
+                    
+                    <!-- Price range filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Faixa de preço</h3>
+                        <input type="range" id="price-range" min="5" max="500" value="500" class="price-range-slider mb-3">
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>R$ 5</span>
+                            <span id="max-price-display">R$ 500</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Category filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Categoria</h3>
+                        <div class="space-y-2" id="category-filters">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="toys" class="mr-2" value="Brinquedos" checked>
+                                <label for="toys" class="text-gray-600">Brinquedos</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="accessories" class="mr-2" value="Acessórios">
+                                <label for="accessories" class="text-gray-600">Acessórios</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="hygiene" class="mr-2" value="Higiene">
+                                <label for="hygiene" class="text-gray-600">Higiene</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="clothes" class="mr-2" value="Roupas">
+                                <label for="clothes" class="text-gray-600">Roupinhas</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="beds" class="mr-2" value="Camas">
+                                <label for="beds" class="text-gray-600">Camas</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="food" class="mr-2" value="Alimentos">
+                                <label for="food" class="text-gray-600">Alimentos</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Color filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Cor</h3>
+                        <div class="flex flex-wrap" id="color-filters">
+                            <div class="color-option bg-black selected" data-color="black"></div>
+                            <div class="color-option bg-white border border-gray-300" data-color="white"></div>
+                            <div class="color-option bg-gray-500" data-color="gray"></div>
+                            <div class="color-option bg-blue-500" data-color="blue"></div>
+                            <div class="color-option bg-red-500" data-color="red"></div>
+                            <div class="color-option bg-green-500" data-color="green"></div>
+                            <div class="color-option bg-yellow-400" data-color="yellow"></div>
+                            <div class="color-option bg-pink-400" data-color="pink"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Brand filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Marca</h3>
+                        <div class="space-y-2" id="brand-filters">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="pedigree" class="mr-2" value="Pedigree">
+                                <label for="pedigree" class="text-gray-600">Pedigree</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="whiskas" class="mr-2" value="Whiskas">
+                                <label for="whiskas" class="text-gray-600">Whiskas</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="petz" class="mr-2" value="Petz">
+                                <label for="petz" class="text-gray-600">Petz</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="petlove" class="mr-2" value="PetLove">
+                                <label for="petlove" class="text-gray-600">PetLove</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="granplus" class="mr-2" value="GranPlus">
+                                <label for="granplus" class="text-gray-600">GranPlus</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Apply filters button -->
+                    <button id="apply-filters" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
+                        Aplicar Filtros
+                    </button>
+                    <button id="reset-filters" class="w-full mt-2 bg-gray-200 text-gray-800 py-2 rounded-lg hover:bg-gray-300 transition">
+                        Limpar Filtros
+                    </button>
+                </div>
+                
+                <!-- Special offers -->
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h3 class="font-semibold text-blue-800 mb-3">Ofertas Especiais</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <div class="bg-white p-2 rounded-lg mr-3">
+                                <i class="fas fa-percentage text-blue-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium">Até 30% OFF</p>
+                                <p class="text-xs text-gray-500">Em produtos selecionados</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="bg-white p-2 rounded-lg mr-3">
+                                <i class="fas fa-truck text-blue-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium">Frete Grátis</p>
+                                <p class="text-xs text-gray-500">Para compras acima de R$ 100</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="bg-white p-2 rounded-lg mr-3">
+                                <i class="fas fa-gift text-blue-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium">Kit Presente</p>
+                                <p class="text-xs text-gray-500">Compre 2 produtos e ganhe um brinde</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            
+            <!-- Products grid -->
+            <div class="w-full lg:w-3/4">
+                <!-- Featured products carousel -->
+                <section class="mb-12">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Destaques</h2>
+                    <div class="carousel-container relative group" id="carousel">
+                        <div class="carousel-track" id="carousel-track">
+                            <!-- Carousel items will be added by JavaScript -->
+                        </div>
+                        
+                        <!-- Carousel navigation arrows -->
+                        <button id="carousel-prev" class="absolute left-0 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 text-gray-800 p-2 rounded-full shadow-md hover:bg-opacity-100 transition opacity-0 group-hover:opacity-100">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button id="carousel-next" class="absolute right-0 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 text-gray-800 p-2 rounded-full shadow-md hover:bg-opacity-100 transition opacity-0 group-hover:opacity-100">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </section>
+                
+                <!-- All pet products -->
+                <section>
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">Todos os Produtos</h2>
+                        <span id="product-count" class="text-gray-500">Mostrando 12 de 12 produtos</span>
+                    </div>
+                    
+                    <div class="product-grid" id="products-grid">
+                        <!-- Products will be added by JavaScript -->
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="flex justify-center mt-8">
+                        <nav class="flex items-center space-x-1" id="pagination">
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 prev-btn">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100 active">1</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">2</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">3</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">4</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">5</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 next-btn">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </nav>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer with social media links -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center">
+                        <img src="https://via.placeholder.com/50x50" alt="SuperStore Logo" class="h-10 mr-2">
+                        <h2 class="text-xl font-bold">SuperStore</h2>
+                    </div>
+                    <p class="mt-2 text-gray-400">Sua loja online completa com os melhores produtos.</p>
+                </div>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2023 SuperStore. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample product data for pet shop
+        const petProducts = [
+            {
+                id: 1,
+                link: "https://www.petz.com.br/produto/brinquedo-para-caes-pet-games-mordedor-de-borracha-em-formato-de-rosquinha",
+                name: "Brinquedo Rosquinha para Cães",
+                price: 29.99,
+                category: "Brinquedos",
+                petType: "dog",
+                brand: "Petz",
+                colors: ["red", "blue"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/05/brinquedos-para-cachorro-filhote-1.jpg",
+                description: "Brinquedo de borracha resistente para cães, formato de rosquinha.",
+                rating: 4.7,
+                discount: 0.10,
+                featured: true,
+                popularity: 90,
+                dateAdded: "2023-05-15"
+            },
+            {
+                id: 2,
+                link: "https://www.petz.com.br/produto/brinquedo-para-gatos-pet-games-ratinho-com-pelo-e-chocalho",
+                name: "Ratinho de Pelúcia para Gatos",
+                price: 19.99,
+                category: "Brinquedos",
+                petType: "cat",
+                brand: "Petz",
+                colors: ["gray", "white"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/11/brinquedos-para-gatos-filhotes.jpg",
+                description: "Ratinho de pelúcia com chocalho interno para estimular gatos.",
+                rating: 4.8,
+                discount: 0,
+                featured: true,
+                popularity: 92,
+                dateAdded: "2023-06-20"
+            },
+            {
+                id: 3,
+                link: "https://www.petz.com.br/produto/coleira-para-caes-pet-games-azul-com-reflexo",
+                name: "Coleira Refletiva para Cães",
+                price: 39.99,
+                category: "Acessórios",
+                petType: "dog",
+                brand: "Petz",
+                colors: ["blue", "black"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/08/coleira-para-cachorro.jpg",
+                description: "Coleira ajustável com material refletivo para segurança noturna.",
+                rating: 4.6,
+                discount: 0.15,
+                featured: true,
+                popularity: 88,
+                dateAdded: "2023-04-10"
+            },
+            {
+                id: 4,
+                link: "https://www.petz.com.br/produto/arranhador-para-gatos-pet-games-torre-com-arvore-de-sisal",
+                name: "Arranhador Torre para Gatos",
+                price: 199.99,
+                category: "Acessórios",
+                petType: "cat",
+                brand: "Petz",
+                colors: ["gray", "beige"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/11/arranhador-para-gato-caseiro.jpg",
+                description: "Torre com múltiplos níveis e poste de sisal para arranhar.",
+                rating: 4.9,
+                discount: 0.20,
+                featured: true,
+                popularity: 95,
+                dateAdded: "2023-03-05"
+            },
+            {
+                id: 5,
+                link: "https://www.petz.com.br/produto/shampoo-para-caes-pet-games-hidratante-500ml",
+                name: "Shampoo Hidratante para Cães",
+                price: 24.99,
+                category: "Higiene",
+                petType: "dog",
+                brand: "Petz",
+                colors: ["white"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/08/shampoo-para-cachorro.jpg",
+                description: "Shampoo com pH balanceado e fórmula hidratante para pelagem.",
+                rating: 4.5,
+                discount: 0,
+                featured: true,
+                popularity: 85,
+                dateAdded: "2023-02-18"
+            },
+            {
+                id: 6,
+                link: "https://www.petz.com.br/produto/roupa-para-caes-pet-games-moletom-com-capuz",
+                name: "Moletom com Capuz para Cães",
+                price: 59.99,
+                category: "Roupas",
+                petType: "dog",
+                brand: "Petz",
+                colors: ["blue", "pink", "gray"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/08/roupa-para-cachorro.jpg",
+                description: "Moletom confortável com capuz para dias frios.",
+                rating: 4.4,
+                discount: 0.10,
+                featured: false,
+                popularity: 80,
+                dateAdded: "2023-07-12"
+            },
+            {
+                id: 7,
+                link: "https://www.petz.com.br/produto/cama-para-caes-pet-games-oval-azul",
+                name: "Cama Oval para Cães",
+                price: 89.99,
+                category: "Camas",
+                petType: "dog",
+                brand: "Petz",
+                colors: ["blue", "gray"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/08/cama-para-cachorro.jpg",
+                description: "Cama macia e confortável com bordas elevadas.",
+                rating: 4.8,
+                discount: 0,
+                featured: false,
+                popularity: 87,
+                dateAdded: "2023-06-25"
+            },
+            {
+                id: 8,
+                link: "https://www.petz.com.br/produto/brinquedo-para-passaros-pet-games-escada-de-madeira-com-sino",
+                name: "Escada com Sino para Pássaros",
+                price: 34.99,
+                category: "Brinquedos",
+                petType: "bird",
+                brand: "Petz",
+                colors: ["natural"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/11/brinquedos-para-passaros.jpg",
+                description: "Escada de madeira com sino para diversão de pássaros.",
+                rating: 4.3,
+                discount: 0,
+                featured: false,
+                popularity: 75,
+                dateAdded: "2023-05-30"
+            },
+            {
+                id: 9,
+                link: "https://www.petz.com.br/produto/aquario-para-peixes-pet-games-30l-com-filtro-e-iluminacao",
+                name: "Aquário 30L Completo",
+                price: 249.99,
+                category: "Acessórios",
+                petType: "fish",
+                brand: "Petz",
+                colors: ["black"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/11/aquario-para-iniciantes.jpg",
+                description: "Aquário completo com filtro, iluminação e termostato.",
+                rating: 4.7,
+                discount: 0.15,
+                featured: false,
+                popularity: 91,
+                dateAdded: "2023-04-22"
+            },
+            {
+                id: 10,
+                link: "https://www.petz.com.br/produto/racao-para-gatos-whiskas-sache-carne-85g",
+                name: "Ração Úmida Whiskas Sache",
+                price: 4.99,
+                category: "Alimentos",
+                petType: "cat",
+                brand: "Whiskas",
+                colors: ["red"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/11/racao-para-gato.jpg",
+                description: "Ração úmida em sachê com sabor carne para gatos.",
+                rating: 4.6,
+                discount: 0.20,
+                featured: false,
+                popularity: 89,
+                dateAdded: "2023-07-05"
+            },
+            {
+                id: 11,
+                link: "https://www.petz.com.br/produto/brinquedo-para-caes-pet-games-bola-com-corda",
+                name: "Bola com Corda para Cães",
+                price: 22.99,
+                category: "Brinquedos",
+                petType: "dog",
+                brand: "Petz",
+                colors: ["green", "yellow"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/05/brinquedos-para-cachorro-filhote-2.jpg",
+                description: "Bola resistente com corda para puxar e brincar.",
+                rating: 4.5,
+                discount: 0,
+                featured: false,
+                popularity: 82,
+                dateAdded: "2023-01-15"
+            },
+            {
+                id: 12,
+                link: "https://www.petz.com.br/produto/comedouro-para-gatos-pet-games-duplo-inox",
+                name: "Comedouro Duplo Inox para Gatos",
+                price: 49.99,
+                category: "Acessórios",
+                petType: "cat",
+                brand: "Petz",
+                colors: ["silver"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/11/comedouro-para-gato.jpg",
+                description: "Comedouro duplo em aço inoxidável, antiderrapante.",
+                rating: 4.7,
+                discount: 0.10,
+                featured: false,
+                popularity: 86,
+                dateAdded: "2023-03-20"
+            },
+            {
+                id: 13,
+                link: "https://www.petz.com.br/produto/areia-higienica-para-gatos-pet-games-silica-3-8kg",
+                name: "Areia Higiênica de Sílica",
+                price: 39.99,
+                category: "Higiene",
+                petType: "cat",
+                brand: "Petz",
+                colors: ["white"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/11/areia-higienica-para-gato.jpg",
+                description: "Areia de sílica com alta absorção e controle de odor.",
+                rating: 4.6,
+                discount: 0,
+                featured: false,
+                popularity: 84,
+                dateAdded: "2023-06-10"
+            },
+            {
+                id: 14,
+                link: "https://www.petz.com.br/produto/coleira-para-gatos-pet-games-peitoral-ajustavel",
+                name: "Coleira Peitoral para Gatos",
+                price: 34.99,
+                category: "Acessórios",
+                petType: "cat",
+                brand: "Petz",
+                colors: ["pink", "blue"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/11/coleira-para-gato.jpg",
+                description: "Coleira peitoral ajustável com fecho de segurança.",
+                rating: 4.5,
+                discount: 0,
+                featured: false,
+                popularity: 83,
+                dateAdded: "2023-05-05"
+            },
+            {
+                id: 15,
+                link: "https://www.petz.com.br/produto/brinquedo-para-coelhos-pet-games-rolinho-de-feno",
+                name: "Rolinho de Feno para Coelhos",
+                price: 19.99,
+                category: "Brinquedos",
+                petType: "small",
+                brand: "Petz",
+                colors: ["natural"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/11/brinquedos-para-coelho.jpg",
+                description: "Rolinho de feno natural para entreter pequenos animais.",
+                rating: 4.4,
+                discount: 0,
+                featured: false,
+                popularity: 78,
+                dateAdded: "2023-04-15"
+            },
+            {
+                id: 16,
+                link: "https://www.petz.com.br/produto/racao-para-caes-pedigree-carne-1kg",
+                name: "Ração Pedigree Carne 1kg",
+                price: 24.99,
+                category: "Alimentos",
+                petType: "dog",
+                brand: "Pedigree",
+                colors: ["red"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/08/racao-para-cachorro.jpg",
+                description: "Ração seca para cães adultos, sabor carne.",
+                rating: 4.5,
+                discount: 0.10,
+                featured: false,
+                popularity: 85,
+                dateAdded: "2023-03-28"
+            },
+            {
+                id: 17,
+                link: "https://www.petz.com.br/produto/brinquedo-para-caes-pet-games-mordedor-de-borracha-em-formato-de-osso",
+                name: "Osso de Borracha para Cães",
+                price: 27.99,
+                category: "Brinquedos",
+                petType: "dog",
+                brand: "Petz",
+                colors: ["red", "green"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/05/brinquedos-para-cachorro-filhote-3.jpg",
+                description: "Osso de borracha resistente para cães de todos os portes.",
+                rating: 4.6,
+                discount: 0,
+                featured: false,
+                popularity: 87,
+                dateAdded: "2023-02-10"
+            },
+            {
+                id: 18,
+                link: "https://www.petz.com.br/produto/arranhador-para-gatos-pet-games-postes-de-sisal",
+                name: "Arranhador de Sisal para Gatos",
+                price: 129.99,
+                category: "Acessórios",
+                petType: "cat",
+                brand: "Petz",
+                colors: ["beige"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/11/arranhador-para-gato.jpg",
+                description: "Arranhador vertical com postes de sisal natural.",
+                rating: 4.8,
+                discount: 0.15,
+                featured: false,
+                popularity: 92,
+                dateAdded: "2023-01-25"
+            },
+            {
+                id: 19,
+                link: "https://www.petz.com.br/produto/coleira-para-caes-pet-games-peitoral-ajustavel-azul",
+                name: "Coleira Peitoral para Cães",
+                price: 44.99,
+                category: "Acessórios",
+                petType: "dog",
+                brand: "Petz",
+                colors: ["blue", "black"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/08/coleira-peitoral-para-cachorro.jpg",
+                description: "Coleira peitoral ergonômica e ajustável para passeios.",
+                rating: 4.7,
+                discount: 0,
+                featured: false,
+                popularity: 88,
+                dateAdded: "2023-05-18"
+            },
+            {
+                id: 20,
+                link: "https://www.petz.com.br/produto/brinquedo-para-gatos-pet-games-varinha-com-penas",
+                name: "Varinha com Penas para Gatos",
+                price: 29.99,
+                category: "Brinquedos",
+                petType: "cat",
+                brand: "Petz",
+                colors: ["multicolor"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/11/brinquedos-para-gatos.jpg",
+                description: "Varinha com penas coloridas para estimular gatos.",
+                rating: 4.9,
+                discount: 0.20,
+                featured: false,
+                popularity: 94,
+                dateAdded: "2023-04-05"
+            },
+            {
+                id: 21,
+                link: "https://www.petz.com.br/produto/cama-para-gatos-pet-games-oval-rosa",
+                name: "Cama Oval para Gatos",
+                price: 79.99,
+                category: "Camas",
+                petType: "cat",
+                brand: "Petz",
+                colors: ["pink", "gray"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/11/cama-para-gato.jpg",
+                description: "Cama macia e aconchegante para gatos de todos os tamanhos.",
+                rating: 4.7,
+                discount: 0,
+                featured: false,
+                popularity: 89,
+                dateAdded: "2023-03-15"
+            },
+            {
+                id: 22,
+                link: "https://www.petz.com.br/produto/brinquedo-para-passaros-pet-games-espelho-com-sino",
+                name: "Espelho com Sino para Pássaros",
+                price: 19.99,
+                category: "Brinquedos",
+                petType: "bird",
+                brand: "Petz",
+                colors: ["silver"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/11/brinquedos-para-passaros-2.jpg",
+                description: "Espelho com sino para entreter pássaros em gaiolas.",
+                rating: 4.3,
+                discount: 0,
+                featured: false,
+                popularity: 76,
+                dateAdded: "2023-02-28"
+            },
+            {
+                id: 23,
+                link: "https://www.petz.com.br/produto/racao-para-caes-pedigree-frango-e-legumes-10kg",
+                name: "Ração Pedigree Frango 10kg",
+                price: 129.99,
+                category: "Alimentos",
+                petType: "dog",
+                brand: "Pedigree",
+                colors: ["green"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/08/racao-para-cachorro-2.jpg",
+                description: "Ração seca para cães adultos, sabor frango e legumes.",
+                rating: 4.6,
+                discount: 0.25,
+                featured: false,
+                popularity: 90,
+                dateAdded: "2023-01-10"
+            },
+            {
+                id: 24,
+                link: "https://www.petz.com.br/produto/aquario-para-peixes-pet-games-15l-com-filtro",
+                name: "Aquário 15L com Filtro",
+                price: 179.99,
+                category: "Acessórios",
+                petType: "fish",
+                brand: "Petz",
+                colors: ["black"],
+                image: "https://www.petz.com.br/blog/wp-content/uploads/2021/11/aquario-para-peixes.jpg",
+                description: "Aquário compacto com filtro interno e iluminação LED.",
+                rating: 4.5,
+                discount: 0.15,
+                featured: false,
+                popularity: 83,
+                dateAdded: "2023-06-15"
+            }
+        ];
+
+        // DOM elements
+        const carouselTrack = document.getElementById('carousel-track');
+        const carouselPrev = document.getElementById('carousel-prev');
+        const carouselNext = document.getElementById('carousel-next');
+        const carousel = document.getElementById('carousel');
+        const categoriesBtn = document.getElementById('categories-btn');
+        const categoryDropdown = document.getElementById('category-dropdown');
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const productsGrid = document.getElementById('products-grid');
+        const colorOptions = document.querySelectorAll('.color-option');
+        const applyFiltersBtn = document.getElementById('apply-filters');
+        const resetFiltersBtn = document.getElementById('reset-filters');
+        const sortBy = document.getElementById('sort-by');
+        const productCount = document.getElementById('product-count');
+        const pagination = document.getElementById('pagination');
+        const priceRange = document.getElementById('price-range');
+        const maxPriceDisplay = document.getElementById('max-price-display');
+        const petTypeBtns = document.querySelectorAll('.pet-type-btn');
+        
+        // Current state
+        let currentFilters = {
+            colors: [],
+            categories: ["Brinquedos"],
+            brands: [],
+            maxPrice: 500,
+            searchTerm: '',
+            sortBy: 'popular',
+            petType: 'all'
+        };
+        
+        let currentPage = 1;
+        const productsPerPage = 12;
+        let filteredProducts = [...petProducts];
+
+        // Format price to BRL
+        function formatPrice(price) {
+            return new Intl.NumberFormat('pt-BR', { 
+                style: 'currency', 
+                currency: 'BRL' 
+            }).format(price);
+        }
+
+        // Initialize carousel with featured pet products
+        function initCarousel() {
+            // Clear any existing items
+            carouselTrack.innerHTML = '';
+            
+            // Get featured products
+            const featuredProducts = petProducts.filter(product => product.featured);
+            
+            // Add products to carousel
+            featuredProducts.forEach(product => {
+                const item = document.createElement('div');
+                item.className = 'carousel-item';
+                
+                // Calculate discounted price if applicable
+                const discountedPrice = product.discount > 0 
+                    ? product.price * (1 - product.discount)
+                    : null;
+                
+                item.innerHTML = `
+                    <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition h-full flex flex-col product-card">
+                        ${product.discount > 0 ? 
+                            `<div class="absolute bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-br-lg">
+                                ${Math.round(product.discount * 100)}% OFF
+                            </div>` : ''}
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+                        <div class="p-4 flex-grow">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-1">${product.name}</h3>
+                            <p class="text-gray-600 text-sm mb-3">${product.description}</p>
+                            <div class="flex flex-col">
+                                ${discountedPrice ? 
+                                    `<div class="flex items-center">
+                                        <span class="text-lg font-bold text-blue-500">${formatPrice(discountedPrice)}</span>
+                                        <span class="text-sm text-gray-500 line-through ml-2">${formatPrice(product.price)}</span>
+                                    </div>` :
+                                    `<span class="text-lg font-bold text-blue-500">${formatPrice(product.price)}</span>`
+                                }
+                                <div class="flex items-center mt-1">
+                                    ${Array.from({ length: 5 }).map((_, i) => 
+                                        `<i class="fas fa-star ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}"></i>`
+                                    ).join('')}
+                                    <span class="text-xs text-gray-500 ml-1">(${product.rating})</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-4 pb-4">
+                            <a href="${product.link}" class="block w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                                <i class="fas fa-shopping-cart mr-2"></i> Comprar
+                            </a>
+                        </div>
+                    </div>
+                `;
+                carouselTrack.appendChild(item);
+            });
+                    
+            // Set carousel width based on number of items
+            const itemCount = featuredProducts.length;
+            const itemWidth = 100 / 3; // Show 3 items at a time
+            carouselTrack.style.width = `${itemCount * itemWidth}%`;
+            
+            // Initialize carousel position
+            let currentPosition = 0;
+            const maxPosition = Math.max(0, itemCount - 3);
+            
+            // Update carousel position
+            function updateCarousel() {
+                carouselTrack.style.transform = `translateX(-${currentPosition * itemWidth}%)`;
+            }
+            
+            // Next button click handler
+            carouselNext.addEventListener('click', () => {
+                if (currentPosition < maxPosition) {
+                    currentPosition++;
+                } else {
+                    currentPosition = 0; // Loop back to start
+                }
+                updateCarousel();
+            });
+            
+            // Previous button click handler
+            carouselPrev.addEventListener('click', () => {
+                if (currentPosition > 0) {
+                    currentPosition--;
+                } else {
+                    currentPosition = maxPosition; // Loop to end
+                }
+                updateCarousel();
+            });
+            
+            // Auto-advance carousel
+            let autoAdvance = setInterval(() => {
+                if (currentPosition < maxPosition) {
+                    currentPosition++;
+                } else {
+                    currentPosition = 0;
+                }
+                updateCarousel();
+            }, 5000);
+            
+            // Pause auto-advance on hover
+            carousel.addEventListener('mouseenter', () => {
+                clearInterval(autoAdvance);
+            });
+            
+            // Resume auto-advance when mouse leaves
+            carousel.addEventListener('mouseleave', () => {
+                autoAdvance = setInterval(() => {
+                    if (currentPosition < maxPosition) {
+                        currentPosition++;
+                    } else {
+                        currentPosition = 0;
+                    }
+                    updateCarousel();
+                }, 5000);
+            });
+            
+            // Initialize carousel position
+            updateCarousel();
+        }
+
+        // Filter products based on current filters
+        function filterProducts() {
+            filteredProducts = petProducts.filter(product => {
+                // Filter by price
+                const priceToCompare = product.discount > 0 
+                    ? product.price * (1 - product.discount)
+                    : product.price;
+                
+                if (priceToCompare > currentFilters.maxPrice) {
+                    return false;
+                }
+                
+                // Filter by color
+                if (currentFilters.colors.length > 0 && 
+                    !currentFilters.colors.some(color => product.colors.includes(color))) {
+                    return false;
+                }
+                
+                // Filter by category
+                if (currentFilters.categories.length > 0 && 
+                    !currentFilters.categories.includes(product.category)) {
+                    return false;
+                }
+                
+                // Filter by brand
+                if (currentFilters.brands.length > 0 && 
+                    !currentFilters.brands.includes(product.brand)) {
+                    return false;
+                }
+                
+                // Filter by pet type
+                if (currentFilters.petType !== 'all' && 
+                    product.petType !== currentFilters.petType) {
+                    return false;
+                }
+                
+                // Filter by search term
+                if (currentFilters.searchTerm && 
+                    !product.name.toLowerCase().includes(currentFilters.searchTerm.toLowerCase()) &&
+                    !product.brand.toLowerCase().includes(currentFilters.searchTerm.toLowerCase())) {
+                    return false;
+                }
+                
+                return true;
+            });
+            
+            // Sort products
+            sortProducts();
+            
+            // Update product count
+            updateProductCount();
+            
+            // Render products
+            renderProducts();
+            
+            // Update pagination
+            updatePagination();
+        }
+
+        // Sort products based on current sort option
+        function sortProducts() {
+            switch(currentFilters.sortBy) {
+                case 'price-low':
+                    filteredProducts.sort((a, b) => {
+                        const priceA = a.discount > 0 ? a.price * (1 - a.discount) : a.price;
+                        const priceB = b.discount > 0 ? b.price * (1 - b.discount) : b.price;
+                        return priceA - priceB;
+                    });
+                    break;
+                case 'price-high':
+                    filteredProducts.sort((a, b) => {
+                        const priceA = a.discount > 0 ? a.price * (1 - a.discount) : a.price;
+                        const priceB = b.discount > 0 ? b.price * (1 - b.discount) : b.price;
+                        return priceB - priceA;
+                    });
+                    break;
+                case 'rating':
+                    filteredProducts.sort((a, b) => b.rating - a.rating);
+                    break;
+                case 'newest':
+                    filteredProducts.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+                    break;
+                case 'popular':
+                default:
+                    filteredProducts.sort((a, b) => b.popularity - a.popularity);
+                    break;
+            }
+        }
+
+        // Render products based on current filters and page
+        function renderProducts() {
+            productsGrid.innerHTML = '';
+            
+            // Calculate pagination
+            const startIndex = (currentPage - 1) * productsPerPage;
+            const endIndex = startIndex + productsPerPage;
+            const productsToShow = filteredProducts.slice(startIndex, endIndex);
+            
+            if (productsToShow.length === 0) {
+                productsGrid.innerHTML = `
+                    <div class="col-span-full text-center py-10">
+                        <i class="fas fa-paw text-4xl text-gray-300 mb-4"></i>
+                        <h3 class="text-xl font-medium text-gray-700">Nenhum produto encontrado</h3>
+                        <p class="text-gray-500 mt-2">Tente ajustar seus filtros de busca</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            productsToShow.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition h-full flex flex-col product-card';
+                
+                // Calculate discounted price if applicable
+                const discountedPrice = product.discount > 0 
+                    ? product.price * (1 - product.discount)
+                    : null;
+                
+                productCard.innerHTML = `
+                    ${product.discount > 0 ? 
+                        `<div class="absolute bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-br-lg">
+                            ${Math.round(product.discount * 100)}% OFF
+                        </div>` : ''}
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+                    <div class="p-4 flex-grow">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-1">${product.name}</h3>
+                        <p class="text-gray-600 text-sm mb-2">${product.brand} - ${product.category}</p>
+                        <div class="flex flex-col">
+                            ${discountedPrice ? 
+                                `<div class="flex items-center">
+                                    <span class="text-lg font-bold text-blue-500">${formatPrice(discountedPrice)}</span>
+                                    <span class="text-sm text-gray-500 line-through ml-2">${formatPrice(product.price)}</span>
+                                </div>` :
+                                `<span class="text-lg font-bold text-blue-500">${formatPrice(product.price)}</span>`
+                            }
+                            <div class="flex items-center mt-1">
+                                ${Array.from({ length: 5 }).map((_, i) => 
+                                    `<i class="fas fa-star ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}"></i>`
+                                ).join('')}
+                                <span class="text-xs text-gray-500 ml-1">(${product.rating})</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-4 pb-4">
+                        <a href="${product.link}" class="block w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                            <i class="fas fa-shopping-cart mr-2"></i> Comprar
+                        </a>
+                    </div>
+                `;
+                productsGrid.appendChild(productCard);
+            });
+        }
+
+        // Update product count display
+        function updateProductCount() {
+            const totalProducts = filteredProducts.length;
+            const showingProducts = Math.min(productsPerPage, totalProducts - (currentPage - 1) * productsPerPage);
+            productCount.textContent = `Mostrando ${showingProducts} de ${totalProducts} produtos`;
+        }
+
+        // Update pagination controls
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+            pagination.innerHTML = '';
+            
+            if (totalPages <= 1) return;
+            
+            // Previous button
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 prev-btn';
+            prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderProducts();
+                    updatePagination();
+                }
+            });
+            pagination.appendChild(prevBtn);
+            
+            // Page buttons
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = startPage + maxVisiblePages - 1;
+            
+            if (endPage > totalPages) {
+                endPage = totalPages;
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+            
+            if (startPage > 1) {
+                const firstPageBtn = document.createElement('button');
+                firstPageBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100';
+                firstPageBtn.textContent = '1';
+                firstPageBtn.addEventListener('click', () => {
+                    currentPage = 1;
+                    renderProducts();
+                    updatePagination();
+                });
+                pagination.appendChild(firstPageBtn);
+                
+                if (startPage > 2) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.className = 'px-2';
+                    ellipsis.textContent = '...';
+                    pagination.appendChild(ellipsis);
+                }
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100 ${i === currentPage ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.addEventListener('click', () => {
+                    currentPage = i;
+                    renderProducts();
+                    updatePagination();
+                });
+                pagination.appendChild(pageBtn);
+            }
+            
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.className = 'px-2';
+                    ellipsis.textContent = '...';
+                    pagination.appendChild(ellipsis);
+                }
+                
+                const lastPageBtn = document.createElement('button');
+                lastPageBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100';
+                lastPageBtn.textContent = totalPages;
+                lastPageBtn.addEventListener('click', () => {
+                    currentPage = totalPages;
+                    renderProducts();
+                    updatePagination();
+                });
+                pagination.appendChild(lastPageBtn);
+            }
+            
+            // Next button
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 next-btn';
+            nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderProducts();
+                    updatePagination();
+                }
+            });
+            pagination.appendChild(nextBtn);
+        }
+
+        // Initialize event listeners
+        function initEventListeners() {
+            // Color selection functionality
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    option.classList.toggle('selected');
+                    updateColorFilters();
+                });
+            });
+            
+            // Category filter checkboxes
+            document.querySelectorAll('#category-filters input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateCategoryFilters();
+                });
+            });
+            
+            // Brand filter checkboxes
+            document.querySelectorAll('#brand-filters input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateBrandFilters();
+                });
+            });
+            
+            // Price range slider
+            priceRange.addEventListener('input', (e) => {
+                maxPriceDisplay.textContent = `R$ ${e.target.value}`;
+            });
+            
+            // Apply filters button
+            applyFiltersBtn.addEventListener('click', () => {
+                currentFilters.maxPrice = parseInt(priceRange.value);
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Reset filters button
+            resetFiltersBtn.addEventListener('click', () => {
+                // Reset all checkboxes
+                document.querySelectorAll('#category-filters input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = checkbox.id === 'toys'; // Only Brinquedos checked by default
+                });
+                
+                document.querySelectorAll('#brand-filters input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                
+                // Reset color selections
+                document.querySelectorAll('.color-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                
+                // Reset price range
+                priceRange.value = 500;
+                maxPriceDisplay.textContent = 'R$ 500';
+                
+                // Reset search
+                searchInput.value = '';
+                
+                // Reset sort
+                sortBy.value = 'popular';
+                
+                // Reset pet type
+                document.querySelectorAll('.pet-type-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.dataset.petType === 'all') {
+                        btn.classList.add('active');
+                    }
+                });
+                
+                // Reset filters state
+                currentFilters = {
+                    colors: [],
+                    categories: ["Brinquedos"],
+                    brands: [],
+                    maxPrice: 500,
+                    searchTerm: '',
+                    sortBy: 'popular',
+                    petType: 'all'
+                };
+                
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Sort by dropdown
+            sortBy.addEventListener('change', (e) => {
+                currentFilters.sortBy = e.target.value;
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Search functionality
+            searchBtn.addEventListener('click', () => {
+                currentFilters.searchTerm = searchInput.value.trim();
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Allow search on Enter key
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    currentFilters.searchTerm = searchInput.value.trim();
+                    currentPage = 1;
+                    filterProducts();
+                }
+            });
+            
+            // Pet type buttons
+            petTypeBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    petTypeBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilters.petType = btn.dataset.petType;
+                    currentPage = 1;
+                    filterProducts();
+                });
+            });
+            
+            // Toggle categories dropdown
+            categoriesBtn.addEventListener('click', () => {
+                document.querySelector('.relative').classList.toggle('show-categories');
+            });
+            
+            // Close categories dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.relative') && !e.target.closest('#categories-btn')) {
+                    document.querySelector('.relative').classList.remove('show-categories');
+                }
+            });
+            
+            // Logout button
+            logoutBtn.addEventListener('click', () => {
+                if (confirm('Tem certeza que deseja sair?')) {
+                    // In a real application, this would clear session and redirect
+                    alert('Você foi desconectado.');
+                    // window.location.href = 'login.html';
+                }
+            });
+        }
+        
+        // Update color filters based on selected colors
+        function updateColorFilters() {
+            currentFilters.colors = Array.from(document.querySelectorAll('.color-option.selected'))
+                .map(option => option.getAttribute('data-color'));
+        }
+        
+        // Update category filters based on checked categories
+        function updateCategoryFilters() {
+            currentFilters.categories = Array.from(document.querySelectorAll('#category-filters input[type="checkbox"]:checked'))
+                .map(checkbox => checkbox.value);
+        }
+        
+        // Update brand filters based on checked brands
+        function updateBrandFilters() {
+            currentFilters.brands = Array.from(document.querySelectorAll('#brand-filters input[type="checkbox"]:checked'))
+                .map(checkbox => checkbox.value);
+        }
+
+        // Initialize the page
+        function init() {
+            initCarousel();
+            filterProducts();
+            initEventListeners();
+        }
+
+        // Start the application
+        init();
+    </script>
+</body>
+</html>

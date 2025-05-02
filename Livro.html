@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuperStore - Livros</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom styles for the carousel and other elements */
+        .carousel-container {
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .carousel-item {
+            flex: 0 0 33.333%;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+        
+        @media (max-width: 1024px) {
+            .carousel-item {
+                flex: 0 0 50%;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .carousel-item {
+                flex: 0 0 100%;
+            }
+        }
+        
+        .category-dropdown {
+            display: none;
+            position: absolute;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        
+        .show-categories .category-dropdown {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .niche-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .filter-section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .price-range-slider {
+            width: 100%;
+            height: 5px;
+            -webkit-appearance: none;
+            background: #ddd;
+            outline: none;
+            border-radius: 5px;
+        }
+
+        .price-range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #3b82f6;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .format-checkbox {
+            display: none;
+        }
+
+        .format-label {
+            display: inline-block;
+            padding: 8px 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .format-checkbox:checked + .format-label {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .genre-checkbox {
+            display: none;
+        }
+
+        .genre-label {
+            display: inline-block;
+            padding: 8px 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .genre-checkbox:checked + .genre-label {
+            background-color: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .pagination-btn {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .pagination-btn:hover:not(.active) {
+            background-color: #f1f5f9;
+        }
+        
+        .active {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        .book-cover {
+            height: 280px;
+            object-fit: contain;
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Header with logo, navigation, and search -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between">
+            <!-- Logo on the left -->
+            <div class="flex items-center mb-4 md:mb-0">
+                <img src="https://via.placeholder.com/50x50" alt="SuperStore Logo" class="h-10 mr-2">
+                <h1 class="text-xl font-bold text-gray-800">SuperStore</h1>
+            </div>
+            
+            <!-- Navigation and search in the middle -->
+            <div class="flex-1 flex flex-col md:flex-row items-center justify-center mx-0 md:mx-8 w-full md:w-auto">
+                <!-- Navigation buttons -->
+                <div class="flex space-x-4 mb-4 md:mb-0">
+                    <a href="index.html" class="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium">Início</a>
+                    <div class="relative">
+                        <button id="categories-btn" class="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                            Categorias <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <!-- Categories dropdown -->
+                        <div id="category-dropdown" class="category-dropdown p-4 rounded-lg mt-1 w-full md:w-96">
+                            <div>
+                                <h3 class="font-bold mb-2">Eletrônicos</h3>
+                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">Celulares</a>
+                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">Notebooks</a>
+                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">TVs</a>
+                            </div>
+                            <div>
+                                <h3 class="font-bold mb-2">Eletrodomésticos</h3>
+                                <a href="eletrodomesticos.html" class="block py-1 text-gray-600 hover:text-blue-500">Geladeiras</a>
+                                <a href="eletrodomesticos.html" class="block py-1 text-gray-600 hover:text-blue-500">Fogões</a>
+                                <a href="eletrodomesticos.html" class="block py-1 text-gray-600 hover:text-blue-500">Microondas</a>
+                            </div>
+                            <div>
+                                <h3 class="font-bold mb-2">Cultura</h3>
+                                <a href="livros.html" class="block py-1 text-gray-600 hover:text-blue-500 text-blue-600 font-medium">Livros</a>
+                                <a href="musica.html" class="block py-1 text-gray-600 hover:text-blue-500">Música</a>
+                                <a href="filmes.html" class="block py-1 text-gray-600 hover:text-blue-500">Filmes</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Search bar -->
+                <div class="relative w-full md:w-96 mb-4 md:mb-0">
+                    <input type="text" id="search-input" placeholder="Buscar livros, autores..." 
+                           class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button id="search-btn" class="absolute right-3 top-2 text-gray-500 hover:text-blue-600">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Logout button on the right -->
+            <div class="ml-auto">
+                <button id="logout-btn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
+                    Sair <i class="fas fa-sign-out-alt ml-1"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Breadcrumb navigation -->
+        <div class="flex items-center text-sm text-gray-500 mb-6">
+            <a href="index.html" class="hover:text-blue-500">Início</a>
+            <span class="mx-2">/</span>
+            <a href="cultura.html" class="hover:text-blue-500">Cultura</a>
+            <span class="mx-2">/</span>
+            <span class="text-gray-700">Livros</span>
+        </div>
+
+        <!-- Page title and sorting options -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Livros</h1>
+            <div class="flex items-center">
+                <span class="text-gray-600 mr-2">Ordenar por:</span>
+                <select id="sort-by" class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="popular">Mais vendidos</option>
+                    <option value="price-low">Menor preço</option>
+                    <option value="price-high">Maior preço</option>
+                    <option value="rating">Melhor avaliados</option>
+                    <option value="newest">Lançamentos</option>
+                    <option value="title">Título (A-Z)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Filters sidebar -->
+            <aside class="w-full lg:w-1/4">
+                <div class="filter-section mb-6">
+                    <h2 class="text-lg font-semibold mb-4 text-gray-800">Filtrar por</h2>
+                    
+                    <!-- Price range filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Faixa de preço</h3>
+                        <input type="range" id="price-range" min="10" max="500" value="500" class="price-range-slider mb-3">
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>R$ 10</span>
+                            <span id="max-price-display">R$ 500</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Format filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Formato</h3>
+                        <div class="flex flex-wrap" id="format-filters">
+                            <input type="checkbox" id="format-fisico" class="format-checkbox" value="Físico" checked>
+                            <label for="format-fisico" class="format-label">Físico</label>
+                            
+                            <input type="checkbox" id="format-digital" class="format-checkbox" value="Digital">
+                            <label for="format-digital" class="format-label">Digital</label>
+                            
+                            <input type="checkbox" id="format-audio" class="format-checkbox" value="Áudio">
+                            <label for="format-audio" class="format-label">Áudio</label>
+                            
+                            <input type="checkbox" id="format-colecao" class="format-checkbox" value="Coleção">
+                            <label for="format-colecao" class="format-label">Coleção</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Genre filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Gênero</h3>
+                        <div class="flex flex-wrap" id="genre-filters">
+                            <input type="checkbox" id="genre-literatura" class="genre-checkbox" value="Literatura">
+                            <label for="genre-literatura" class="genre-label">Literatura</label>
+                            
+                            <input type="checkbox" id="genre-ficcao" class="genre-checkbox" value="Ficção">
+                            <label for="genre-ficcao" class="genre-label">Ficção</label>
+                            
+                            <input type="checkbox" id="genre-romance" class="genre-checkbox" value="Romance">
+                            <label for="genre-romance" class="genre-label">Romance</label>
+                            
+                            <input type="checkbox" id="genre-fantasia" class="genre-checkbox" value="Fantasia">
+                            <label for="genre-fantasia" class="genre-label">Fantasia</label>
+                            
+                            <input type="checkbox" id="genre-aventura" class="genre-checkbox" value="Aventura">
+                            <label for="genre-aventura" class="genre-label">Aventura</label>
+                            
+                            <input type="checkbox" id="genre-biografia" class="genre-checkbox" value="Biografia">
+                            <label for="genre-biografia" class="genre-label">Biografia</label>
+                            
+                            <input type="checkbox" id="genre-autoajuda" class="genre-checkbox" value="Autoajuda">
+                            <label for="genre-autoajuda" class="genre-label">Autoajuda</label>
+                            
+                            <input type="checkbox" id="genre-infantil" class="genre-checkbox" value="Infantil">
+                            <label for="genre-infantil" class="genre-label">Infantil</label>
+                            
+                            <input type="checkbox" id="genre-didatico" class="genre-checkbox" value="Didático">
+                            <label for="genre-didatico" class="genre-label">Didático</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Language filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Idioma</h3>
+                        <div class="space-y-2" id="language-filters">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="portugues" class="mr-2" value="Português" checked>
+                                <label for="portugues" class="text-gray-600">Português</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="ingles" class="mr-2" value="Inglês">
+                                <label for="ingles" class="text-gray-600">Inglês</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="espanhol" class="mr-2" value="Espanhol">
+                                <label for="espanhol" class="text-gray-600">Espanhol</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="frances" class="mr-2" value="Francês">
+                                <label for="frances" class="text-gray-600">Francês</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Condition filter -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-3 text-gray-700">Condição</h3>
+                        <div class="space-y-2" id="condition-filters">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="novo" class="mr-2" value="Novo" checked>
+                                <label for="novo" class="text-gray-600">Novo</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="usado" class="mr-2" value="Usado">
+                                <label for="usado" class="text-gray-600">Usado</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Apply filters button -->
+                    <button id="apply-filters" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
+                        Aplicar Filtros
+                    </button>
+                    <button id="reset-filters" class="w-full mt-2 bg-gray-200 text-gray-800 py-2 rounded-lg hover:bg-gray-300 transition">
+                        Limpar Filtros
+                    </button>
+                </div>
+                
+                <!-- Special offers -->
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h3 class="font-semibold text-blue-800 mb-3">Ofertas Especiais</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <div class="bg-white p-2 rounded-lg mr-3">
+                                <i class="fas fa-book text-blue-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium">Frete Grátis</p>
+                                <p class="text-xs text-gray-500">Para livros físicos acima de R$ 100</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="bg-white p-2 rounded-lg mr-3">
+                                <i class="fas fa-percentage text-blue-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium">Até 30% OFF</p>
+                                <p class="text-xs text-gray-500">Em livros selecionados</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="bg-white p-2 rounded-lg mr-3">
+                                <i class="fas fa-gift text-blue-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium">Brinde Exclusivo</p>
+                                <p class="text-xs text-gray-500">Em coleções especiais</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            
+            <!-- Products grid -->
+            <div class="w-full lg:w-3/4">
+                <!-- Featured books carousel -->
+                <section class="mb-12">
+                    <h2 class="text-2xl font-bold mb-6 text-gray-800">Lançamentos</h2>
+                    <div class="carousel-container relative group" id="carousel">
+                        <div class="carousel-track" id="carousel-track">
+                            <!-- Carousel items will be added by JavaScript -->
+                        </div>
+                        
+                        <!-- Carousel navigation arrows -->
+                        <button id="carousel-prev" class="absolute left-0 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 text-gray-800 p-2 rounded-full shadow-md hover:bg-opacity-100 transition opacity-0 group-hover:opacity-100">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button id="carousel-next" class="absolute right-0 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 text-gray-800 p-2 rounded-full shadow-md hover:bg-opacity-100 transition opacity-0 group-hover:opacity-100">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </section>
+                
+                <!-- All books -->
+                <section>
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">Todos os Livros</h2>
+                        <span id="product-count" class="text-gray-500">Mostrando 12 de 12 produtos</span>
+                    </div>
+                    
+                    <div class="product-grid" id="products-grid">
+                        <!-- Products will be added by JavaScript -->
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="flex justify-center mt-8">
+                        <nav class="flex items-center space-x-1" id="pagination">
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 prev-btn">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100 active">1</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">2</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">3</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">4</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100">5</button>
+                            <button class="pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 next-btn">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </nav>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer with social media links -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center">
+                        <img src="https://via.placeholder.com/50x50" alt="SuperStore Logo" class="h-10 mr-2">
+                        <h2 class="text-xl font-bold">SuperStore</h2>
+                    </div>
+                    <p class="mt-2 text-gray-400">Sua loja online completa com os melhores produtos.</p>
+                </div>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2023 SuperStore. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample product data for books
+        const booksProducts = [
+            {
+                id: 1,
+                link: "https://www.amazon.com.br/dp/8532530784",
+                name: "O Hobbit",
+                author: "J.R.R. Tolkien",
+                price: 49.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Fantasia",
+                language: "Português",
+                condition: "Novo",
+                publisher: "HarperCollins",
+                publicationYear: 2019,
+                pages: 336,
+                isbn: "9788532530783",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "A aventura de Bilbo Bolseiro, um hobbit que se junta a um grupo de anões para recuperar um tesouro guardado por um dragão.",
+                rating: 4.9,
+                discount: 0.10,
+                featured: true,
+                popularity: 95,
+                dateAdded: "2023-05-15"
+            },
+            {
+                id: 2,
+                link: "https://www.amazon.com.br/dp/8535914846",
+                name: "1984",
+                author: "George Orwell",
+                price: 39.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Ficção",
+                language: "Português",
+                condition: "Novo",
+                publisher: "Companhia das Letras",
+                publicationYear: 2009,
+                pages: 416,
+                isbn: "9788535914849",
+                image: "https://images-na.ssl-images-amazon.com/images/I/81a5KHSkwxL._AC_UL600_SR600,600_.jpg",
+                description: "Um clássico distópico sobre vigilância governamental e controle da mente.",
+                rating: 4.8,
+                discount: 0,
+                featured: true,
+                popularity: 98,
+                dateAdded: "2023-06-20"
+            },
+            {
+                id: 3,
+                link: "https://www.amazon.com.br/dp/8539004119",
+                name: "A Garota do Lago",
+                author: "Charlie Donlea",
+                price: 34.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Suspense",
+                language: "Português",
+                condition: "Novo",
+                publisher: "Faro Editorial",
+                publicationYear: 2017,
+                pages: 288,
+                isbn: "9788539004119",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "Um thriller psicológico sobre um assassinato não resolvido e segredos familiares.",
+                rating: 4.5,
+                discount: 0.20,
+                featured: true,
+                popularity: 85,
+                dateAdded: "2023-04-10"
+            },
+            {
+                id: 4,
+                link: "https://www.amazon.com.br/dp/8539005840",
+                name: "O Homem de Giz",
+                author: "C.J. Tudor",
+                price: 44.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Suspense",
+                language: "Português",
+                condition: "Novo",
+                publisher: "Faro Editorial",
+                publicationYear: 2018,
+                pages: 272,
+                isbn: "9788539005840",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "Um thriller arrepiante sobre um grupo de amigos e um jogo infantil que deu errado.",
+                rating: 4.7,
+                discount: 0,
+                featured: true,
+                popularity: 92,
+                dateAdded: "2023-03-05"
+            },
+            {
+                id: 5,
+                link: "https://www.amazon.com.br/dp/8584391308",
+                name: "Mais Esperto que o Diabo",
+                author: "Napoleon Hill",
+                price: 29.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Autoajuda",
+                language: "Português",
+                condition: "Novo",
+                publisher: "Citadel Editora",
+                publicationYear: 2017,
+                pages: 240,
+                isbn: "9788584391308",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "O manuscrito secreto que revela como vencer medos e alcançar o sucesso.",
+                rating: 4.6,
+                discount: 0.05,
+                featured: true,
+                popularity: 90,
+                dateAdded: "2023-02-18"
+            },
+            {
+                id: 6,
+                link: "https://www.amazon.com.br/dp/8532531195",
+                name: "O Senhor dos Anéis: A Sociedade do Anel",
+                author: "J.R.R. Tolkien",
+                price: 59.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Fantasia",
+                language: "Português",
+                condition: "Novo",
+                publisher: "HarperCollins",
+                publicationYear: 2019,
+                pages: 576,
+                isbn: "9788532531193",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "A primeira parte da épica trilogia de Tolkien sobre a Terra-média.",
+                rating: 4.9,
+                discount: 0.15,
+                featured: false,
+                popularity: 96,
+                dateAdded: "2023-07-12"
+            },
+            {
+                id: 7,
+                link: "https://www.amazon.com.br/dp/8539006618",
+                name: "A Paciente Silenciosa",
+                author: "Alex Michaelides",
+                price: 39.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Suspense",
+                language: "Português",
+                condition: "Novo",
+                publisher: "Faro Editorial",
+                publicationYear: 2019,
+                pages: 320,
+                isbn: "9788539006618",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "Um thriller psicológico sobre uma mulher que atira no marido e depois se recusa a falar.",
+                rating: 4.7,
+                discount: 0,
+                featured: false,
+                popularity: 88,
+                dateAdded: "2023-06-25"
+            },
+            {
+                id: 8,
+                link: "https://www.amazon.com.br/dp/8539007940",
+                name: "A Vida Invisível de Addie LaRue",
+                author: "V.E. Schwab",
+                price: 54.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Fantasia",
+                language: "Português",
+                condition: "Novo",
+                publisher: "Faro Editorial",
+                publicationYear: 2021,
+                pages: 464,
+                isbn: "9788539007943",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "A história de uma mulher que faz um pacto para viver para sempre, mas é esquecida por todos que conhece.",
+                rating: 4.8,
+                discount: 0.10,
+                featured: false,
+                popularity: 94,
+                dateAdded: "2023-05-30"
+            },
+            {
+                id: 9,
+                link: "https://www.amazon.com.br/dp/8539008319",
+                name: "O Projeto Esposa",
+                author: "Greer Hendricks",
+                price: 44.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Suspense",
+                language: "Português",
+                condition: "Novo",
+                publisher: "Faro Editorial",
+                publicationYear: 2021,
+                pages: 352,
+                isbn: "9788539008315",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "Um thriller psicológico sobre um homem que procura a esposa perfeita através de um experimento social.",
+                rating: 4.3,
+                discount: 0,
+                featured: false,
+                popularity: 82,
+                dateAdded: "2023-04-22"
+            },
+            {
+                id: 10,
+                link: "https://www.amazon.com.br/dp/8539009080",
+                name: "O Clube do Livro dos Homens",
+                author: "Lyssa Kay Adams",
+                price: 39.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Romance",
+                language: "Português",
+                condition: "Novo",
+                publisher: "Faro Editorial",
+                publicationYear: 2021,
+                pages: 320,
+                isbn: "9788539009084",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "Um grupo de homens forma um clube do livro para entender melhor as mulheres.",
+                rating: 4.2,
+                discount: 0.15,
+                featured: false,
+                popularity: 79,
+                dateAdded: "2023-07-05"
+            },
+            {
+                id: 11,
+                link: "https://www.amazon.com.br/dp/853900951X",
+                name: "O Homem Mais Rico da Babilônia",
+                author: "George S. Clason",
+                price: 24.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Finanças",
+                language: "Português",
+                condition: "Novo",
+                publisher: "Faro Editorial",
+                publicationYear: 2021,
+                pages: 160,
+                isbn: "9788539009510",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "Clássico sobre como multiplicar riqueza e solucionar problemas financeiros.",
+                rating: 4.7,
+                discount: 0,
+                featured: false,
+                popularity: 87,
+                dateAdded: "2023-01-15"
+            },
+            {
+                id: 12,
+                link: "https://www.amazon.com.br/dp/8539009870",
+                name: "O Poder do Hábito",
+                author: "Charles Duhigg",
+                price: 49.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Autoajuda",
+                language: "Português",
+                condition: "Novo",
+                publisher: "Faro Editorial",
+                publicationYear: 2021,
+                pages: 408,
+                isbn: "9788539009879",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "Por que fazemos o que fazemos na vida e nos negócios.",
+                rating: 4.6,
+                discount: 0.20,
+                featured: false,
+                popularity: 89,
+                dateAdded: "2023-03-20"
+            },
+            {
+                id: 13,
+                link: "https://www.amazon.com.br/dp/8545200726",
+                name: "A Revolução dos Bichos",
+                author: "George Orwell",
+                price: 29.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Ficção",
+                language: "Português",
+                condition: "Novo",
+                publisher: "Companhia Editora Nacional",
+                publicationYear: 2007,
+                pages: 152,
+                isbn: "9788545200720",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "Uma fábula sobre o poder e a corrupção.",
+                rating: 4.8,
+                discount: 0,
+                featured: false,
+                popularity: 93,
+                dateAdded: "2023-06-10"
+            },
+            {
+                id: 14,
+                link: "https://www.amazon.com.br/dp/8545201269",
+                name: "O Pequeno Príncipe",
+                author: "Antoine de Saint-Exupéry",
+                price: 19.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Infantil",
+                language: "Português",
+                condition: "Novo",
+                publisher: "Companhia Editora Nacional",
+                publicationYear: 2009,
+                pages: 96,
+                isbn: "9788545201260",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "Um clássico da literatura mundial sobre amizade, amor e humanidade.",
+                rating: 4.9,
+                discount: 0.10,
+                featured: false,
+                popularity: 97,
+                dateAdded: "2023-05-05"
+            },
+            {
+                id: 15,
+                link: "https://www.amazon.com.br/dp/8545201544",
+                name: "Crime e Castigo",
+                author: "Fiódor Dostoiévski",
+                price: 39.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Literatura",
+                language: "Português",
+                condition: "Novo",
+                publisher: "Companhia Editora Nacional",
+                publicationYear: 2011,
+                pages: 608,
+                isbn: "9788545201543",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "Um clássico da literatura russa sobre culpa e redenção.",
+                rating: 4.7,
+                discount: 0.15,
+                featured: false,
+                popularity: 91,
+                dateAdded: "2023-04-15"
+            },
+            {
+                id: 16,
+                link: "https://www.amazon.com.br/dp/8545201765",
+                name: "Dom Quixote",
+                author: "Miguel de Cervantes",
+                price: 49.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Literatura",
+                language: "Português",
+                condition: "Novo",
+                publisher: "Companhia Editora Nacional",
+                publicationYear: 2012,
+                pages: 928,
+                isbn: "9788545201765",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "A obra-prima de Cervantes sobre um cavaleiro sonhador e seu fiel escudeiro.",
+                rating: 4.6,
+                discount: 0,
+                featured: false,
+                popularity: 86,
+                dateAdded: "2023-03-28"
+            },
+            {
+                id: 17,
+                link: "https://www.amazon.com.br/dp/854520215X",
+                name: "Orgulho e Preconceito",
+                author: "Jane Austen",
+                price: 34.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Romance",
+                language: "Português",
+                condition: "Novo",
+                publisher: "Companhia Editora Nacional",
+                publicationYear: 2013,
+                pages: 424,
+                isbn: "9788545202151",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "Um dos romances mais amados da literatura inglesa sobre Elizabeth Bennet e Mr. Darcy.",
+                rating: 4.8,
+                discount: 0.05,
+                featured: false,
+                popularity: 94,
+                dateAdded: "2023-02-10"
+            },
+            {
+                id: 18,
+                link: "https://www.amazon.com.br/dp/8545202478",
+                name: "O Conde de Monte Cristo",
+                author: "Alexandre Dumas",
+                price: 59.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Aventura",
+                language: "Português",
+                condition: "Novo",
+                publisher: "Companhia Editora Nacional",
+                publicationYear: 2014,
+                pages: 1312,
+                isbn: "9788545202472",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "Uma história épica de vingança e redenção.",
+                rating: 4.9,
+                discount: 0,
+                featured: false,
+                popularity: 95,
+                dateAdded: "2023-01-25"
+            },
+            {
+                id: 19,
+                link: "https://www.amazon.com.br/dp/8545202745",
+                name: "Moby Dick",
+                author: "Herman Melville",
+                price: 44.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Aventura",
+                language: "Português",
+                condition: "Novo",
+                publisher: "Companhia Editora Nacional",
+                publicationYear: 2014,
+                pages: 704,
+                isbn: "9788545202748",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "A obsessiva busca do capitão Ahab pela baleia branca.",
+                rating: 4.5,
+                discount: 0.10,
+                featured: false,
+                popularity: 84,
+                dateAdded: "2023-05-18"
+            },
+            {
+                id: 20,
+                link: "https://www.amazon.com.br/dp/8545203016",
+                name: "O Retrato de Dorian Gray",
+                author: "Oscar Wilde",
+                price: 29.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Literatura",
+                language: "Português",
+                condition: "Novo",
+                publisher: "Companhia Editora Nacional",
+                publicationYear: 2015,
+                pages: 320,
+                isbn: "9788545203011",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "Um jovem bonito mantém sua juventude enquanto seu retrato envelhece.",
+                rating: 4.7,
+                discount: 0.15,
+                featured: false,
+                popularity: 88,
+                dateAdded: "2023-04-05"
+            },
+            {
+                id: 21,
+                link: "https://www.amazon.com.br/dp/8545203261",
+                name: "Drácula",
+                author: "Bram Stoker",
+                price: 39.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Terror",
+                language: "Português",
+                condition: "Novo",
+                publisher: "Companhia Editora Nacional",
+                publicationYear: 2015,
+                pages: 448,
+                isbn: "9788545203264",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "O clássico romance gótico que popularizou os vampiros.",
+                rating: 4.6,
+                discount: 0,
+                featured: false,
+                popularity: 85,
+                dateAdded: "2023-03-15"
+            },
+            {
+                id: 22,
+                link: "https://www.amazon.com.br/dp/8545203520",
+                name: "Frankenstein",
+                author: "Mary Shelley",
+                price: 34.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Terror",
+                language: "Português",
+                condition: "Novo",
+                publisher: "Companhia Editora Nacional",
+                publicationYear: 2016,
+                pages: 288,
+                isbn: "9788545203523",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "A história do cientista Victor Frankenstein e sua criatura.",
+                rating: 4.5,
+                discount: 0.05,
+                featured: false,
+                popularity: 83,
+                dateAdded: "2023-02-28"
+            },
+            {
+                id: 23,
+                link: "https://www.amazon.com.br/dp/8545203849",
+                name: "A Metamorfose",
+                author: "Franz Kafka",
+                price: 24.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Literatura",
+                language: "Português",
+                condition: "Novo",
+                publisher: "Companhia Editora Nacional",
+                publicationYear: 2016,
+                pages: 96,
+                isbn: "9788545203844",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "Gregor Samsa acorda transformado em um inseto monstruoso.",
+                rating: 4.4,
+                discount: 0,
+                featured: false,
+                popularity: 81,
+                dateAdded: "2023-01-10"
+            },
+            {
+                id: 24,
+                link: "https://www.amazon.com.br/dp/8545204128",
+                name: "Ulisses",
+                author: "James Joyce",
+                price: 69.90,
+                category: "livros",
+                format: "Físico",
+                genre: "Literatura",
+                language: "Português",
+                condition: "Novo",
+                publisher: "Companhia Editora Nacional",
+                publicationYear: 2017,
+                pages: 912,
+                isbn: "9788545204124",
+                image: "https://images-na.ssl-images-amazon.com/images/I/91b0XQfCJ+L._AC_UL600_SR600,600_.jpg",
+                description: "Um dia na vida de Leopold Bloom em Dublin.",
+                rating: 4.3,
+                discount: 0.15,
+                featured: false,
+                popularity: 78,
+                dateAdded: "2023-06-15"
+            }
+        ];
+
+        // DOM elements
+        const carouselTrack = document.getElementById('carousel-track');
+        const carouselPrev = document.getElementById('carousel-prev');
+        const carouselNext = document.getElementById('carousel-next');
+        const carousel = document.getElementById('carousel');
+        const categoriesBtn = document.getElementById('categories-btn');
+        const categoryDropdown = document.getElementById('category-dropdown');
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const productsGrid = document.getElementById('products-grid');
+        const formatFilters = document.getElementById('format-filters');
+        const genreFilters = document.getElementById('genre-filters');
+        const languageFilters = document.getElementById('language-filters');
+        const conditionFilters = document.getElementById('condition-filters');
+        const priceRange = document.getElementById('price-range');
+        const maxPriceDisplay = document.getElementById('max-price-display');
+        const applyFiltersBtn = document.getElementById('apply-filters');
+        const resetFiltersBtn = document.getElementById('reset-filters');
+        const sortBy = document.getElementById('sort-by');
+        const productCount = document.getElementById('product-count');
+        const pagination = document.getElementById('pagination');
+        
+        // Current state
+        let currentFilters = {
+            formats: ['Físico'],
+            genres: [],
+            languages: ['Português'],
+            conditions: ['Novo'],
+            maxPrice: 500,
+            searchTerm: '',
+            sortBy: 'popular'
+        };
+        
+        let currentPage = 1;
+        const productsPerPage = 12;
+        let filteredProducts = [...booksProducts];
+
+        // Format price to BRL
+        function formatPrice(price) {
+            return new Intl.NumberFormat('pt-BR', { 
+                style: 'currency', 
+                currency: 'BRL' 
+            }).format(price);
+        }
+
+        // Initialize carousel with featured books
+        function initCarousel() {
+            // Clear any existing items
+            carouselTrack.innerHTML = '';
+            
+            // Get featured books
+            const featuredBooks = booksProducts.filter(product => product.featured);
+            
+            // Add products to carousel
+            featuredBooks.forEach(product => {
+                const item = document.createElement('div');
+                item.className = 'carousel-item';
+                
+                // Calculate discounted price if applicable
+                const discountedPrice = product.discount > 0 
+                    ? product.price * (1 - product.discount)
+                    : null;
+                
+                item.innerHTML = `
+                    <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition h-full flex flex-col product-card">
+                        ${product.discount > 0 ? 
+                            `<div class="absolute bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-br-lg">
+                                ${Math.round(product.discount * 100)}% OFF
+                            </div>` : ''}
+                        <img src="${product.image}" alt="${product.name}" class="w-full book-cover">
+                        <div class="p-4 flex-grow">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-1">${product.name}</h3>
+                            <p class="text-gray-600 text-sm mb-1">${product.author}</p>
+                            <p class="text-gray-500 text-xs mb-3">${product.publisher} • ${product.publicationYear}</p>
+                            <div class="flex flex-col">
+                                ${discountedPrice ? 
+                                    `<div class="flex items-center">
+                                        <span class="text-lg font-bold text-blue-500">${formatPrice(discountedPrice)}</span>
+                                        <span class="text-sm text-gray-500 line-through ml-2">${formatPrice(product.price)}</span>
+                                    </div>` :
+                                    `<span class="text-lg font-bold text-blue-500">${formatPrice(product.price)}</span>`
+                                }
+                                <div class="flex items-center mt-1">
+                                    ${Array.from({ length: 5 }).map((_, i) => 
+                                        `<i class="fas fa-star ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}"></i>`
+                                    ).join('')}
+                                    <span class="text-xs text-gray-500 ml-1">(${product.rating})</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="px-4 pb-4">
+                            <a href="${product.link}" class="block w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                                <i class="fas fa-shopping-cart mr-2"></i> Comprar
+                            </a>
+                        </div>
+                    </div>
+                `;
+                carouselTrack.appendChild(item);
+            });
+                    
+            // Set carousel width based on number of items
+            const itemCount = featuredBooks.length;
+            const itemWidth = 100 / 3; // Show 3 items at a time
+            carouselTrack.style.width = `${itemCount * itemWidth}%`;
+            
+            // Initialize carousel position
+            let currentPosition = 0;
+            const maxPosition = Math.max(0, itemCount - 3);
+            
+            // Update carousel position
+            function updateCarousel() {
+                carouselTrack.style.transform = `translateX(-${currentPosition * itemWidth}%)`;
+            }
+            
+            // Next button click handler
+            carouselNext.addEventListener('click', () => {
+                if (currentPosition < maxPosition) {
+                    currentPosition++;
+                } else {
+                    currentPosition = 0; // Loop back to start
+                }
+                updateCarousel();
+            });
+            
+            // Previous button click handler
+            carouselPrev.addEventListener('click', () => {
+                if (currentPosition > 0) {
+                    currentPosition--;
+                } else {
+                    currentPosition = maxPosition; // Loop to end
+                }
+                updateCarousel();
+            });
+            
+            // Auto-advance carousel
+            let autoAdvance = setInterval(() => {
+                if (currentPosition < maxPosition) {
+                    currentPosition++;
+                } else {
+                    currentPosition = 0;
+                }
+                updateCarousel();
+            }, 5000);
+            
+            // Pause auto-advance on hover
+            carousel.addEventListener('mouseenter', () => {
+                clearInterval(autoAdvance);
+            });
+            
+            // Resume auto-advance when mouse leaves
+            carousel.addEventListener('mouseleave', () => {
+                autoAdvance = setInterval(() => {
+                    if (currentPosition < maxPosition) {
+                        currentPosition++;
+                    } else {
+                        currentPosition = 0;
+                    }
+                    updateCarousel();
+                }, 5000);
+            });
+            
+            // Initialize carousel position
+            updateCarousel();
+        }
+
+        // Filter products based on current filters
+        function filterProducts() {
+            filteredProducts = booksProducts.filter(product => {
+                // Filter by price
+                const priceToCompare = product.discount > 0 
+                    ? product.price * (1 - product.discount)
+                    : product.price;
+                
+                if (priceToCompare > currentFilters.maxPrice) {
+                    return false;
+                }
+                
+                // Filter by format
+                if (currentFilters.formats.length > 0 && 
+                    !currentFilters.formats.includes(product.format)) {
+                    return false;
+                }
+                
+                // Filter by genre
+                if (currentFilters.genres.length > 0 && 
+                    !currentFilters.genres.includes(product.genre)) {
+                    return false;
+                }
+                
+                // Filter by language
+                if (currentFilters.languages.length > 0 && 
+                    !currentFilters.languages.includes(product.language)) {
+                    return false;
+                }
+                
+                // Filter by condition
+                if (currentFilters.conditions.length > 0 && 
+                    !currentFilters.conditions.includes(product.condition)) {
+                    return false;
+                }
+                
+                // Filter by search term
+                if (currentFilters.searchTerm && 
+                    !product.name.toLowerCase().includes(currentFilters.searchTerm.toLowerCase()) &&
+                    !product.author.toLowerCase().includes(currentFilters.searchTerm.toLowerCase())) {
+                    return false;
+                }
+                
+                return true;
+            });
+            
+            // Sort products
+            sortProducts();
+            
+            // Update product count
+            updateProductCount();
+            
+            // Render products
+            renderProducts();
+            
+            // Update pagination
+            updatePagination();
+        }
+
+        // Sort products based on current sort option
+        function sortProducts() {
+            switch(currentFilters.sortBy) {
+                case 'price-low':
+                    filteredProducts.sort((a, b) => {
+                        const priceA = a.discount > 0 ? a.price * (1 - a.discount) : a.price;
+                        const priceB = b.discount > 0 ? b.price * (1 - b.discount) : b.price;
+                        return priceA - priceB;
+                    });
+                    break;
+                case 'price-high':
+                    filteredProducts.sort((a, b) => {
+                        const priceA = a.discount > 0 ? a.price * (1 - a.discount) : a.price;
+                        const priceB = b.discount > 0 ? b.price * (1 - b.discount) : b.price;
+                        return priceB - priceA;
+                    });
+                    break;
+                case 'rating':
+                    filteredProducts.sort((a, b) => b.rating - a.rating);
+                    break;
+                case 'newest':
+                    filteredProducts.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+                    break;
+                case 'title':
+                    filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                case 'popular':
+                default:
+                    filteredProducts.sort((a, b) => b.popularity - a.popularity);
+                    break;
+            }
+        }
+
+        // Render products based on current filters and page
+        function renderProducts() {
+            productsGrid.innerHTML = '';
+            
+            // Calculate pagination
+            const startIndex = (currentPage - 1) * productsPerPage;
+            const endIndex = startIndex + productsPerPage;
+            const productsToShow = filteredProducts.slice(startIndex, endIndex);
+            
+            if (productsToShow.length === 0) {
+                productsGrid.innerHTML = `
+                    <div class="col-span-full text-center py-10">
+                        <i class="fas fa-book text-4xl text-gray-300 mb-4"></i>
+                        <h3 class="text-xl font-medium text-gray-700">Nenhum livro encontrado</h3>
+                        <p class="text-gray-500 mt-2">Tente ajustar seus filtros de busca</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            productsToShow.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition h-full flex flex-col product-card';
+                
+                // Calculate discounted price if applicable
+                const discountedPrice = product.discount > 0 
+                    ? product.price * (1 - product.discount)
+                    : null;
+                
+                productCard.innerHTML = `
+                    ${product.discount > 0 ? 
+                        `<div class="absolute bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-br-lg">
+                            ${Math.round(product.discount * 100)}% OFF
+                        </div>` : ''}
+                    <img src="${product.image}" alt="${product.name}" class="w-full book-cover">
+                    <div class="p-4 flex-grow">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-1">${product.name}</h3>
+                        <p class="text-gray-600 text-sm mb-1">${product.author}</p>
+                        <p class="text-gray-500 text-xs mb-3">${product.publisher} • ${product.publicationYear}</p>
+                        <div class="flex flex-col">
+                            ${discountedPrice ? 
+                                `<div class="flex items-center">
+                                    <span class="text-lg font-bold text-blue-500">${formatPrice(discountedPrice)}</span>
+                                    <span class="text-sm text-gray-500 line-through ml-2">${formatPrice(product.price)}</span>
+                                </div>` :
+                                `<span class="text-lg font-bold text-blue-500">${formatPrice(product.price)}</span>`
+                            }
+                            <div class="flex items-center mt-1">
+                                ${Array.from({ length: 5 }).map((_, i) => 
+                                    `<i class="fas fa-star ${i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-300'}"></i>`
+                                ).join('')}
+                                <span class="text-xs text-gray-500 ml-1">(${product.rating})</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-4 pb-4">
+                        <a href="${product.link}" class="block w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
+                            <i class="fas fa-shopping-cart mr-2"></i> Comprar
+                        </a>
+                    </div>
+                `;
+                productsGrid.appendChild(productCard);
+            });
+        }
+
+        // Update product count display
+        function updateProductCount() {
+            const totalProducts = filteredProducts.length;
+            const showingProducts = Math.min(productsPerPage, totalProducts - (currentPage - 1) * productsPerPage);
+            productCount.textContent = `Mostrando ${showingProducts} de ${totalProducts} livros`;
+        }
+
+        // Update pagination controls
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+            pagination.innerHTML = '';
+            
+            if (totalPages <= 1) return;
+            
+            // Previous button
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 prev-btn';
+            prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderProducts();
+                    updatePagination();
+                }
+            });
+            pagination.appendChild(prevBtn);
+            
+            // Page buttons
+            const maxVisiblePages = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+            let endPage = startPage + maxVisiblePages - 1;
+            
+            if (endPage > totalPages) {
+                endPage = totalPages;
+                startPage = Math.max(1, endPage - maxVisiblePages + 1);
+            }
+            
+            if (startPage > 1) {
+                const firstPageBtn = document.createElement('button');
+                firstPageBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100';
+                firstPageBtn.textContent = '1';
+                firstPageBtn.addEventListener('click', () => {
+                    currentPage = 1;
+                    renderProducts();
+                    updatePagination();
+                });
+                pagination.appendChild(firstPageBtn);
+                
+                if (startPage > 2) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.className = 'px-2';
+                    ellipsis.textContent = '...';
+                    pagination.appendChild(ellipsis);
+                }
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100 ${i === currentPage ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.addEventListener('click', () => {
+                    currentPage = i;
+                    renderProducts();
+                    updatePagination();
+                });
+                pagination.appendChild(pageBtn);
+            }
+            
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.className = 'px-2';
+                    ellipsis.textContent = '...';
+                    pagination.appendChild(ellipsis);
+                }
+                
+                const lastPageBtn = document.createElement('button');
+                lastPageBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100';
+                lastPageBtn.textContent = totalPages;
+                lastPageBtn.addEventListener('click', () => {
+                    currentPage = totalPages;
+                    renderProducts();
+                    updatePagination();
+                });
+                pagination.appendChild(lastPageBtn);
+            }
+            
+            // Next button
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'pagination-btn px-3 py-1 rounded-lg border border-gray-300 text-gray-500 hover:bg-gray-100 next-btn';
+            nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderProducts();
+                    updatePagination();
+                }
+            });
+            pagination.appendChild(nextBtn);
+        }
+
+        // Initialize event listeners
+        function initEventListeners() {
+            // Format filter checkboxes
+            document.querySelectorAll('.format-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateFormatFilters();
+                });
+            });
+            
+            // Genre filter checkboxes
+            document.querySelectorAll('.genre-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateGenreFilters();
+                });
+            });
+            
+            // Language filter checkboxes
+            document.querySelectorAll('#language-filters input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateLanguageFilters();
+                });
+            });
+            
+            // Condition filter checkboxes
+            document.querySelectorAll('#condition-filters input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateConditionFilters();
+                });
+            });
+            
+            // Price range slider
+            priceRange.addEventListener('input', (e) => {
+                maxPriceDisplay.textContent = `R$ ${e.target.value}`;
+            });
+            
+            // Apply filters button
+            applyFiltersBtn.addEventListener('click', () => {
+                currentFilters.maxPrice = parseInt(priceRange.value);
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Reset filters button
+            resetFiltersBtn.addEventListener('click', () => {
+                // Reset all checkboxes
+                document.querySelectorAll('.format-checkbox').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                document.getElementById('format-fisico').checked = true;
+                
+                document.querySelectorAll('.genre-checkbox').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                
+                document.querySelectorAll('#language-filters input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                document.getElementById('portugues').checked = true;
+                
+                document.querySelectorAll('#condition-filters input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                document.getElementById('novo').checked = true;
+                
+                // Reset price range
+                priceRange.value = 500;
+                maxPriceDisplay.textContent = 'R$ 500';
+                
+                // Reset search
+                searchInput.value = '';
+                
+                // Reset sort
+                sortBy.value = 'popular';
+                
+                // Reset filters state
+                currentFilters = {
+                    formats: ['Físico'],
+                    genres: [],
+                    languages: ['Português'],
+                    conditions: ['Novo'],
+                    maxPrice: 500,
+                    searchTerm: '',
+                    sortBy: 'popular'
+                };
+                
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Sort by dropdown
+            sortBy.addEventListener('change', (e) => {
+                currentFilters.sortBy = e.target.value;
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Search functionality
+            searchBtn.addEventListener('click', () => {
+                currentFilters.searchTerm = searchInput.value.trim();
+                currentPage = 1;
+                filterProducts();
+            });
+            
+            // Allow search on Enter key
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    currentFilters.searchTerm = searchInput.value.trim();
+                    currentPage = 1;
+                    filterProducts();
+                }
+            });
+            
+            // Toggle categories dropdown
+            categoriesBtn.addEventListener('click', () => {
+                document.querySelector('.relative').classList.toggle('show-categories');
+            });
+            
+            // Close categories dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.relative') && !e.target.closest('#categories-btn')) {
+                    document.querySelector('.relative').classList.remove('show-categories');
+                }
+            });
+            
+            // Logout button
+            logoutBtn.addEventListener('click', () => {
+                if (confirm('Tem certeza que deseja sair?')) {
+                    // In a real application, this would clear session and redirect
+                    alert('Você foi desconectado.');
+                    // window.location.href = 'login.html';
+                }
+            });
+        }
+        
+        // Update format filters based on checked formats
+        function updateFormatFilters() {
+            currentFilters.formats = Array.from(document.querySelectorAll('.format-checkbox:checked'))
+                .map(checkbox => checkbox.value);
+        }
+        
+        // Update genre filters based on checked genres
+        function updateGenreFilters() {
+            currentFilters.genres = Array.from(document.querySelectorAll('.genre-checkbox:checked'))
+                .map(checkbox => checkbox.value);
+        }
+        
+        // Update language filters based on checked languages
+        function updateLanguageFilters() {
+            currentFilters.languages = Array.from(document.querySelectorAll('#language-filters input[type="checkbox"]:checked'))
+                .map(checkbox => checkbox.value);
+        }
+        
+        // Update condition filters based on checked conditions
+        function updateConditionFilters() {
+            currentFilters.conditions = Array.from(document.querySelectorAll('#condition-filters input[type="checkbox"]:checked'))
+                .map(checkbox => checkbox.value);
+        }
+
+        // Initialize the page
+        function init() {
+            initCarousel();
+            filterProducts();
+            initEventListeners();
+        }
+
+        // Start the application
+        init();
+    </script>
+</body>
+</html>

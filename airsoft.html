@@ -304,6 +304,26 @@
                                 <input type="checkbox" id="chumbinho" class="mr-2" value="Chumbinho">
                                 <label for="chumbinho" class="text-gray-600">Chumbinho</label>
                             </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="case/capa" class="mr-2" value="Case/Capa">
+                                <label for="case/capa" class="text-gray-600">Case/Capa</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="bandolera" class="mr-2" value="Bandolera">
+                                <label for="bandolera" class="text-gray-600">Bandolera</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="porta chumbo" class="mr-2" value="Porta Chumbo">
+                                <label for="porta chumbo" class="text-gray-600">Porta Chumbo</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="luneta" class="mr-2" value="Luneta">
+                                <label for="luneta" class="text-gray-600">Luneta</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="alvo" class="mr-2" value="Alvo">
+                                <label for="alvo" class="text-gray-600">Alvo</label>
+                            </div>
                         </div>
                     </div>
                     
@@ -1433,7 +1453,7 @@
 
         // Accessories data
         const accessories = [
-        {
+            {
                 id: 1001,
                 link: "https://mercadolivre.com/sec/18aREZV",
                 name: "Esfera Bbs Bolinha Airsoft 6mm 0.12g Rossi Premium 1000 Un",
@@ -1446,8 +1466,8 @@
                 rating: 4.5,
                 discount: 0,
                 featured: false
-                },
-        {
+            },
+            {
                 id: 1002,
                 link: "https://mercadolivre.com/sec/2KUsRm5",
                 name: "Munição Bbs Airsoft 5 Pacotes Com 150uni 0.12g Esfera 6mm",
@@ -1460,8 +1480,8 @@
                 rating: 4.5,
                 discount: 0,
                 featured: false
-                },
-        {
+            },
+            {
                 id: 1003,
                 link: "https://mercadolivre.com/sec/2fkin1q",
                 name: "Bbs Munição Airsoft 1000un 0.12g Esfera 6mm Rossi",
@@ -1474,10 +1494,10 @@
                 rating: 4.5,
                 discount: 0,
                 featured: false
-                },
-                {
+            },
+            {
                 id: 1004,
-        link: "https://mercadolivre.com/sec/2BftGa1",
+                link: "https://mercadolivre.com/sec/2BftGa1",
                 name: "Bb Tracer 0,25g Rossi 1000 : Airsoft Bbs 6mm Rifle Aeg 0.25g",
                 price: 78.80,
                 category: "acessorios",
@@ -1488,10 +1508,10 @@
                 rating: 4.5,
                 discount: 0,
                 featured: false
-                },
-        {
+            },
+            {
                 id: 1005,
-        link: "https://mercadolivre.com/sec/1vXEHPL",
+                link: "https://mercadolivre.com/sec/1vXEHPL",
                 name: "Esferas Bbs Airsoft Rossi 0.20g 6mm Branco 1000 Unidades",
                 price: 34.34,
                 category: "acessorios",
@@ -1502,10 +1522,10 @@
                 rating: 4.5,
                 discount: 0,
                 featured: false
-                },
-        {
+            },
+            {
                 id: 1006,
-        link: "https://mercadolivre.com/sec/31gDU18",
+                link: "https://mercadolivre.com/sec/31gDU18",
                 name: "Bb's 0,25g 4000 Bb King Airsoft Bbs 6mm Spring Aep Aeg Gbb",
                 price: 116.78,
                 category: "acessorios",
@@ -1516,7 +1536,273 @@
                 rating: 4.5,
                 discount: 0,
                 featured: false
-                }
+            },
+            {
+                id: 1007,
+                link: "https://mercadolivre.com/sec/1m9smuK",
+                name: "Bbs Munição Esfera Aço 1.000 Rounds 6mm",
+                price: 47.99,
+                category: "acessorios",
+                type: "BBS",
+                brand: "Intebra",
+                image: "imagens/airguns/airsoft1007.png",
+                description: "Bbs Munição Esfera Aço 1.000 Rounds 6mm",
+                rating: 4.6,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 1008,
+                link: "https://mercadolivre.com/sec/2uL2gvP",
+                name: "Kit 500 Esferas Munição Aço Níquel 6mm + 10 Cilindro Co2 12g",
+                price: 86.97,
+                category: "acessorios",
+                type: "BBS",
+                brand: "Mendexz",
+                image: "imagens/airguns/airsoft1008.png",
+                description: "Kit 500 Esferas Munição Aço Níquel 6mm + 10 Cilindro Co2 12g",
+                rating: 4.7,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 1009,
+                link: "https://mercadolivre.com/sec/2x5uB3Z",
+                name: "Kit Com 1000 Esferas De Aço 4.5mm + 10 Cilindros Co2 12g",
+                price: 69.75,
+                category: "acessorios",
+                type: "BBS",
+                brand: "dhunnas",
+                image: "imagens/airguns/airsoft1009.png",
+                description: "Kit Com 1000 Esferas De Aço 4.5mm + 10 Cilindros Co2 12g",
+                rating: 4.8,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 1010,
+                link: "https://mercadolivre.com/sec/14j8hpK",
+                name: "Kit 10 Chumbinhos Pressão Diabolô Snyper 5.5 1250 Unid",
+                price: 129.47,
+                category: "acessorios",
+                type: "Chumbinho",
+                brand: "Snyper",
+                image: "imagens/airguns/airsoft1010.png",
+                description: "Kit 10 Chumbinhos Pressão Diabolô Snyper 5.5 1250 Unid",
+                rating: 4.8,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 1011,
+                link: "https://mercadolivre.com/sec/1QW7SXb",
+                name: "Chumbo 5.5 Perfurante P/ Caça 5,5 Ff Hell Boy Prometheus +nf",
+                price: 68.50,
+                category: "acessorios",
+                type: "Chumbinho",
+                brand: "Feldman Forces",
+                image: "imagens/airguns/airsoft1011.png",
+                description: "Chumbo 5.5 Perfurante P/ Caça 5,5 Ff Hell Boy Prometheus +nf",
+                rating: 4.7,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 1012,
+                link: "https://mercadolivre.com/sec/1ptx5Kz",
+                name: "50x Capsulas Cilindro 12g Refil Ar Airsoft C02",
+                price: 119.90,
+                category: "acessorios",
+                type: "CO2",
+                brand: "Arsenal Rio",
+                image: "imagens/airguns/airsoft1012.png",
+                description: "50x Capsulas Cilindro 12g Refil Ar Airsoft C02",
+                rating: 4.6,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 1013,
+                link: "https://mercadolivre.com/sec/2pytp3u",
+                name: "Case Maleta Airsoft Airgun C/ Espuma Interna Enter Adventure",
+                price: 35.49,
+                category: "acessorios",
+                type: "Case/Capa",
+                brand: "Enter Adventure",
+                image: "imagens/airguns/airsoft1013.png",
+                description: "Case Maleta Airsoft Airgun C/ Espuma Interna Enter Adventure",
+                rating: 4.8,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 1014,
+                link: "https://mercadolivre.com/sec/2XbkxEg",
+                name: "Maleta Rígida Pistol Case Para Armas Curtas Tag",
+                price: 371.91,
+                category: "acessorios",
+                type: "Case/Capa",
+                brand: "TAG",
+                image: "imagens/airguns/airsoft1014.png",
+                description: "Maleta Rígida Pistol Case Para Armas Curtas Tag",
+                rating: 5.0,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 1015,
+                link: "https://mercadolivre.com/sec/24CovWs",
+                name: "Capa/case Rossi Almofada P/ Carabina De Pressão Top",
+                price: 88.99,
+                category: "acessorios",
+                type: "Case/Capa",
+                brand: "TAG",
+                image: "imagens/airguns/airsoft1015.png",
+                description: "Capa/case Rossi Almofada P/ Carabina De Pressão Top",
+                rating: 5.0,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 1016,
+                link: "https://mercadolivre.com/sec/2VfLSCo",
+                name: "Capa Carabina De Pressão Espingarda Simples Case 120x18cm",
+                price: 78,
+                category: "acessorios",
+                type: "Case/Capa",
+                brand: "Rossi",
+                image: "imagens/airguns/airsoft1016.png",
+                description: "Capa Carabina De Pressão Espingarda Simples Case 120x18cm",
+                rating: 5.0,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 1017,
+                link: "https://mercadolivre.com/sec/2JAMoQU",
+                name: "Bandoleira Tática Duas Pontas Para Carabina C Zarelho Teisen Cor Preto",
+                price: 15.90,
+                category: "acessorios",
+                type: "Bandolera",
+                brand: "Teisen",
+                image: "imagens/airguns/airsoft1017.png",
+                description: "Bandoleira Tática Duas Pontas Para Carabina C Zarelho Teisen Cor Preto",
+                rating: 3.9,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 1018,
+                link: "https://mercadolivre.com/sec/1EfFA7A",
+                name: "Porta-chumbo Carabina Espingarda Pressão 4,5mm 5,5mm 6mm",
+                price: 14.87,
+                category: "acessorios",
+                type: "Porta Chumbo",
+                brand: "Teisen",
+                image: "imagens/airguns/airsoft1018.png",
+                description: "Porta-chumbo Carabina Espingarda Pressão 4,5mm 5,5mm 6mm",
+                rating: 4.3,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 1019,
+                link: "https://mercadolivre.com/sec/2kixpeH",
+                name: "Chumbinho Target 5.5mm .22 Rossi 100un Carabinas De Pressão",
+                price: 14.90,
+                category: "acessorios",
+                type: "Chumbinho",
+                brand: "Rossi",
+                image: "imagens/airguns/airsoft1019.png",
+                description: "Chumbinho Target 5.5mm .22 Rossi 100un Carabinas De Pressão",
+                rating: 5.0,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 1020,
+                link: "https://mercadolivre.com/sec/2eh2vVq",
+                name: "Porta Chumbo E.v.a Coronha Carabina De Pressão 5.5mm Rossi",
+                price: 19.90,
+                category: "acessorios",
+                type: "Porta Chumbo",
+                brand: "Rossi",
+                image: "imagens/airguns/airsoft1020.png",
+                description: "Porta Chumbo E.v.a Coronha Carabina De Pressão 5.5mm Rossi",
+                rating: 5.0,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 1021,
+                link: "https://mercadolivre.com/sec/2SctrFP",
+                name: "Luneta Rossi 4x32 11mm P/ Carabina Espingarda+alvo+chumbinho",
+                price: 199,
+                category: "acessorios",
+                type: "Luneta",
+                brand: "Rossi",
+                image: "imagens/airguns/airsoft1021.png",
+                description: "Luneta Rossi 4x32 11mm P/ Carabina Espingarda+alvo+chumbinho",
+                rating: 4.5,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 1022,
+                link: "https://mercadolivre.com/sec/2SctrFP",
+                name: "Luneta Rossi 4x20 P/ Carabina Pressão - Espingarda Chumbinho",
+                price: 78.99,
+                category: "acessorios",
+                type: "Luneta",
+                brand: "Rossi",
+                image: "imagens/airguns/airsoft1021.png",
+                description: "Luneta Rossi 4x20 P/ Carabina Pressão - Espingarda Chumbinho",
+                rating: 5.0,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 1023,
+                link: "https://mercadolivre.com/sec/2n5GmS8",
+                name: "Luneta Mira 3-9x40 Eg C/ Ret. Iluminado + Mount 11mm",
+                price: 356.90,
+                category: "acessorios",
+                type: "Luneta",
+                brand: "3-9x40Eg",
+                image: "imagens/airguns/airsoft1023.png",
+                description: "Luneta Mira 3-9x40 Eg C/ Ret. Iluminado + Mount 11mm",
+                rating: 5.0,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 1024,
+                link: "https://mercadolivre.com/sec/1YF3bxA",
+                name: "Mount Único Absorção Impacto 11mm - Tag",
+                price: 145.53,
+                category: "acessorios",
+                type: "Luneta",
+                brand: "TAG",
+                image: "imagens/airguns/airsoft1024.png",
+                description: "Mount Único Absorção Impacto 11mm - Tag",
+                rating: 4.4,
+                discount: 0,
+                featured: false
+            },
+            {
+                id: 1025,
+                link: "https://mercadolivre.com/sec/2gSAqAn",
+                name: "Alvo 5 Pendulos Carabina Hatsan Airtact Striker Edge 1000s",
+                price: 269,
+                category: "acessorios",
+                type: "Alvo",
+                brand: "QuickShot",
+                image: "imagens/airguns/airsoft1025.png",
+                description: "Alvo 5 Pendulos Carabina Hatsan Airtact Striker Edge 1000s",
+                rating: 5.0,
+                discount: 0,
+                featured: false
+            }
         ];
 
         // Combine products and accessories

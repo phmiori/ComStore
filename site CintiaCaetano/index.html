@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cintia Caetano - Moda Feminina</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .product-card:hover .product-overlay {
+            opacity: 1;
+        }
+        .filter-option:hover {
+            background-color: #f3f4f6;
+        }
+        .filter-option.active {
+            background-color: #f3f4f6;
+            font-weight: 600;
+            border-left: 3px solid #000;
+        }
+        .product-overlay {
+            transition: opacity 0.3s ease;
+        }
+        @media (max-width: 768px) {
+            .filter-sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            .filter-sidebar.open {
+                transform: translateX(0);
+            }
+            .filter-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0,0,0,0.5);
+                z-index: 10;
+            }
+            .filter-overlay.open {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Mobile Filter Button -->
+    <div class="md:hidden fixed bottom-6 right-6 z-20">
+        <button id="mobileFilterBtn" class="bg-black text-white p-4 rounded-full shadow-lg">
+            <i class="fas fa-sliders-h text-xl"></i>
+        </button>
+    </div>
+
+    <!-- Mobile Filter Overlay -->
+    <div id="filterOverlay" class="filter-overlay"></div>
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-tshirt text-2xl text-pink-500"></i>
+                <h1 class="text-2xl font-bold">Cintia Caetano</h1>
+            </div>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#" class="hover:text-pink-500 transition">Início</a>
+                <a href="#" class="hover:text-pink-500 transition">Novidades</a>
+                <a href="#" class="hover:text-pink-500 transition">Sobre</a>
+                <a href="https://wa.me/5511999999999" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full flex items-center space-x-2 transition">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>Contato</span>
+                </a>
+            </div>
+            <button class="md:hidden text-2xl">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="flex flex-col md:flex-row container mx-auto px-4 py-8">
+        <!-- Filter Sidebar -->
+        <aside id="filterSidebar" class="filter-sidebar md:w-1/5 bg-white p-6 rounded-lg shadow-sm md:shadow-none md:mr-6 h-full md:sticky md:top-24 z-20">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold">Filtrar</h2>
+                <button id="closeFilterBtn" class="md:hidden text-xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="mb-8">
+                <h3 class="font-semibold mb-3 text-lg">Categorias</h3>
+                <ul class="space-y-2">
+                    <li><button class="filter-option w-full text-left py-2 px-3 rounded active" data-category="all">Todos os produtos</button></li>
+                    <li><button class="filter-option w-full text-left py-2 px-3 rounded" data-category="dresses">Vestidos</button></li>
+                    <li><button class="filter-option w-full text-left py-2 px-3 rounded" data-category="pants">Calças</button></li>
+                    <li><button class="filter-option w-full text-left py-2 px-3 rounded" data-category="shirts">Camisetas</button></li>
+                    <li><button class="filter-option w-full text-left py-2 px-3 rounded" data-category="skirts">Saias</button></li>
+                    <li><button class="filter-option w-full text-left py-2 px-3 rounded" data-category="jackets">Casacos</button></li>
+                </ul>
+            </div>
+            
+            <div class="mb-8">
+                <h3 class="font-semibold mb-3 text-lg">Tamanhos</h3>
+                <div class="flex flex-wrap gap-2">
+                    <button class="size-option border px-3 py-1 rounded hover:bg-gray-100" data-size="all">Todos</button>
+                    <button class="size-option border px-3 py-1 rounded hover:bg-gray-100" data-size="P">P</button>
+                    <button class="size-option border px-3 py-1 rounded hover:bg-gray-100" data-size="M">M</button>
+                    <button class="size-option border px-3 py-1 rounded hover:bg-gray-100" data-size="G">G</button>
+                    <button class="size-option border px-3 py-1 rounded hover:bg-gray-100" data-size="GG">GG</button>
+                </div>
+            </div>
+            
+            <div class="mb-8">
+                <h3 class="font-semibold mb-3 text-lg">Cores</h3>
+                <div class="flex flex-wrap gap-2">
+                    <button class="color-option w-8 h-8 rounded-full border border-gray-200 hover:opacity-80" data-color="all" style="background: conic-gradient(red, orange, yellow, green, blue, indigo, violet);"></button>
+                    <button class="color-option w-8 h-8 rounded-full bg-black hover:opacity-80" data-color="black"></button>
+                    <button class="color-option w-8 h-8 rounded-full bg-white border border-gray-300 hover:opacity-80" data-color="white"></button>
+                    <button class="color-option w-8 h-8 rounded-full bg-red-500 hover:opacity-80" data-color="red"></button>
+                    <button class="color-option w-8 h-8 rounded-full bg-blue-500 hover:opacity-80" data-color="blue"></button>
+                    <button class="color-option w-8 h-8 rounded-full bg-green-500 hover:opacity-80" data-color="green"></button>
+                    <button class="color-option w-8 h-8 rounded-full bg-yellow-400 hover:opacity-80" data-color="yellow"></button>
+                    <button class="color-option w-8 h-8 rounded-full bg-pink-500 hover:opacity-80" data-color="pink"></button>
+                </div>
+            </div>
+            
+            <div>
+                <h3 class="font-semibold mb-3 text-lg">Preço</h3>
+                <div class="flex items-center space-x-2 mb-2">
+                    <input type="range" min="0" max="500" value="500" class="w-full" id="priceRange">
+                </div>
+                <div class="flex justify-between text-sm text-gray-600">
+                    <span>R$0</span>
+                    <span>R$500</span>
+                </div>
+                <div class="mt-4 text-center">
+                    <span id="priceValue" class="font-medium">Até R$500</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Product Grid -->
+        <main class="md:w-4/5">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold">Nossa Coleção</h2>
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm text-gray-600">Ordenar por:</span>
+                    <select class="border rounded px-3 py-1 bg-white">
+                        <option>Mais recentes</option>
+                        <option>Menor preço</option>
+                        <option>Maior preço</option>
+                        <option>Mais populares</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="productGrid">
+                <!-- Product cards will be inserted here by JavaScript -->
+            </div>
+            
+            <div class="mt-12 text-center">
+                <button class="bg-black text-white px-6 py-3 rounded-full hover:bg-gray-800 transition">
+                    Carregar mais produtos
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/5511999999999" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg z-10 hover:bg-green-600 transition md:hidden">
+        <i class="fab fa-whatsapp text-2xl"></i>
+    </a>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fas fa-tshirt text-pink-500 mr-2"></i>
+                        Cintia Caetano
+                    </h3>
+                    <p class="text-gray-400">Moda feminina com estilo e qualidade para todos os momentos.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Links Rápidos</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Início</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Produtos</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Novidades</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Sobre</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Contato</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-center">
+                            <i class="fas fa-phone-alt mr-2"></i>
+                            (11) 99999-9999
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-2"></i>
+                            contato@cintiacaetano.com
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fab fa-whatsapp mr-2"></i>
+                            WhatsApp
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Redes Sociais</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition text-xl">
+                            <i class="fab fa-pinterest"></i>
+                        </a>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-sm text-gray-400">Assine nossa newsletter</p>
+                        <div class="flex mt-2">
+                            <input type="email" placeholder="Seu e-mail" class="px-3 py-2 text-gray-900 rounded-l w-full">
+                            <button class="bg-pink-500 text-white px-3 rounded-r">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2023 Cintia Caetano. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample product data
+        const products = [
+            { id: 1, name: "Vestido Floral Midi", category: "dresses", price: 189.90, sizes: ["P", "M", "G"], colors: ["pink", "red"], image: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" },
+            { id: 2, name: "Calça Jeans Skinny", category: "pants", price: 159.90, sizes: ["P", "M", "G", "GG"], colors: ["blue", "black"], image: "https://images.unsplash.com/photo-1542272604-787c3835535d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1026&q=80" },
+            { id: 3, name: "Camiseta Básica Branca", category: "shirts", price: 49.90, sizes: ["P", "M", "G"], colors: ["white"], image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80" },
+            { id: 4, name: "Saia Midi Plissada", category: "skirts", price: 129.90, sizes: ["P", "M"], colors: ["black", "green"], image: "https://images.unsplash.com/photo-1551232864-3f0890e580d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" },
+            { id: 5, name: "Casaco Tricô Oversized", category: "jackets", price: 219.90, sizes: ["M", "G", "GG"], colors: ["yellow", "pink"], image: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=736&q=80" },
+            { id: 6, name: "Vestido Longo Elegante", category: "dresses", price: 249.90, sizes: ["P", "M", "G"], colors: ["black", "red"], image: "https://images.unsplash.com/photo-1539533018447-63fcce2678e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" },
+            { id: 7, name: "Calça Wide Leg", category: "pants", price: 179.90, sizes: ["M", "G"], colors: ["white", "black"], image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" },
+            { id: 8, name: "Camiseta Estampada", category: "shirts", price: 69.90, sizes: ["P", "M", "G", "GG"], colors: ["blue", "green"], image: "https://images.unsplash.com/photo-1527719327859-c6ce80353573?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=684&q=80" }
+        ];
+
+        // Current filters
+        let currentFilters = {
+            category: "all",
+            size: "all",
+            color: "all",
+            maxPrice: 500
+        };
+
+        // DOM elements
+        const productGrid = document.getElementById('productGrid');
+        const priceRange = document.getElementById('priceRange');
+        const priceValue = document.getElementById('priceValue');
+        const mobileFilterBtn = document.getElementById('mobileFilterBtn');
+        const closeFilterBtn = document.getElementById('closeFilterBtn');
+        const filterSidebar = document.getElementById('filterSidebar');
+        const filterOverlay = document.getElementById('filterOverlay');
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderProducts(products);
+            
+            // Price range filter
+            priceRange.addEventListener('input', function() {
+                currentFilters.maxPrice = parseInt(this.value);
+                priceValue.textContent = `Até R$${currentFilters.maxPrice}`;
+                filterProducts();
+            });
+            
+            // Category filter
+            document.querySelectorAll('.filter-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-option').forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilters.category = this.dataset.category;
+                    filterProducts();
+                });
+            });
+            
+            // Size filter
+            document.querySelectorAll('.size-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.size-option').forEach(btn => btn.classList.remove('bg-gray-200'));
+                    this.classList.add('bg-gray-200');
+                    currentFilters.size = this.dataset.size;
+                    filterProducts();
+                });
+            });
+            
+            // Color filter
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.color-option').forEach(btn => btn.classList.remove('ring-2', 'ring-offset-2', 'ring-black'));
+                    this.classList.add('ring-2', 'ring-offset-2', 'ring-black');
+                    currentFilters.color = this.dataset.color;
+                    filterProducts();
+                });
+            });
+            
+            // Mobile filter toggle
+            mobileFilterBtn.addEventListener('click', function() {
+                filterSidebar.classList.add('open');
+                filterOverlay.classList.add('open');
+            });
+            
+            closeFilterBtn.addEventListener('click', function() {
+                filterSidebar.classList.remove('open');
+                filterOverlay.classList.remove('open');
+            });
+            
+            filterOverlay.addEventListener('click', function() {
+                filterSidebar.classList.remove('open');
+                this.classList.remove('open');
+            });
+        });
+
+        // Render products to the grid
+        function renderProducts(productsToRender) {
+            productGrid.innerHTML = '';
+            
+            productsToRender.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition';
+                
+                productCard.innerHTML = `
+                    <div class="relative overflow-hidden" style="padding-top: 120%;">
+                        <img src="${product.image}" alt="${product.name}" class="absolute top-0 left-0 w-full h-full object-cover">
+                        <div class="product-overlay absolute inset-0 bg-black bg-opacity-30 opacity-0 flex items-center justify-center">
+                            <a href="https://wa.me/5511999999999?text=Olá! Gostaria de saber mais sobre o produto: ${encodeURIComponent(product.name)}" target="_blank" class="bg-white text-black px-6 py-2 rounded-full font-medium hover:bg-gray-100 transition">
+                                <i class="fab fa-whatsapp mr-2"></i> Consultar
+                            </a>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-medium text-lg mb-1">${product.name}</h3>
+                        <div class="flex items-center mb-2">
+                            ${product.colors.map(color => `<span class="w-3 h-3 rounded-full mr-1 ${getColorClass(color)}"></span>`).join('')}
+                            <span class="text-xs text-gray-500 ml-2">${product.sizes.join(', ')}</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-lg">R$${product.price.toFixed(2)}</span>
+                            <button class="text-pink-500 hover:text-pink-600 transition">
+                                <i class="far fa-heart text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                productGrid.appendChild(productCard);
+            });
+        }
+
+        // Filter products based on current filters
+        function filterProducts() {
+            let filteredProducts = products.filter(product => {
+                // Category filter
+                if (currentFilters.category !== 'all' && product.category !== currentFilters.category) {
+                    return false;
+                }
+                
+                // Size filter
+                if (currentFilters.size !== 'all' && !product.sizes.includes(currentFilters.size)) {
+                    return false;
+                }
+                
+                // Color filter
+                if (currentFilters.color !== 'all' && !product.colors.includes(currentFilters.color)) {
+                    return false;
+                }
+                
+                // Price filter
+                if (product.price > currentFilters.maxPrice) {
+                    return false;
+                }
+                
+                return true;
+            });
+            
+            renderProducts(filteredProducts);
+        }
+
+        // Helper function to get Tailwind color classes
+        function getColorClass(color) {
+            const colorMap = {
+                'black': 'bg-black',
+                'white': 'bg-white border border-gray-300',
+                'red': 'bg-red-500',
+                'blue': 'bg-blue-500',
+                'green': 'bg-green-500',
+                'yellow': 'bg-yellow-400',
+                'pink': 'bg-pink-500'
+            };
+            return colorMap[color] || 'bg-gray-300';
+        }
+    </script>
+</body>
+</html>

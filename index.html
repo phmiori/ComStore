@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!-- 1 --> 
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -13,29 +13,25 @@
         .carousel-container {
             overflow: hidden;
             position: relative;
+            height: 400px;
         }
         
         .carousel-track {
             display: flex;
             transition: transform 0.5s ease;
+            height: 100%;
         }
         
         .carousel-item {
-            flex: 0 0 33.333%;
-            padding: 0 10px;
-            box-sizing: border-box;
+            flex: 0 0 100%;
+            width: 100%;
+            height: 100%;
         }
         
-        @media (max-width: 1024px) {
-            .carousel-item {
-                flex: 0 0 50%;
-            }
-        }
-        
-        @media (max-width: 640px) {
-            .carousel-item {
-                flex: 0 0 100%;
-            }
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         .category-dropdown {
@@ -112,30 +108,29 @@
                 </div>
             </div>
             
-            <!-- Logout button on the right -->
+            <!-- Botão Sobre no canto direito -->
             <div class="ml-auto">
-                <button id="logout-btn" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
-                    Sobre <i class="fas fa-sign-out-alt ml-1"></i>
-                </button>
+                <a href="sobre.html" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition flex items-center">
+                    Sobre <i class="fas fa-info-circle ml-2"></i>
+                </a>
             </div>
         </div>
     </header>
 
     <!-- Main content -->
     <main class="container mx-auto px-4 py-8">
-        <!-- Carousel section -->
+        <!-- Banner Carousel section -->
         <section class="mb-12">
-            <h2 class="text-2xl font-bold mb-6 text-gray-800">Destaques</h2>
             <div class="carousel-container relative group" id="carousel">
                 <div class="carousel-track" id="carousel-track">
-                    <!-- Carousel items will be added by JavaScript -->
+                    <!-- Banner items will be added by JavaScript -->
                 </div>
                 
                 <!-- Carousel navigation arrows -->
-                <button id="carousel-prev" class="absolute left-0 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 text-gray-800 p-2 rounded-full shadow-md hover:bg-opacity-100 transition opacity-0 group-hover:opacity-100">
+                <button id="carousel-prev" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 text-gray-800 p-2 rounded-full shadow-md hover:bg-opacity-100 transition opacity-0 group-hover:opacity-100">
                     <i class="fas fa-chevron-left"></i>
                 </button>
-                <button id="carousel-next" class="absolute right-0 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 text-gray-800 p-2 rounded-full shadow-md hover:bg-opacity-100 transition opacity-0 group-hover:opacity-100">
+                <button id="carousel-next" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 text-gray-800 p-2 rounded-full shadow-md hover:bg-opacity-100 transition opacity-0 group-hover:opacity-100">
                     <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
@@ -175,7 +170,6 @@
                     <a href="https://www.tiktok.com/@comst.ore" class="text-gray-400 hover:text-white text-xl">
                         <i class="fab fa-tiktok"></i>
                     </a>
-                    
                 </div>
             </div>
             
@@ -186,71 +180,28 @@
     </footer>
 
     <script>
-        // Sample product data for the carousel
-        const carouselProducts = [
+        // Sample banner data for the carousel
+        const bannerItems = [
             {
                 id: 1,
-                name: "Smartphone Premium",
-                price: 3499.99,
-                category: "eletronicos",
-                image: "https://images.unsplash.com/photo-1601784551446-66c9e1e7b96f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                description: "Smartphone com câmera tripla de 48MP e tela AMOLED de 6.7 polegadas."
+                title: "Eletrônicos",
+                subtitle: "Melhores produtos selecionados com os melhores preços.",
+                image: "imagens/Eletrônicos.png",
+                link: "eletronicos.html"
             },
             {
                 id: 2,
-                name: "Notebook Ultrafino",
-                price: 4299.99,
-                category: "eletronicos",
-                image: "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                description: "Notebook com processador de última geração e 16GB de RAM."
+                title: "Novos Produtos",
+                subtitle: "Confira nossa última coleção",
+                image: "https://images.unsplash.com/photo-1523381294911-8d3cead13475?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1600&q=80",
+                link: "#"
             },
             {
                 id: 3,
-                name: "TV 4K 55 Polegadas",
-                price: 2899.99,
-                category: "eletronicos",
-                image: "https://images.unsplash.com/photo-1544869665-443a33cb7d3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                description: "TV Smart com resolução 4K e HDR para melhor experiência."
-            },
-            {
-                id: 4,
-                name: "Geladeira Frost Free",
-                price: 3199.99,
-                category: "eletrodomesticos",
-                image: "https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                description: "Geladeira com capacidade de 375 litros e tecnologia inverter."
-            },
-            {
-                id: 5,
-                name: "Fogão 5 Bocas",
-                price: 1499.99,
-                category: "eletrodomesticos",
-                image: "https://images.unsplash.com/photo-1584568592979-b0d0e182dcc7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                description: "Fogão com forno elétrico e timer digital."
-            },
-            {
-                id: 6,
-                name: "Camiseta Básica",
-                price: 49.99,
-                category: "roupas",
-                image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                description: "Camiseta 100% algodão em diversas cores."
-            },
-            {
-                id: 7,
-                name: "Calça Jeans",
-                price: 129.99,
-                category: "roupas",
-                image: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                description: "Calça jeans masculina com modelagem moderna."
-            },
-            {
-                id: 8,
-                name: "Tênis Esportivo",
-                price: 249.99,
-                category: "calcados",
-                image: "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                description: "Tênis com amortecimento para corrida e caminhada."
+                title: "Frete Grátis",
+                subtitle: "Em compras acima de R$ 200,00",
+                image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1600&q=80",
+                link: "#"
             }
         ];
 
@@ -345,64 +296,44 @@
         const categoryDropdown = document.getElementById('category-dropdown');
         const searchInput = document.getElementById('search-input');
         const searchBtn = document.getElementById('search-btn');
-        const logoutBtn = document.getElementById('logout-btn');
         const nicheGrid = document.querySelector('.niche-grid');
 
-        // Format price to BRL
-        function formatPrice(price) {
-            return new Intl.NumberFormat('pt-BR', { 
-                style: 'currency', 
-                currency: 'BRL' 
-            }).format(price);
-        }
-
-        // Initialize carousel
+        // Initialize banner carousel
         function initCarousel() {
             // Clear any existing items
             carouselTrack.innerHTML = '';
             
-            // Add products to carousel
-            carouselProducts.forEach(product => {
+            // Add banners to carousel
+            bannerItems.forEach(banner => {
                 const item = document.createElement('div');
                 item.className = 'carousel-item';
                 item.innerHTML = `
-                    <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition">
-                        <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
-                        <div class="p-4">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-1">${product.name}</h3>
-                            <p class="text-gray-600 text-sm mb-3">${product.description}</p>
-                            <div class="flex justify-between items-center">
-                                <span class="text-lg font-bold text-blue-500">${formatPrice(product.price)}</span>
-                                <button class="text-blue-500 hover:text-blue-600">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </button>
-                            </div>
+                    <a href="${banner.link}" class="block h-full w-full relative">
+                        <img src="${banner.image}" alt="${banner.title}" class="w-full h-full">
+                        <div class="absolute bottom-10 left-10 right-10 bg-black bg-opacity-50 text-white p-6 rounded-lg">
+                            <h2 class="text-3xl font-bold mb-2">${banner.title}</h2>
+                            <p class="text-xl">${banner.subtitle}</p>
                         </div>
-                    </div>
+                    </a>
                 `;
                 carouselTrack.appendChild(item);
             });
             
-            // Set carousel width based on number of items
-            const itemCount = carouselProducts.length;
-            const itemWidth = 100 / 3; // Show 3 items at a time
-            carouselTrack.style.width = `${itemCount * itemWidth}%`;
-            
             // Initialize carousel position
             let currentPosition = 0;
-            const maxPosition = itemCount - 3;
+            const itemCount = bannerItems.length;
             
             // Update carousel position
             function updateCarousel() {
-                carouselTrack.style.transform = `translateX(-${currentPosition * itemWidth}%)`;
+                carouselTrack.style.transform = `translateX(-${currentPosition * 100}%)`;
             }
             
             // Next button click handler
             carouselNext.addEventListener('click', () => {
-                if (currentPosition < maxPosition) {
+                if (currentPosition < itemCount - 1) {
                     currentPosition++;
                 } else {
-                    currentPosition = 0; // Loop back to start
+                    currentPosition = 0;
                 }
                 updateCarousel();
             });
@@ -412,14 +343,14 @@
                 if (currentPosition > 0) {
                     currentPosition--;
                 } else {
-                    currentPosition = maxPosition; // Loop to end
+                    currentPosition = itemCount - 1;
                 }
                 updateCarousel();
             });
             
             // Auto-advance carousel
             let autoAdvance = setInterval(() => {
-                if (currentPosition < maxPosition) {
+                if (currentPosition < itemCount - 1) {
                     currentPosition++;
                 } else {
                     currentPosition = 0;
@@ -435,7 +366,7 @@
             // Resume auto-advance when mouse leaves
             carousel.addEventListener('mouseleave', () => {
                 autoAdvance = setInterval(() => {
-                    if (currentPosition < maxPosition) {
+                    if (currentPosition < itemCount - 1) {
                         currentPosition++;
                     } else {
                         currentPosition = 0;
@@ -480,9 +411,7 @@
         searchBtn.addEventListener('click', () => {
             const searchTerm = searchInput.value.trim().toLowerCase();
             if (searchTerm) {
-                // In a real application, this would redirect to search results
                 alert(`Buscando por: ${searchTerm}`);
-                // window.location.href = `search.html?q=${encodeURIComponent(searchTerm)}`;
             }
         });
 
@@ -490,15 +419,6 @@
         searchInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 searchBtn.click();
-            }
-        });
-
-        // Logout button
-        logoutBtn.addEventListener('click', () => {
-            if (confirm('Tem certeza que deseja sair?')) {
-                // In a real application, this would clear session and redirect
-                alert('Você foi desconectado.');
-                // window.location.href = 'login.html';
             }
         });
 

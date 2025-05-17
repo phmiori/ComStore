@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obrigado - ComStore</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .checkmark {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 5;
+            stroke: #3B82F6;
+            stroke-miterlimit: 10;
+            margin: 0 auto;
+            box-shadow: 0 0 0 rgba(59, 130, 246, 0.4);
+            animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+        }
+        
+        .checkmark__circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 5;
+            stroke-miterlimit: 10;
+            stroke: #3B82F6;
+            fill: none;
+            animation: stroke .6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+
+        .checkmark__check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: stroke .3s cubic-bezier(0.65, 0, 0.45, 1) .8s forwards;
+        }
+
+        @keyframes stroke {
+            100% { stroke-dashoffset: 0; }
+        }
+
+        @keyframes scale {
+            0%, 100% { transform: none; }
+            50% { transform: scale3d(1.1, 1.1, 1); }
+        }
+
+        @keyframes fill {
+            100% { box-shadow: inset 0 0 0 100px rgba(59, 130, 246, 0.1); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Header igual ao resto do site -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-7 flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="imagens/logo.png" alt="ComStore Logo" class="h-12 mr-2">
+                <h1 class="text-xl font-bold text-gray-800">ComStore</h1>
+            </div>
+            
+            <nav class="hidden md:flex space-x-6">
+                <a href="index.html" class="text-gray-700 hover:text-blue-600">Início</a>
+                <a href="sobre.html" class="text-gray-700 hover:text-blue-600">Sobre</a>
+                <a href="contato.html" class="text-gray-700 hover:text-blue-600">Contato</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Conteúdo principal -->
+    <main class="container mx-auto px-4 py-12 min-h-screen">
+        <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-8 text-center">
+            <!-- Animação de checkmark -->
+            <svg class="checkmark mb-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+            
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Mensagem Enviada com Sucesso!</h2>
+            
+            <p class="text-lg text-gray-600 mb-8">
+                Obrigado por entrar em contato com a ComStore. Nossa equipe responderá em até <span class="font-semibold">24 horas úteis</span>.
+            </p>
+            
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8 text-left">
+                <div class="flex">
+                    <div class="flex-shrink-0 text-blue-500">
+                        <i class="fas fa-info-circle text-xl"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-blue-700">
+                            Enviamos uma cópia da sua mensagem para o e-mail cadastrado. Caso não encontre, verifique sua caixa de spam.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="index.html" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center justify-center">
+                    <i class="fas fa-home mr-2"></i> Voltar à Página Inicial
+                </a>
+                
+                <a href="sobre.html" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition flex items-center justify-center">
+                    <i class="fas fa-store mr-2"></i> Conheça Nossa Loja
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer igual ao resto do site -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center">
+                        <img src="imagens/logo.png" alt="ComStore Logo" class="h-10 mr-2">
+                        <h2 class="text-xl font-bold">ComStore</h2>
+                    </div>
+                    <p class="mt-2 text-gray-400">Sua loja especializada em produtos de nicho</p>
+                </div>
+                
+                <div class="flex space-x-6">
+                    <a href="https://www.facebook.com/people/Davi-Miori/pfbid0TaBjuT2ugM39mja7JMnp7xHAEy6bpBde2BfXr3zW5G2nEmgEhJ4EwrMTL6ZUQ9kul/" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.instagram.com/comst_ore/" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@AvalonMoneyMakers" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-youtube"></i>
+                    </a> 
+                    <a href="https://www.tiktok.com/@comst.ore" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 ComStore. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script para animação -->
+    <script>
+        // Redirecionamento automático opcional (após 10 segundos)
+        setTimeout(() => {
+            // window.location.href = "index.html"; // Descomente se quiser redirecionar automaticamente
+        }, 10000);
+    </script>
+</body>
+</html>

@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sobre Nós - Com-Store</title>
-    <!-- Tailwind CSS for styling -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome for icons -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Custom styles consistent with main page */
         .category-dropdown {
             display: none;
             position: absolute;
@@ -48,25 +47,23 @@
     </style>
 </head>
 <body class="bg-gray-100 font-sans">
-    <!-- Header with logo, navigation, and search - identical to main page -->
+    <!-- Header -->
     <header class="bg-white shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-4 py-7 flex flex-col md:flex-row items-center justify-between">
-            <!-- Logo on the left -->
+            <!-- Logo -->
             <div class="flex items-center mb-4 md:mb-0">
-                <img src="imagens/logo.png" alt="SuperStore Logo" class="h-12 mr-2" class="logo">
+                <img src="imagens/logo.png" alt="ComStore Logo" class="h-12 mr-2">
                 <h1 class="text-xl font-bold text-gray-800">ComStore</h1>
             </div>
             
-            <!-- Navigation and search in the middle -->
+            <!-- Navigation -->
             <div class="flex-1 flex flex-col md:flex-row items-center justify-center mx-0 md:mx-8 w-full md:w-auto">
-                <!-- Navigation buttons -->
                 <div class="flex space-x-4 mb-4 md:mb-0">
                     <a href="index.html" class="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium">Início</a>
                     <div class="relative">
                         <button id="categories-btn" class="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
                             Categorias <i class="fas fa-chevron-down ml-1 text-xs"></i>
                         </button>
-                        <!-- Categories dropdown -->
                         <div id="category-dropdown" class="category-dropdown p-4 rounded-lg mt-1 w-full md:w-96">
                             <div>
                                 <h3 class="font-bold mb-2">Airsoft/Airgun</h3>
@@ -100,7 +97,7 @@
                 </div>
             </div>
             
-            <!-- Botão Sobre no canto direito (agora ativo) -->
+            <!-- Botão Sobre -->
             <div class="ml-auto">
                 <a href="sobre.html" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center">
                     Sobre <i class="fas fa-info-circle ml-2"></i>
@@ -109,7 +106,7 @@
         </div>
     </header>
 
-    <!-- Main content - About page specific -->
+    <!-- Main Content -->
     <main class="container mx-auto px-4 py-8">
         <!-- Page title -->
         <div class="mb-8 text-center">
@@ -226,48 +223,50 @@
                 </div>
                 <div>
                     <h3 class="text-lg font-semibold mb-3 text-gray-800">Envie uma Mensagem</h3>
-                    <form action="https://formsubmit.co/conta.paranegocios2826@gmail.com" method="POST" class="space-y-4">
-    <!-- Campos ocultos para configuração -->
-    <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" name="_next" value="https://https://phmiori.github.io/ComStore/obrigado.html">
-    <input type="hidden" name="_template" value="table">
-    
-    <!-- Seus campos originais (adaptados) -->
-    <div>
-        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nome</label>
-        <input type="text" id="name" name="name" required 
-               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-    </div>
-    
-    <div>
-        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
-        <input type="email" id="email" name="email" required
-               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-    </div>
-    
-    <div>
-        <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Mensagem</label>
-        <textarea id="message" name="message" rows="3" required
-                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"></textarea>
-    </div>
-    
-    <button type="submit" 
-            class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-        <i class="fas fa-paper-plane mr-2"></i> Enviar Mensagem
-    </button>
-</form>
+                    <form id="comstoreForm" action="https://formsubmit.co/conta.paranegocios2826@gmail.com" method="POST" class="space-y-4">
+                        <!-- Dados para o Google Sheets -->
+                        <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="_next" value="https://phmiori.github.io/ComStore/obrigado.html">
+                        <input type="hidden" name="_template" value="table">
+                        <input type="hidden" name="ip" id="userIp">
+                        <input type="hidden" name="origem" value="Página Sobre">
+                        
+                        <!-- Campos do formulário -->
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nome*</label>
+                            <input type="text" id="name" name="name" required 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">E-mail*</label>
+                            <input type="email" id="email" name="email" required
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Mensagem*</label>
+                            <textarea id="message" name="message" rows="3" required
+                                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"></textarea>
+                        </div>
+                        
+                        <button type="submit" 
+                                class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center justify-center">
+                            <i class="fas fa-paper-plane mr-2"></i> Enviar Mensagem
+                        </button>
+                        
+                        <p class="text-xs text-gray-500">Ao enviar, você concorda com nosso tratamento de dados.</p>
+                    </form>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Footer with social media links - identical to main page -->
+    <!-- Footer -->
     <footer class="bg-gray-800 text-white py-8">
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="mb-6 md:mb-0">
                     <div class="flex items-center">
-                        <img src="imagens/logo.png" alt="SuperStore Logo" class="h-10 mr-2">
+                        <img src="imagens/logo.png" alt="ComStore Logo" class="h-10 mr-2">
                         <h2 class="text-xl font-bold">ComStore</h2>
                     </div>
                     <p class="mt-2 text-gray-400">Inscreva-se em nossas redes sociais!</p>
@@ -295,38 +294,47 @@
         </div>
     </footer>
 
+    <!-- Script para capturar IP e enviar para Google Sheets -->
     <script>
-        // DOM elements for functionality consistent with main page
-        const categoriesBtn = document.getElementById('categories-btn');
-        const categoryDropdown = document.getElementById('category-dropdown');
-        const searchInput = document.getElementById('search-input');
-        const searchBtn = document.getElementById('search-btn');
-
-        // Toggle categories dropdown
-        categoriesBtn.addEventListener('click', () => {
-            document.querySelector('.relative').classList.toggle('show-categories');
-        });
-
-        // Close categories dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.relative') && !e.target.closest('#categories-btn')) {
-                document.querySelector('.relative').classList.remove('show-categories');
-            }
-        });
-
-        // Search functionality
-        searchBtn.addEventListener('click', () => {
-            const searchTerm = searchInput.value.trim().toLowerCase();
-            if (searchTerm) {
-                alert(`Buscando por: ${searchTerm}`);
-            }
-        });
-
-        // Allow search on Enter key
-        searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                searchBtn.click();
-            }
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('comstoreForm');
+            
+            // Capturar IP do usuário
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('userIp').value = data.ip;
+                });
+            
+            // Enviar dados para o Google Sheets (além do FormSubmit)
+            form.addEventListener('submit', function(e) {
+                const btn = form.querySelector('button[type="submit"]');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Enviando...';
+                
+                // URL do seu Web App do Google Script (substitua pela sua)
+                const scriptUrl = 'https://script.google.com/macros/s/AKfycbw7v6lQ1NnDeZFVVG4WK3XBGcLQWeaHsM5nG1lqF4BEIbb5Rk5zTdKewaBbYuk1z4jgOw/exec';
+                
+                // Dados do formulário
+                const formData = {
+                    name: form.name.value,
+                    email: form.email.value,
+                    message: form.message.value,
+                    ip: document.getElementById('userIp').value,
+                    origem: 'Página Sobre'
+                };
+                
+                // Enviar para o Google Sheets (opcional)
+                fetch(scriptUrl, {
+                    method: 'POST',
+                    body: JSON.stringify(formData),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).catch(error => console.log('Erro no Google Sheets:', error));
+                
+                // O FormSubmit continuará enviando o e-mail normalmente
+            });
         });
     </script>
 </body>

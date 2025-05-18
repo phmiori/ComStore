@@ -296,46 +296,58 @@
 
     <!-- Script para capturar IP e enviar para Google Sheets -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('comstoreForm');
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('comstoreForm');
+        
+        // Capturar IP do usuário
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('userIp').value = data.ip;
+            });
+
+        // Enviar dados para o Google Sheets
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Evita o envio padrão (vamos enviar via Fetch)
             
-            // Capturar IP do usuário
-            fetch('https://api.ipify.org?format=json')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('userIp').value = data.ip;
-                });
-            
-            // Enviar dados para o Google Sheets (além do FormSubmit)
-            form.addEventListener('submit', function(e) {
-                const btn = form.querySelector('button[type="submit"]');
-                btn.disabled = true;
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Enviando...';
+            const btn = form.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Enviando...';
+
+            // Dados do formulário
+            const formData = {
+                name: form.name.value,
+                email: form.email.value,
+                message: form.message.value,
+                ip: document.getElementById('userIp').value,
+                origem: 'Página Sobre'
+            };
+
+            // URL do seu Web App do Google Script (SUBSTITUA PELA SUA URL)
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbzSDKbA9MkbGyT_4ynCPTmNansFV52XQI7_LU570aMY1bSZSi9MjAeFdp8TE3OpjDU/exec';
+
+            // Enviar para o Google Sheets
+            fetch(scriptUrl, {
+                method: 'POST',
+                body: JSON.stringify(formData),
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Se quiser enviar também por e-mail (FormSubmit), descomente a linha abaixo:
+                form.submit(); // Envia o formulário original (para o FormSubmit)
                 
-                // URL do seu Web App do Google Script (substitua pela sua)
-                const scriptUrl = 'https://script.google.com/macros/s/AKfycbzgp3woMTheqN2xxip_pH4KDpnvvY9HCfxFAHiQ_hcDmnFhLEcqcMZDDAqqi3pTcrfM7A/exec';
-                
-                // Dados do formulário
-                const formData = {
-                    name: form.name.value,
-                    email: form.email.value,
-                    message: form.message.value,
-                    ip: document.getElementById('userIp').value,
-                    origem: 'Página Sobre'
-                };
-                
-                // Enviar para o Google Sheets (opcional)
-                fetch(scriptUrl, {
-                    method: 'POST',
-                    body: JSON.stringify(formData),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }).catch(error => console.log('Erro no Google Sheets:', error));
-                
-                // O FormSubmit continuará enviando o e-mail normalmente
+                // Redireciona para a página de obrigado (opcional)
+                window.location.href = "https://phmiori.github.io/ComStore/obrigado.html";
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Ocorreu um erro. Tente novamente.');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane mr-2"></i> Enviar Mensagem';
             });
         });
-    </script>
+    });
+</script>
 </body>
 </html>

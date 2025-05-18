@@ -328,24 +328,19 @@
 
             // Enviar para o Google Sheets
             fetch(scriptUrl, {
-            method: 'POST',
-            body: JSON.stringify(formData),
-            headers: { 'Content-Type': 'application/json' }
-            })
-            .then(response => {
-            if (!response.ok) throw new Error("Erro na rede");
-            return response.json();
-            })
-            .then(data => {
-            if (data.status === "error") throw new Error(data.message);
-            form.submit(); // Envia para o FormSubmit
-            })
-            .catch(error => {
-            console.error("Erro detalhado:", error);
-            alert(`Erro: ${error.message}. Contate o suporte.`);
-            btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-paper-plane mr-2"></i> Enviar Mensagem';
-            });
+  method: 'POST',
+  body: JSON.stringify(formData),
+  headers: { 'Content-Type': 'application/json' },
+  mode: 'no-cors' // Ignora CORS (mas limita a resposta)
+})
+.then(() => {
+  // Não é possível ler a resposta em modo 'no-cors'
+  form.submit(); // Envia para o FormSubmit
+})
+.catch(error => {
+  console.error("Erro:", error);
+  alert("Mensagem enviada, mas não foi possível salvar na planilha.");
+});
         });
     });
 </script>

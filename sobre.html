@@ -324,27 +324,27 @@
             };
 
             // URL do seu Web App do Google Script (SUBSTITUA PELA SUA URL)
-            const scriptUrl = 'https://script.google.com/macros/s/AKfycbzSDKbA9MkbGyT_4ynCPTmNansFV52XQI7_LU570aMY1bSZSi9MjAeFdp8TE3OpjDU/exec';
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycby_84t2RfGKk4zuPK4O4TGEremB9cI8gYoILDzh_VHNmkV15SJ6390kW1yJmCNuAPoy/exec';
 
             // Enviar para o Google Sheets
             fetch(scriptUrl, {
-                method: 'POST',
-                body: JSON.stringify(formData),
-                headers: { 'Content-Type': 'application/json' }
+            method: 'POST',
+            body: JSON.stringify(formData),
+            headers: { 'Content-Type': 'application/json' }
             })
-            .then(response => response.json())
+            .then(response => {
+            if (!response.ok) throw new Error("Erro na rede");
+            return response.json();
+            })
             .then(data => {
-                // Se quiser enviar também por e-mail (FormSubmit), descomente a linha abaixo:
-                form.submit(); // Envia o formulário original (para o FormSubmit)
-                
-                // Redireciona para a página de obrigado (opcional)
-                window.location.href = "https://phmiori.github.io/ComStore/obrigado.html";
+            if (data.status === "error") throw new Error(data.message);
+            form.submit(); // Envia para o FormSubmit
             })
             .catch(error => {
-                console.error('Erro:', error);
-                alert('Ocorreu um erro. Tente novamente.');
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-paper-plane mr-2"></i> Enviar Mensagem';
+            console.error("Erro detalhado:", error);
+            alert(`Erro: ${error.message}. Contate o suporte.`);
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-paper-plane mr-2"></i> Enviar Mensagem';
             });
         });
     });

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Com-Store</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom styles for other elements */
+        .category-dropdown {
+            display: none;
+            position: absolute;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        
+        .show-categories .category-dropdown {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .niche-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Header with logo, navigation, and search -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-7 flex flex-col md:flex-row items-center justify-between">
+            <!-- Logo on the left -->
+            <div class="flex items-center mb-4 md:mb-0">
+                <img src="imagens/logo01.png" alt="SuperStore Logo" class="h-12 mr-2" class="logo">
+                <h1 class="text-xl font-bold text-gray-800">ComStore</h1>
+            </div>
+            
+            <!-- Navigation and search in the middle -->
+            <div class="flex-1 flex flex-col md:flex-row items-center justify-center mx-0 md:mx-8 w-full md:w-auto">
+                <!-- Navigation buttons -->
+                <div class="flex space-x-4 mb-4 md:mb-0">
+                    <a href="index.html" class="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium">Início</a>
+                    <div class="relative">
+                        <button id="categories-btn" class="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                            Categorias <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <!-- Categories dropdown -->
+                        <div id="category-dropdown" class="category-dropdown p-4 rounded-lg mt-1 w-full md:w-96">
+                            <div>
+                                <h3 class="font-bold mb-2">Airsoft/Airgun</h3>
+                                <a href="airsoft.html" class="block py-1 text-gray-600 hover:text-blue-500">Carabina</a>
+                                <a href="airsoft.html" class="block py-1 text-gray-600 hover:text-blue-500">Airsoft</a>
+                                <a href="airsoft.html" class="block py-1 text-gray-600 hover:text-blue-500">Airgun</a>
+                            </div>
+                            <div>
+                                <h3 class="font-bold mb-2">Faca/Canivete</h3>
+                                <a href="facas.html" class="block py-1 text-gray-600 hover:text-blue-500">Facas</a>
+                                <a href="facas.html" class="block py-1 text-gray-600 hover:text-blue-500">Canivetes</a>
+                                <a href="facas.html" class="block py-1 text-gray-600 hover:text-blue-500">Outros</a>
+                            </div>
+                            <div>
+                                <h3 class="font-bold mb-2">Eletrônicos</h3>
+                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">Celulares</a>
+                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">Notebooks</a>
+                                <a href="eletronicos.html" class="block py-1 text-gray-600 hover:text-blue-500">Outros</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Search bar -->
+                <div class="relative w-full md:w-96 mb-4 md:mb-0">
+                    <input type="text" id="search-input" placeholder="Buscar produtos..." 
+                           class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button id="search-btn" class="absolute right-3 top-2 text-gray-500 hover:text-blue-600">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Botão Sobre no canto direito -->
+            <div class="ml-auto">
+                <a href="sobre.html" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition flex items-center">
+                    Sobre <i class="fas fa-info-circle ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main content - Começa direto com as categorias -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Niche categories section -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">Nossas Categorias</h2>
+            <div class="niche-grid">
+                <!-- Niche categories will be added by JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer with social media links -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center">
+                        <img src="imagens/logo.png" alt="SuperStore Logo" class="h-10 mr-2">
+                        <h2 class="text-xl font-bold">ComStore</h2>
+                    </div>
+                    <p class="mt-2 text-gray-400">Inscreva-se em nossas redes sociais!</p>
+                </div>
+                
+                <div class="flex space-x-6">
+                    <a href="https://www.facebook.com/people/Davi-Miori/pfbid0TaBjuT2ugM39mja7JMnp7xHAEy6bpBde2BfXr3zW5G2nEmgEhJ4EwrMTL6ZUQ9kul/" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.instagram.com/comst_ore/" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@AvalonMoneyMakers" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-youtube"></i>
+                    </a> 
+                    <a href="https://www.tiktok.com/@comst.ore" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 ComStore. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample niche categories data
+        const nicheCategories = [
+            {
+                name: "Facas e Canivetes",
+                category: "facas e canivetes",
+                image: "imagens/imagem de Lista de Nicho - facas.jpg",
+                link: "facas.html"
+            },
+            {
+                name: "Airsofts/Airguns",
+                category: "Airsofts e Airguns",
+                image: "imagens/imagem de Lista de Nicho - airsoft.webp",
+                link: "airsoft.html"
+            },
+            {
+                name: "Eletronicos",
+                category: "eletronicos",
+                image: "imagens/imagem de Lista de Nicho - eletronicos.jpg",
+                link: "eletronicos.html"
+            }
+        ];
+
+        // DOM elements
+        const categoriesBtn = document.getElementById('categories-btn');
+        const categoryDropdown = document.getElementById('category-dropdown');
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const nicheGrid = document.querySelector('.niche-grid');
+
+        // Initialize niche categories
+        function initNicheCategories() {
+            nicheGrid.innerHTML = '';
+            
+            nicheCategories.forEach(niche => {
+                const nicheItem = document.createElement('a');
+                nicheItem.href = niche.link;
+                nicheItem.className = 'bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition';
+                nicheItem.innerHTML = `
+                    <img src="${niche.image}" alt="${niche.name}" class="w-full h-40 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800">${niche.name}</h3>
+                        <p class="text-gray-500 text-sm">${niche.category.charAt(0).toUpperCase() + niche.category.slice(1)}</p>
+                    </div>
+                `;
+                nicheGrid.appendChild(nicheItem);
+            });
+        }
+
+        // Toggle categories dropdown
+        categoriesBtn.addEventListener('click', () => {
+            document.querySelector('.relative').classList.toggle('show-categories');
+        });
+
+        // Close categories dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.relative') && !e.target.closest('#categories-btn')) {
+                document.querySelector('.relative').classList.remove('show-categories');
+            }
+        });
+
+        // Search functionality
+        searchBtn.addEventListener('click', () => {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            if (searchTerm) {
+                alert(`Buscando por: ${searchTerm}`);
+            }
+        });
+
+        // Allow search on Enter key
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchBtn.click();
+            }
+        });
+
+        // Initialize the page
+        initNicheCategories();
+    </script>
+</body>
+</html>

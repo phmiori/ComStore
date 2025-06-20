@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Com-Store</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom styles for other elements */
+        .category-dropdown {
+            display: none;
+            position: absolute;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+        
+        .show-categories .category-dropdown {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .niche-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .active-category {
+            color: #3b82f6;
+            font-weight: 600;
+            border-bottom: 2px solid #3b82f6;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Header with logo, navigation, and search -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-7 flex flex-col md:flex-row items-center justify-between">
+            <!-- Logo on the left -->
+            <div class="flex items-center mb-4 md:mb-0">
+                <img src="imagens/logo01.png" alt="SuperStore Logo" class="h-12 mr-2" class="logo">
+                <h1 class="text-xl font-bold text-gray-800">ComStore</h1>
+            </div>
+            
+            <!-- Navigation and search in the middle -->
+            <div class="flex-1 flex flex-col md:flex-row items-center justify-center mx-0 md:mx-8 w-full md:w-auto">
+                <!-- Navigation buttons -->
+                <div class="flex space-x-4 mb-4 md:mb-0">
+                    <a href="#" class="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium category-filter" data-category="all">Início</a>
+                    <div class="relative">
+                        <button id="categories-btn" class="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                            Categorias <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                        </button>
+                        <!-- Categories dropdown -->
+                        <div id="category-dropdown" class="category-dropdown p-4 rounded-lg mt-1 w-full md:w-96">
+                            <div>
+                                <h3 class="font-bold mb-2">Airsoft/Airgun</h3>
+                                <a href="#" class="block py-1 text-gray-600 hover:text-blue-500 category-filter" data-category="carabina">Carabina</a>
+                                <a href="#" class="block py-1 text-gray-600 hover:text-blue-500 category-filter" data-category="airsoft">Airsoft</a>
+                                <a href="#" class="block py-1 text-gray-600 hover:text-blue-500 category-filter" data-category="airgun">Airgun</a>
+                            </div>
+                            <div>
+                                <h3 class="font-bold mb-2">Faca/Canivete</h3>
+                                <a href="#" class="block py-1 text-gray-600 hover:text-blue-500 category-filter" data-category="facas">Facas</a>
+                                <a href="#" class="block py-1 text-gray-600 hover:text-blue-500 category-filter" data-category="canivetes">Canivetes</a>
+                                <a href="#" class="block py-1 text-gray-600 hover:text-blue-500 category-filter" data-category="outros">Outros</a>
+                            </div>
+                            <div>
+                                <h3 class="font-bold mb-2">Eletrônicos</h3>
+                                <a href="#" class="block py-1 text-gray-600 hover:text-blue-500 category-filter" data-category="celulares">Celulares</a>
+                                <a href="#" class="block py-1 text-gray-600 hover:text-blue-500 category-filter" data-category="notebooks">Notebooks</a>
+                                <a href="#" class="block py-1 text-gray-600 hover:text-blue-500 category-filter" data-category="eletronicos">Outros</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Search bar -->
+                <div class="relative w-full md:w-96 mb-4 md:mb-0">
+                    <input type="text" id="search-input" placeholder="Buscar produtos..." 
+                           class="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button id="search-btn" class="absolute right-3 top-2 text-gray-500 hover:text-blue-600">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Botão Sobre no canto direito -->
+            <div class="ml-auto">
+                <a href="sobre.html" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition flex items-center">
+                    Sobre <i class="fas fa-info-circle ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main content - Começa direto com as categorias -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Niche categories section -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">Nossos Produtos</h2>
+            <div class="product-grid" id="product-grid">
+                <!-- Products will be added by JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer with social media links -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <div class="flex items-center">
+                        <img src="imagens/logo.png" alt="SuperStore Logo" class="h-10 mr-2">
+                        <h2 class="text-xl font-bold">ComStore</h2>
+                    </div>
+                    <p class="mt-2 text-gray-400">Inscreva-se em nossas redes sociais!</p>
+                </div>
+                
+                <div class="flex space-x-6">
+                    <a href="https://www.facebook.com/people/Davi-Miori/pfbid0TaBjuT2ugM39mja7JMnp7xHAEy6bpBde2BfXr3zW5G2nEmgEhJ4EwrMTL6ZUQ9kul/" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.instagram.com/comst_ore/" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@AvalonMoneyMakers" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-youtube"></i>
+                    </a> 
+                    <a href="https://www.tiktok.com/@comst.ore" class="text-gray-400 hover:text-white text-xl">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 ComStore. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample products data
+        const products = [
+            {
+                id: 1,
+                name: "Carabina Airsoft",
+                price: 799.90,
+                image: "imagens/carabina.jpg",
+                category: "carabina",
+                link: "airsoft.html"
+            },
+            {
+                id: 2,
+                name: "Pistola Airsoft",
+                price: 499.90,
+                image: "imagens/airsoft.jpg",
+                category: "airsoft",
+                link: "airsoft.html"
+            },
+            {
+                id: 3,
+                name: "Faca de Caça",
+                price: 299.90,
+                image: "imagens/faca.jpg",
+                category: "facas",
+                link: "facas.html"
+            },
+            {
+                id: 4,
+                name: "Canivete Suíço",
+                price: 199.90,
+                image: "imagens/canivete.jpg",
+                category: "canivetes",
+                link: "facas.html"
+            },
+            {
+                id: 5,
+                name: "Smartphone Premium",
+                price: 2999.90,
+                image: "imagens/celular.jpg",
+                category: "celulares",
+                link: "eletronicos.html"
+            },
+            {
+                id: 6,
+                name: "Notebook Ultra",
+                price: 4599.00,
+                image: "imagens/notebook.jpg",
+                category: "notebooks",
+                link: "eletronicos.html"
+            },
+            {
+                id: 7,
+                name: "Airgun de Pressão",
+                price: 899.90,
+                image: "imagens/airgun.jpg",
+                category: "airgun",
+                link: "airsoft.html"
+            },
+            {
+                id: 8,
+                name: "Faca de Cozinha",
+                price: 159.90,
+                image: "imagens/faca-cozinha.jpg",
+                category: "facas",
+                link: "facas.html"
+            }
+        ];
+
+        // DOM elements
+        const categoriesBtn = document.getElementById('categories-btn');
+        const categoryDropdown = document.getElementById('category-dropdown');
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const productGrid = document.getElementById('product-grid');
+        const categoryFilters = document.querySelectorAll('.category-filter');
+
+        // Current filter state
+        let currentFilter = 'all';
+
+        // Initialize products
+        function initProducts(filter = 'all') {
+            productGrid.innerHTML = '';
+            
+            const filteredProducts = filter === 'all' 
+                ? products 
+                : products.filter(product => product.category === filter);
+            
+            filteredProducts.forEach(product => {
+                const productItem = document.createElement('a');
+                productItem.href = product.link;
+                productItem.className = 'bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition';
+                productItem.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-lg font-semibold text-gray-800">${product.name}</h3>
+                        <p class="text-blue-600 font-bold">R$ ${product.price.toFixed(2).replace('.', ',')}</p>
+                        <span class="inline-block mt-2 px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">${getCategoryName(product.category)}</span>
+                    </div>
+                `;
+                productGrid.appendChild(productItem);
+            });
+        }
+
+        // Get category name for display
+        function getCategoryName(category) {
+            const names = {
+                'carabina': 'Carabina',
+                'airsoft': 'Airsoft',
+                'airgun': 'Airgun',
+                'facas': 'Facas',
+                'canivetes': 'Canivetes',
+                'celulares': 'Celulares',
+                'notebooks': 'Notebooks',
+                'eletronicos': 'Eletrônicos',
+                'outros': 'Outros'
+            };
+            return names[category] || category;
+        }
+
+        // Set active category filter
+        function setActiveFilter(category) {
+            categoryFilters.forEach(filter => {
+                if (filter.dataset.category === category) {
+                    filter.classList.add('active-category');
+                } else {
+                    filter.classList.remove('active-category');
+                }
+            });
+        }
+
+        // Initialize the page
+        function initPage() {
+            initProducts();
+            setActiveFilter('all');
+            
+            // Set up category filter click handlers
+            categoryFilters.forEach(filter => {
+                filter.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentFilter = filter.dataset.category;
+                    initProducts(currentFilter);
+                    setActiveFilter(currentFilter);
+                    
+                    // Close dropdown if open
+                    document.querySelector('.relative').classList.remove('show-categories');
+                });
+            });
+        }
+
+        // Toggle categories dropdown
+        categoriesBtn.addEventListener('click', () => {
+            document.querySelector('.relative').classList.toggle('show-categories');
+        });
+
+        // Close categories dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.relative') && !e.target.closest('#categories-btn')) {
+                document.querySelector('.relative').classList.remove('show-categories');
+            }
+        });
+
+        // Search functionality
+        searchBtn.addEventListener('click', () => {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            if (searchTerm) {
+                alert(`Buscando por: ${searchTerm}`);
+            }
+        });
+
+        // Allow search on Enter key
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchBtn.click();
+            }
+        });
+
+        // Initialize the page
+        initPage();
+    </script>
+</body>
+</html>
